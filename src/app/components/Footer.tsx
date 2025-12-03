@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 const socials = [
-    { label: "Instagram", href: "https://instagram.com" },
+    { label: "Instagram", href: "https://www.instagram.com/albauhaus/" },
     { label: "Linkedin", href: "https://linkedin.com" },
     { label: "Behance", href: "https://behance.net" },
     { label: "Github", href: "https://github.com" },
