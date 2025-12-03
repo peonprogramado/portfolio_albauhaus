@@ -81,19 +81,19 @@ export default function AboutPage() {
                                 Sé usar estos programas
                             </h3>
                             <div className="flex flex-wrap gap-3 mb-8">
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Figma
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Adobe
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Blender
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     TouchDesigner
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Premiere
                                 </span>
                             </div>
@@ -105,19 +105,19 @@ export default function AboutPage() {
                                 A veces programo en...
                             </h3>
                             <div className="flex flex-wrap gap-3">
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     React
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Flutter
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     HTML/CSS
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Javascript
                                 </span>
-                                <span className="px-4 py-2 border-2 border-black rounded-full text-black font-medium">
+                                <span className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
                                     Python
                                 </span>
                             </div>
