@@ -19,6 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Alba Antón - Portfolio",
   description: "Portfolio de Alba Antón González - Diseñadora gráfica y desarrolladora creativa",
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 };// ...existing code...
 export default function RootLayout({
   children,
