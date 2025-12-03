@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const socials = [
     { label: "Instagram", href: "https://instagram.com" },
@@ -17,6 +17,18 @@ const footerLinks = [
 ];
 
 const Footer: React.FC = () => {
+    const router = useRouter();
+
+    const handleNavigation = (href: string, label: string) => {
+        if (label === "Índice") {
+            router.push("/");
+        } else if (label === "About") {
+            router.push("/about");
+        } else if (label === "Proyectos") {
+            router.push("/proyectos");
+        }
+    };
+
     return (
         <footer className="w-full bg-black text-white mt-40 pb-16 pt-20">
             <div className="w-full max-w-[1200px] mx-auto px-8 flex flex-col md:flex-row md:items-start md:justify-between gap-12">
@@ -69,13 +81,13 @@ const Footer: React.FC = () => {
 
                 <div className="flex flex-col items-start md:items-end gap-4 text-right text-sm uppercase tracking-[0.18em]">
                     {footerLinks.map((link) => (
-                        <Link
+                        <button
                             key={link.label}
-                            href={link.href}
-                            className="curzr-hover text-white/80 hover:text-white transition-colors"
+                            onClick={() => handleNavigation(link.href, link.label)}
+                            className="curzr-hover text-white/80 hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0 text-right text-sm uppercase tracking-[0.18em] font-inherit"
                         >
                             {link.label}
-                        </Link>
+                        </button>
                     ))}
                 </div>
             </div>
