@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 
 const socials = [
     { label: "Instagram", href: "https://www.instagram.com/albauhaus/" },
-    { label: "Linkedin", href: "https://linkedin.com" },
-    { label: "Behance", href: "https://behance.net" },
-    { label: "Github", href: "https://github.com" },
+    { label: "Linkedin", href: "https://www.linkedin.com/in/alba-antón-8b1a80351" },
+    { label: "Behance", href: "https://www.behance.net/albaanton1/projects" },
+    { label: "Github", href: "https://github.com/albauhaus" },
 ];
 
 const footerLinks = [
