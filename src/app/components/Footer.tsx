@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import Link from "next/link";
 
 const socials = [
     { label: "Instagram", href: "https://instagram.com" },
@@ -11,8 +11,8 @@ const socials = [
 ];
 
 const footerLinks = [
-    { label: "Inicio", href: "#top" },
-    { label: "About", href: "#about" },
+    { label: "Índice", href: "/" },
+    { label: "About", href: "/about" },
     { label: "Proyectos", href: "/proyectos" },
 ];
 
@@ -69,13 +69,13 @@ const Footer: React.FC = () => {
 
                 <div className="flex flex-col items-start md:items-end gap-4 text-right text-sm uppercase tracking-[0.18em]">
                     {footerLinks.map((link) => (
-                        <a
+                        <Link
                             key={link.label}
                             href={link.href}
                             className="curzr-hover text-white/80 hover:text-white transition-colors"
                         >
                             {link.label}
-                        </a>
+                        </Link>
                     ))}
                 </div>
             </div>
