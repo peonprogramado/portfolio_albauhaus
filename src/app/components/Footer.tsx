@@ -44,6 +44,7 @@ const Footer: React.FC = () => {
                             <button
                                 className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-white curzr-hover hover:bg-white hover:text-black transition-all duration-300 flex-shrink-0"
                                 type="button"
+                                onClick={() => window.location.href = 'mailto:albaantondesign@gmail.com'}
                             >
                                 <svg
                                     width="24"
