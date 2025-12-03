@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   title: "Alba Antón - Portfolio",
   description: "Portfolio de Alba Antón González - Diseñadora gráfica y desarrolladora creativa",
   icons: {
-    icon: '/icon.png',
-    shortcut: '/icon.png',
+    icon: ['/favicon.ico', '/icon.png'],
+    shortcut: '/favicon.ico',
     apple: '/icon.png',
   },
 };// ...existing code...
