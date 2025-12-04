@@ -479,7 +479,7 @@ export default function Home() {
         >
           <img
             ref={imageRef2}
-            src="/images/FireShot Capture 136 - SynthMind - [synthminddesign.vercel.app].png"
+            src="/images/Captura de pantalla 2025-11-14 a las 12.46.56.png"
             alt="SynthMind Design"
             className="curzr-hover cursor-pointer"
             style={{
