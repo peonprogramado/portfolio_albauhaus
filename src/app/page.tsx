@@ -434,7 +434,7 @@ export default function Home() {
 
         {/* MIS TRABAJOS DESTACADOS */}
         <div className="w-full max-w-[1300px]">
-          <ScrollReveal textClassName="text-black font-bold pl-[50px] pr-[2000px] mt-[200px] mb-[140px] whitespace-nowrap" >
+          <ScrollReveal textClassName="text-black font-bold pl-[50px] pr-[2000px] mt-[200px] mb-[60px] whitespace-nowrap" >
             Mis trabajos destacados...
           </ScrollReveal>
         </div>
@@ -444,7 +444,7 @@ export default function Home() {
           style={{
             paddingLeft: '50px',
             paddingRight: '50px',
-            marginTop: '180px',
+            marginTop: '80px',
             width: '100%',
             display: 'flex',
             justifyContent: 'center',
