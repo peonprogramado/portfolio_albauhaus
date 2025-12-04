@@ -510,7 +510,7 @@ export default function Home() {
         >
           <img
             ref={imageRef3}
-            src="/images/Captura de pantalla 2025-06-28 a las 21.01.51.png"
+            src="/images/mockupinfografiadune.jpg"
             alt="Destacados 3"
             className="curzr-hover cursor-pointer"
             style={{
