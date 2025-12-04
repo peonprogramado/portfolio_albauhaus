@@ -483,8 +483,8 @@ export default function Home() {
             alt="SynthMind Design"
             className="curzr-hover cursor-pointer"
             style={{
-              width: '1800px',
-              height: '900px',
+              width: '100%',
+              height: 'clamp(400px, 50vw, 600px)',
               objectFit: 'cover',
               borderRadius: '20px',
               boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
