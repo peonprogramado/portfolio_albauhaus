@@ -15,9 +15,10 @@ if (typeof window !== 'undefined') {
 interface MaskedHeadingProps {
   text: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export default function MaskedHeading({ text, className = "" }: MaskedHeadingProps) {
+export default function MaskedHeading({ text, className = "", style }: MaskedHeadingProps) {
   const headingRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function MaskedHeading({ text, className = "" }: MaskedHeadingPro
       ref={headingRef}
       data-split="heading"
       className={className}
+      style={style}
     >
       {text}
     </h2>

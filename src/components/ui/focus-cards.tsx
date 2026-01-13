@@ -110,7 +110,7 @@ export function FocusCards({
     const [hovered, setHovered] = useState<number | null>(null);
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-6 lg:scale-90 xl:scale-100 xl:gap-8">
             {cards.map((card, index) => (
                 <div key={card.id} className="project-item group cursor-pointer curzr-hover">
                     <Card
