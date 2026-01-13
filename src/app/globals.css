@@ -1,0 +1,280 @@
+
+@import "tailwindcss";
+@import "./components/loading.css";
+@import "tw-animate-css";
+
+/* Large Screen Optimizations for Project Pages */
+@media (min-width: 1280px) {
+  /* Larger media containers for XL screens */
+  .xl-large-project-media {
+    max-width: 90vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  /* Reduced lateral margins for project pages */
+  .xl-reduced-project-margins {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+    max-width: 95vw !important;
+  }
+  
+  /* Separated text layout for project details */
+  .xl-project-text-separation {
+    gap: 3rem !important;
+  }
+  
+  .xl-project-text-separation .client-section {
+    margin-bottom: 2rem;
+  }
+  
+  .xl-project-text-separation .description-section {
+    margin-top: 2rem;
+  }
+
+  /* TiltedCard optimizations for large screens (1280px+) in About page */
+  .client-section.xl-large-project-media .tilted-card-container {
+    max-width: 500px !important;
+    margin: 0 auto !important;
+    transform: scale(1.1) !important;
+  }
+
+  .client-section.xl-large-project-media .space-y-6 {
+    gap: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Education info text scaling and centering for large screens */
+  .client-section.xl-large-project-media .text-black {
+    text-align: center !important;
+    margin-top: 1.5rem !important;
+  }
+
+  .client-section.xl-large-project-media .text-black h4 {
+    text-align: center !important;
+  }
+
+  .client-section.xl-large-project-media .text-black p {
+    text-align: left !important;
+  }
+
+  .client-section.xl-large-project-media h4 {
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .client-section.xl-large-project-media p {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Overlay content scaling for large screens */
+  .client-section.xl-large-project-media .bg-white\/10 span {
+    font-size: 1.25rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+@media (min-width: 1536px) {
+  /* Even larger for 2XL screens */
+  .xxl-large-project-media {
+    max-width: 95vw !important;
+  }
+  
+  /* Further reduced margins for 2XL */
+  .xxl-reduced-project-margins {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    max-width: 98vw !important;
+  }
+  
+  /* Enhanced text separation for 2XL */
+  .xxl-project-text-separation {
+    gap: 4rem !important;
+  }
+  
+  .xxl-project-text-separation .client-section {
+    margin-bottom: 3rem;
+  }
+  
+  .xxl-project-text-separation .description-section {
+    margin-top: 3rem;
+  }
+
+  /* TiltedCard optimizations for 2XL screens (1536px+) in About page */
+  .client-section.xxl-large-project-media .tilted-card-container {
+    max-width: 550px !important;
+    margin: 0 auto !important;
+    transform: scale(1.15) !important;
+  }
+
+  .client-section.xxl-large-project-media .space-y-6 {
+    gap: 2.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Education info text scaling and centering for 2XL screens */
+  .client-section.xxl-large-project-media .text-black {
+    text-align: center !important;
+    margin-top: 1.75rem !important;
+  }
+
+  .client-section.xxl-large-project-media .text-black h4 {
+    text-align: center !important;
+  }
+
+  .client-section.xxl-large-project-media .text-black p {
+    text-align: left !important;
+  }
+
+  .client-section.xxl-large-project-media h4 {
+    font-size: 2.25rem !important;
+    margin-bottom: 0.875rem !important;
+  }
+
+  .client-section.xxl-large-project-media p {
+    font-size: 1.625rem !important;
+    margin-bottom: 0.875rem !important;
+  }
+
+  /* Overlay content scaling for 2XL screens */
+  .client-section.xxl-large-project-media .bg-white\/10 span {
+    font-size: 1.375rem !important;
+    padding: 0.625rem 1.25rem !important;
+  }
+
+  /* Footer social buttons optimization for 2XL screens */
+  .xxl-project-text-separation .curzr-hover {
+    min-width: 180px !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Footer navigation links alignment for 2XL screens */
+  .xxl-project-text-separation .description-section {
+    align-self: flex-start !important;
+    margin-top: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  .xxl-project-text-separation .description-section button {
+    text-align: left !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  /* Footer "TRABAJEMOS JUNTOS" text optimizations for very large screens only */
+  .xl-large-project-media h2, .xxl-large-project-media h2 {
+    font-size: 120px !important;
+    text-align: center !important;
+  }
+
+  .xl-large-project-media, .xxl-large-project-media {
+    justify-content: center !important;
+  }
+
+  /* TiltedCard optimizations for very large screens in About page */
+  .client-section.xl-large-project-media .tilted-card-container {
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    transform: scale(1.2) !important;
+  }
+
+  .client-section.xl-large-project-media .space-y-6 {
+    gap: 3rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Education info text scaling and centering for very large screens */
+  .client-section.xl-large-project-media .text-black {
+    text-align: center !important;
+    margin-top: 2rem !important;
+  }
+
+  .client-section.xl-large-project-media .text-black h4 {
+    text-align: center !important;
+  }
+
+  .client-section.xl-large-project-media .text-black p {
+    text-align: left !important;
+  }
+
+  .client-section.xl-large-project-media h4 {
+    font-size: 2.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .client-section.xl-large-project-media p {
+    font-size: 1.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Overlay content scaling */
+  .client-section.xl-large-project-media .bg-white\/10 span {
+    font-size: 1.5rem !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+}
+
+body {
+  font-family: var(--font-geist-sans), "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+/* Geist Variable Font Classes */
+.geist-sans {
+  font-family: var(--font-geist-sans), "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.geist-mono {
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Font weight utilities for Geist variable font */
+.geist-thin { font-weight: 100; }
+.geist-extralight { font-weight: 200; }
+.geist-light { font-weight: 300; }
+.geist-normal { font-weight: 400; }
+.geist-medium { font-weight: 500; }
+.geist-semibold { font-weight: 600; }
+.geist-bold { font-weight: 700; }
+.geist-extrabold { font-weight: 800; }
+.geist-black { font-weight: 900; }
+
+.curzr {
+  pointer-events: none;
+  z-index: 2147483647;
+}
+.curzr-dot {
+  pointer-events: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar-track {
+  display: none !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+
