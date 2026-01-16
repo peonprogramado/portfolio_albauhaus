@@ -84,9 +84,9 @@ export default function PiLab5Page() {
 
                     {/* Stories Piskills Video */}
                     <div className="animate-element">
-                        <div className="relative overflow-hidden rounded-2xl aspect-[3/4] bg-white flex items-center justify-center">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[3/4] bg-white">
                             <video
-                                className="h-full w-auto object-contain block rounded-2xl"
+                                className="w-full h-full object-cover rounded-2xl"
                                 controls
                                 autoPlay
                                 loop
@@ -94,7 +94,7 @@ export default function PiLab5Page() {
                                 playsInline
                                 preload="metadata"
                             >
-                                <source src="/video/storiespiskills.mp4" type="video/mp4" />
+                                <source src="/video/pilab/pilabverticalb.mp4" type="video/mp4" />
                                 Tu navegador no soporta el elemento de video.
                             </video>
                         </div>
