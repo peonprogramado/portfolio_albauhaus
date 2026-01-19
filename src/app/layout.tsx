@@ -37,11 +37,20 @@ export const metadata: Metadata = {
     siteName: "Alba Antón - Portfolio",
     locale: "es_ES",
     type: "website",
+    images: [
+      {
+        url: '/images/capturalink/preview.png',
+        width: 1200,
+        height: 630,
+        alt: 'Alba Antón Portfolio - Diseño innovador y accesible',
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Alba Antón - Portfolio",
     description: "Diseño innovador, sintético y accesible. Un lenguaje visual creativo enfocado en la funcionalidad.",
+    images: ['/images/capturalink/preview.png'],
   },
 };// ...existing code...
 export default function RootLayout({
