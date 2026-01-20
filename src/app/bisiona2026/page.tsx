@@ -82,9 +82,10 @@ export default function Bisiona2026Page() {
                     <div className="animate-element">
                         <div className="relative overflow-hidden rounded-2xl aspect-[3/4]">
                             <img
-                                src="/images/mockupposterbus.jpg"
-                                alt="Mockup poster bus Bisiona"
+                                src="/images/bisiona/mockupcartelesbisiona.jpg"
+                                alt="Mockup carteles Bisiona"
                                 className="w-full h-full object-cover rounded-2xl"
+                                style={{ objectPosition: '35% center' }}
                             />
                         </div>
                     </div>
@@ -93,8 +94,8 @@ export default function Bisiona2026Page() {
                     <div className="animate-element">
                         <div className="relative overflow-hidden rounded-2xl aspect-[3/4]">
                             <img
-                                src="/images/cartelbisiona_escultura.png"
-                                alt="Cartel Bisiona escultura"
+                                src="/images/bisiona/mockuptotebagvariante.jpg"
+                                alt="Mockup tote bag Bisiona"
                                 className="w-full h-full object-cover rounded-2xl"
                             />
                         </div>
@@ -107,8 +108,19 @@ export default function Bisiona2026Page() {
                     <div className="animate-element">
                         <div className="relative overflow-hidden rounded-2xl aspect-[16/9]">
                             <img
-                                src="/images/MockupIDcardmetalazul.jpg"
-                                alt="Mockup ID card metal azul Bisiona"
+                                src="/images/bisiona/MockupIDcardbisionafondonegro.jpg"
+                                alt="Mockup ID card Bisiona fondo negro"
+                                className="w-full h-full object-cover rounded-2xl"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Wristband Bisiona */}
+                    <div className="animate-element">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[16/9]">
+                            <img
+                                src="/images/bisiona/wristband_bisiona_final.png"
+                                alt="Wristband Bisiona"
                                 className="w-full h-full object-cover rounded-2xl"
                             />
                         </div>
@@ -152,11 +164,9 @@ export default function Bisiona2026Page() {
                     <div className="description-section">
                         <h2 className="text-2xl font-normal text-black mb-4">Identidad IX Jornadas de Arte y Diseño EASDPP</h2>
                         <p className="text-gray-600 leading-relaxed">
-                            Para la novena edición de Bisiona, presento una propuesta de identidad dinámica y participativa que sitúa el rastro del alumnado como el motor transformador de la EASD Pablo Picasso. El concepto se aleja de una imagen estática para construir un sistema visual vivo que evoluciona mediante la intervención directa de los estudiantes, revalorizando su singularidad individual y convirtiéndola en la base del lenguaje gráfico del evento.
+                            Bisiona son las jornadas de referencia de la EASD Pablo Picasso, un evento anual que conecta la formación académica con la realidad profesional a través de conferencias y talleres. Para su novena edición, se propone una identidad dinámica y participativa que materializa el rastro del alumnado sobre la propia escuela. El proyecto revaloriza la singularidad individual de los alumnos como un motor transformador de la escuela, construyendo un sistema visual que evoluciona mediante la participación e intervención activa de los estudiantes.
                             <br /><br />
-                            La propuesta se materializa a través de la herramienta digital interactiva <a href="https://peonprogramado.github.io/Crea-o-teu-Bisiona/" target="_blank" rel="noopener noreferrer" className="text-black font-semibold hover:opacity-70 transition-opacity">Crea o teu Bisiona</a>, donde cada alumno puede customizar el identificador de las jornadas. Mediante parámetros que simbolizan las distintas disciplinas del centro, los estudiantes utilizan los conceptos aprendidos en el aula para generar un resultado único, permitiendo que la identidad de las jornadas sea, en realidad, una suma de sus talentos personales.
-                            <br /><br />
-                            Finalmente, el diseño rinde homenaje a la riqueza técnica de la escuela mediante el uso de texturas específicas para cada especialidad, reforzando el vínculo entre la materia y la formación. Estas piezas individuales se comparten bajo el hashtag #bisiona, construyendo una imagen colectiva en redes sociales que conecta de forma coherente la realidad académica con la proyección profesional de la comunidad educativa.
+                            A través de un código QR distribuido por la escuela, los alumnos acceden a una plataforma interactiva (<a href="https://peonprogramado.github.io/Crea-o-teu-Bisiona/" target="_blank" rel="noopener noreferrer" className="text-black font-semibold hover:opacity-70 transition-opacity">Crea o teu Bisiona</a>) donde pueden experimentar con diferentes parámetros. Cada variable de la herramienta representa simbólicamente una de las disciplinas de la escuela. Finalmente bajo el #bisiona en redes sociales, se incita al alumnado y demás espectadores del evento a participar en la identidad compartiendo sus creaciones.
                         </p>
                     </div>
                 </div>

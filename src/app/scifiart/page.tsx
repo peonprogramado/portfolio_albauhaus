@@ -127,7 +127,7 @@ export default function SciFiArtPage() {
                         </p>
                         <div className="flex flex-wrap gap-2">
                             <span className="px-5 py-2 border border-black rounded-full text-black text-sm hover:bg-black hover:text-white transition-colors cursor-default">
-                                Informativa
+                                Experimental
                             </span>
                         </div>
                     </div>

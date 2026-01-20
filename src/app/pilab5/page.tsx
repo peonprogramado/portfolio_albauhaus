@@ -141,9 +141,24 @@ export default function PiLab5Page() {
                                 playsInline
                                 preload="metadata"
                             >
-                                <source src="/video/Mopie mockup.mp4" type="video/mp4" />
+                                <source src="/video/pilab/Mopie mockup.mp4" type="video/mp4" />
                                 Tu navegador no soporta el elemento de video.
                             </video>
+                        </div>
+                    </div>
+
+                    {/* Mockup Digital Image */}
+                    <div className="animate-element">
+                        <div className="relative overflow-hidden rounded-2xl">
+                            <img
+                                src="/images/pilab5/157.png"
+                                alt="Mockup Digital"
+                                className="w-full h-auto block"
+                                style={{
+                                    clipPath: 'inset(0 round 1rem)',
+                                    transform: 'scale(1.01)'
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -168,7 +183,7 @@ export default function PiLab5Page() {
                     <div className="description-section">
                         <h2 className="text-2xl font-normal text-black mb-4">PiLab 5 - Gráficas publicitarias</h2>
                         <p className="text-gray-600 leading-relaxed">
-                            Esta serie de gráficas publicitarias para la campaña de la tienda ficticia PiLab 5 se concibe como una llamada a experimentar con la tecnología en un laboratorio creativo bajo el motto "Mil proyectos, una Raspberry". La propuesta visual en soportes exteriores, prensa y canales digitales busca motivar al espectador para que abandone su rol de consumidor pasivo y descubra su potencial como creador activo. A través de los talleres PiSkills, las charlas PiTalk y las demos in situ, el público puede atreverse a aprender y materializar las infinitas posibilidades tecnológicas del producto, demostrando que todos tienen la capacidad de fabricar sus propias ideas y democratizando así la creación de tecnología en un entorno que respira futuro, precisión y libertad creativa.
+                            Serie de gráficas publicitarias para la campaña de la tienda ficticia PiLab 5 se concibe como una llamada a experimentar con la tecnología en un laboratorio creativo bajo el motto "Mil proyectos, una Raspberry". La propuesta visual en soportes exteriores, prensa y canales digitales busca motivar al espectador para que abandone su rol de consumidor pasivo y descubra su potencial como creador activo. Se plantea la organización de talleres PiSkills, charlas PiTalk y demos in situ. En ellos se anima al público a aprender y materializar las infinitas posibilidades tecnológicas del producto, demostrando que cualquiera puede fabricar sus propias ideas.
                         </p>
                     </div>
                 </div>
