@@ -486,7 +486,13 @@ export default function Home() {
             {/* DESARROLLO WEB Y APP */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
-                <p className="text-black text-[24px] font-medium">
+                {/* Mobile: Programación Creativa */}
+                <p className="text-black text-[24px] font-medium md:hidden">
+                  Programación<br />
+                  Creativa
+                </p>
+                {/* Desktop: Desarrollo Web y App */}
+                <p className="text-black text-[24px] font-medium hidden md:block">
                   Desarrollo<br />
                   Web y App
                 </p>
