@@ -8,8 +8,8 @@ import CustomCursor from '../components/CustomCursor';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
-import MaskedHeading from '../components/MaskedHeading';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react';
+import MaskedHeading from '../components/MaskedHeading';
 import { FocusCards } from '@/components/ui/focus-cards';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -305,7 +305,7 @@ export default function ProyectosPage() {
 
                 {/* Filter Dropdown con HeroUI */}
                 <div className="mb-12">
-                    <Dropdown onOpenChange={(open) => setIsDropdownOpen(open)}>
+                    <Dropdown onOpenChange={(open) => setIsDropdownOpen(open)} shouldBlockScroll={false}>
                         <DropdownTrigger>
                             <Button
                                 className="backdrop-blur-sm bg-white/10 border border-black/20 rounded-3xl px-6 py-3 text-black font-medium hover:bg-white/20 transition-all duration-300 min-w-[220px]"

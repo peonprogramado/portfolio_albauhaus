@@ -242,6 +242,15 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+/* Prevent HeroUI from hiding the scrollbar when dropdowns/overlays open */
+body {
+  overflow-y: scroll !important;
+}
+body[style] {
+  overflow-y: scroll !important;
+  padding-right: 0 !important;
+}
 /* Geist Variable Font Classes */
 .geist-sans {
   font-family: var(--font-geist-sans), "Geist", sans-serif;

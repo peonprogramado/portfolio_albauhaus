@@ -5,7 +5,7 @@ import "./globals.css";
 import CustomCursor from "./components/CustomCursor";
 import BasicLoading from "./components/BasicLoading";
 import { Providers } from "./providers";
-
+import ScrollbarFix from "./components/ScrollbarFix";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -78,6 +78,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
+          <ScrollbarFix />
           <BasicLoading>
             <CustomCursor />
             {children}
