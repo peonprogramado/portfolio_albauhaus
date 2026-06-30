@@ -289,8 +289,7 @@ export default function Home() {
         >
           <TextPressure
             text="ALBA ANTÓN"
-            fontFamily="Compressa VF"
-            fontUrl="https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2"
+            fontFamily="Roboto Flex"
             minFontSize={320}
             textColor="#FFFFFF"
           />
@@ -304,8 +303,7 @@ export default function Home() {
           <div style={{ width: '80%', height: '200px' }}>
             <TextPressure
               text="ALBA"
-              fontFamily="Compressa VF"
-              fontUrl="https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2"
+              fontFamily="Roboto Flex"
               minFontSize={100}
               textColor="#FFFFFF"
             />
@@ -313,8 +311,7 @@ export default function Home() {
           <div style={{ width: '100%', height: '200px' }}>
             <TextPressure
               text="ANTÓN"
-              fontFamily="Compressa VF"
-              fontUrl="https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2"
+              fontFamily="Roboto Flex"
               minFontSize={100}
               textColor="#FFFFFF"
             />

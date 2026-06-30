@@ -20,8 +20,8 @@ interface TextPressureProps {
 
 const TextPressure: React.FC<TextPressureProps> = ({
     text = 'Compressa',
-    fontFamily = 'Compressa VF',
-    fontUrl = 'https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2',
+    fontFamily = 'Inter',
+    fontUrl = 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap',
     width = true,
     weight = true,
     italic = true,
@@ -54,22 +54,38 @@ const TextPressure: React.FC<TextPressureProps> = ({
     useEffect(() => {
         spansRef.current = [];
 
-        // Preload de la fuente
+        // Cargar fuente local o usar fallback
         const loadFont = async () => {
             try {
-                const font = new FontFace(fontFamily, `url(${fontUrl})`);
+                console.log('Loading font:', fontFamily);
+                // Intentar cargar desde public/fonts primero
+                const localFontUrl = `/fonts/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf`;
+                const font = new FontFace(fontFamily, `url(${localFontUrl})`);
                 await font.load();
                 document.fonts.add(font);
+                console.log('Local font loaded successfully:', fontFamily);
                 setFontLoaded(true);
             } catch (error) {
-                console.warn('Error loading font:', error);
-                // Usar fuente fallback
-                setFontLoaded(true);
+                console.warn('Local font not found, trying Google Fonts fallback:', error);
+                // Fallback a Google Fonts
+                const link = document.createElement('link');
+                link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap';
+                link.rel = 'stylesheet';
+                document.head.appendChild(link);
+
+                document.fonts.ready.then(() => {
+                    console.log('Google Fonts loaded as fallback');
+                    setFontLoaded(true);
+                });
+
+                setTimeout(() => {
+                    setFontLoaded(true);
+                }, 2000);
             }
         };
 
         loadFont();
-    }, [text, fontFamily, fontUrl]);
+    }, [fontFamily]);
 
     const dist = (a: { x: number; y: number }, b: { x: number; y: number }) => {
         const dx = b.x - a.x;
@@ -195,7 +211,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
                 className="relative w-full h-full overflow-hidden bg-transparent flex items-center justify-center"
             >
                 <div className="text-white/50 text-lg">
-                    Cargando...
+                    Cargando fuente...
                 </div>
             </div>
         );
@@ -211,11 +227,6 @@ const TextPressure: React.FC<TextPressureProps> = ({
             }}
         >
             <style>{`
-        @font-face {
-          font-family: '${fontFamily}';
-          src: url('${fontUrl}');
-          font-style: normal;
-        }
         .stroke span {
           position: relative;
           color: ${textColor};
