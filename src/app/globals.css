@@ -242,6 +242,25 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+::selection {
+  color: #fff;
+  background-color: #000;
+}
+
+::-moz-selection {
+  color: #fff;
+  background-color: #000;
+}
+
+/* Prevent HeroUI from hiding the scrollbar when dropdowns/overlays open */
+body {
+  overflow-y: scroll !important;
+}
+body[style] {
+  overflow-y: scroll !important;
+  padding-right: 0 !important;
+}
 /* Geist Variable Font Classes */
 .geist-sans {
   font-family: var(--font-geist-sans), "Geist", sans-serif;
@@ -292,4 +311,11 @@ body {
 .scrollbar-hide::-webkit-scrollbar-thumb {
   display: none !important;
 }
+/* La información de cada proyecto permanece fija mientras se recorre la galería. */
+.project-info-scroll {
+  scrollbar-width: none;
+}
 
+.project-info-scroll::-webkit-scrollbar {
+  display: none;
+}

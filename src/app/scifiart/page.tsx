@@ -1,149 +1,96 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
-import CustomCursor from "../components/CustomCursor";
-import MaskedHeading from "../components/MaskedHeading";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React from "react";
+import ProjectDetailLayout from "../components/ProjectDetailLayout";
 
-gsap.registerPlugin(ScrollTrigger);
+const processSections = [
+  {
+    title: "Contexto",
+    lead:
+      "El proyecto parte de una conexión: gran parte del imaginario futurista de la ciencia ficción comparte principios visuales con las vanguardias del siglo XX.",
+    body:
+      "Geometría, abstracción, tecnología y dinamismo se analizan a través de más de 400 obras, construyendo un sistema de relaciones entre movimientos históricos y diferentes representaciones del futuro.",
+  },
+  {
+    title: "Problema",
+    lead:
+      "¿Cómo hacer visibles las conexiones entre movimientos artísticos separados por el tiempo, pero unidos por un mismo lenguaje visual?",
+    body:
+      "Las influencias entre las vanguardias y la ciencia ficción no siempre son explícitas. El reto consiste en organizar estas relaciones para poder identificar patrones, recurrencias e influencias estéticas dentro de un conjunto amplio de referencias.",
+  },
+  {
+    title: "Objetivo",
+    lead:
+      "Transformar estas relaciones en un sistema visual capaz de conectar arte, tiempo e influencia.",
+    body:
+      "La propuesta busca hacer visible cómo los principios de las vanguardias evolucionan y reaparecen en el imaginario sci-fi, desde la arquitectura y la tecnología hasta la robótica y la representación de espacios futuros.",
+  },
+
+];
 
 export default function SciFiArtPage() {
-    const router = useRouter();
-    const contentRef = useRef<HTMLDivElement>(null);
+  return (
+    <ProjectDetailLayout
+      title="SCI FI ART"
+      client="Proyecto Académico"
+      tags={["Experimental"]}
+      projectTitle="Infografía sobre la influencia de las vanguardias en el arte de ciencia ficción"
+      processSections={processSections}
+      description={
+        <p>
+         Una exploración visual sobre la influencia de las vanguardias históricas en el imaginario de la ciencia ficción. A partir del análisis de más de 400 obras de ilustración sci-fi, el proyecto relaciona movimientos artísticos, referentes y características visuales para descubrir patrones e influencias a lo largo del tiempo.
+          <br />
+          <br />
+          La visualización principal, desarrollada con p5.js, transforma estas conexiones en un mapa visual que combina investigación, programación y diseño de información.
+        </p>
+      }
+    >
+      <div className="animate-element overflow-hidden rounded-2xl aspect-[16/10]">
+        <video
+          className="block h-full w-full object-cover"
+          controls
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src="/video/scifi/posterhzHD 2.mp4" type="video/mp4" />
+          Tu navegador no soporta el elemento de video.
+        </video>
+      </div>
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            const elements = contentRef.current?.querySelectorAll('.animate-element');
-
-            if (elements && elements.length > 0) {
-                gsap.set(elements, {
-                    opacity: 0,
-                    y: 50,
-                    scale: 0.95
-                });
-
-                gsap.to(elements, {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.8,
-                    ease: "power2.out",
-                    stagger: 0.2
-                });
-            }
-        }, 100);
-
-        return () => {
-            clearTimeout(timer);
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
-    }, []);
-
-    return (
-        <div className="min-h-screen bg-white">
-            <CustomCursor />
-            <NavBar />
-
-            <div ref={contentRef} className="pt-32 pb-16 px-8 max-w-7xl mx-auto xl-reduced-project-margins xxl-reduced-project-margins">
-                {/* Header */}
-                <div className="mb-16">
-                    <MaskedHeading
-                        text="SCI FI ART"
-                        className="text-[42px] sm:text-[56px] md:text-[80px] lg:text-[120px] font-bold text-black leading-none mb-4"
-                    />
-                </div>
-
-                {/* Main Hero Video */}
-                <div className="animate-element mb-12 xl-large-project-media xxl-large-project-media">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[16/10]">
-                        <video
-                            className="w-full h-full object-cover block"
-                            controls
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            preload="metadata"
-                        >
-                            <source src="/video/scifi/posterhzHD 2.mp4" type="video/mp4" />
-                            Tu navegador no soporta el elemento de video.
-                        </video>
-                    </div>
-                </div>
-
-                {/* Grid de imágenes del proyecto */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 xl-large-project-media xxl-large-project-media">
-                    {/* Primera imagen */}
-                    <div className="animate-element">
-                        <div className="relative overflow-hidden rounded-2xl aspect-[3/4]">
-                            <img
-                                src="/images/scifi/Mesa de trabajo 2 copia.png"
-                                alt="SCI FI art infografía 1"
-                                className="w-full h-full object-cover rounded-2xl"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Segunda imagen - Video */}
-                    <div className="animate-element">
-                        <div className="relative overflow-hidden rounded-2xl aspect-[3/4] bg-black flex items-center justify-center">
-                            <video
-                                className="h-full w-auto object-contain block rounded-2xl"
-                                controls
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                preload="metadata"
-                            >
-                                <source src="/video/scifi/posterrollup (1).mp4" type="video/mp4" />
-                                Tu navegador no soporta el elemento de video.
-                            </video>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Bottom Section - Wide Image */}
-                <div className="animate-element mb-12 xl-large-project-media xxl-large-project-media">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9]">
-                        <img
-                            src="/images/scifi/3.jpg"
-                            alt="SCI FI art infografía 3"
-                            className="w-full h-full object-cover rounded-2xl"
-                        />
-                    </div>
-                </div>
-
-                {/* Project Details */}
-                <div className="animate-element mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 xl-project-text-separation xxl-project-text-separation">
-                    <div className="client-section">
-                        <h2 className="text-2xl font-bold text-black mb-4">Cliente</h2>
-                        <p className="text-gray-600 mb-6">
-                            Proyecto Académico
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                            <span className="px-5 py-2 border border-black rounded-full text-black text-sm hover:bg-black hover:text-white transition-colors cursor-default">
-                                Experimental
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="description-section">
-                        <h2 className="text-2xl font-normal text-black mb-4">Infografía sobre la influencia de las vanguardias en el arte de ciencia ficción</h2>
-                        <p className="text-gray-600 leading-relaxed">
-                            Esta infografía cualitativa explora la conexión estética entre las vanguardias históricas y el arte de la ciencia ficción, analizando cómo la ruptura visual del siglo XX configuró el imaginario futurista. El proyecto muestra cómo la experimentación geométrica y el énfasis en el dinamismo tecnológico de estos movimientos sentaron las bases para la representación de la arquitectura, la robótica y los espacios propios del género especulativo.
-                            <br /><br />
-                            La gráfica principal fue desarrollada mediante p5.js, y establece una correlación visual entre las distintas vanguardias y más de 400 obras representativas del género sci-fi en el ámbito de la ilustración, permitiendo identificar patrones formales, influencias estéticas y recurrencias visuales a lo largo del tiempo.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <Footer />
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="animate-element overflow-hidden rounded-2xl aspect-[3/4]">
+          <img
+            src="/images/scifi/Mesa de trabajo 2 copia.png"
+            alt="SCI FI art infografía 1"
+            className="h-full w-full object-cover"
+          />
         </div>
-    );
+        <div className="animate-element flex items-center justify-center overflow-hidden rounded-2xl bg-black aspect-[3/4]">
+          <video
+            className="block h-full w-auto object-contain"
+            controls
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source src="/video/scifi/posterrollup (1).mp4" type="video/mp4" />
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+      </div>
+
+      <div className="animate-element overflow-hidden rounded-2xl aspect-[16/9]">
+        <img
+          src="/images/scifi/3.jpg"
+          alt="SCI FI art infografía 3"
+          className="h-full w-full object-cover"
+        />
+      </div>
+    </ProjectDetailLayout>
+  );
 }

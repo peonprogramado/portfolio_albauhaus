@@ -29,7 +29,7 @@ export default function NavBar() {
             }
 
             // Si estamos en páginas con fondo blanco, siempre usar texto negro
-            if (currentPath === '/proyectos' || currentPath === '/bisiona2026' || currentPath === '/nars' || currentPath === '/about' || currentPath === '/pilab5' || currentPath === '/duneinfografia' || currentPath === '/scifiart') {
+            if (currentPath === '/proyectos' || currentPath === '/bisiona2026' || currentPath === '/nars' || currentPath === '/about' || currentPath === '/pilab5' || currentPath === '/duneinfografia' || currentPath === '/scifiart' || currentPath === '/sileo') {
                 setIsWhiteBackground(true);
             } else {
                 // Detectar cuando el fondo cambia a blanco (aproximadamente cuando el ScrollReveal está en pantalla)

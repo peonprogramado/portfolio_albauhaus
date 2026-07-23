@@ -5,7 +5,7 @@ import "./globals.css";
 import CustomCursor from "./components/CustomCursor";
 import BasicLoading from "./components/BasicLoading";
 import { Providers } from "./providers";
-
+import ScrollbarFix from "./components/ScrollbarFix";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,13 +22,9 @@ export const metadata: Metadata = {
   title: "Alba Antón - Portfolio",
   description: "Diseño innovador, sintético y accesible. Un lenguaje visual creativo enfocado en la funcionalidad.",
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: '48x48', type: 'image/x-icon' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' }
-    ],
-    shortcut: '/favicon.ico',
-    apple: { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    icon: [{ url: '/images/Favicon.png', type: 'image/png', sizes: '48x48' }],
+    shortcut: '/images/Favicon.png',
+    apple: '/images/Favicon.png',
   },
   openGraph: {
     title: "Alba Antón - Portfolio",
@@ -78,6 +74,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
+          <ScrollbarFix />
           <BasicLoading>
             <CustomCursor />
             {children}

@@ -48,7 +48,7 @@ export default function HorizontalScrollGallery({ children, itemCount }: Horizon
             ref={sectionRef}
             className="relative"
             style={{
-                height: `${300}vh`,
+                height: `${itemCount * 100}vh`,
             }}
         >
             <div className="sticky top-0 h-screen overflow-hidden">

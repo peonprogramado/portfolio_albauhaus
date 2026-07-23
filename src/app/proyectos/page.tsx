@@ -8,7 +8,6 @@ import CustomCursor from '../components/CustomCursor';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
-import MaskedHeading from '../components/MaskedHeading';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react';
 import { FocusCards } from '@/components/ui/focus-cards';
 
@@ -16,8 +15,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
     {
+        id: 6,
+        title: "Sileo App",
+        subtitle: "Identidad visual e interfaz de una aplicación de productividad accesible",
+        category: "Identidad • UI/UX",
+        typology: ["Identidad", "UI/UX"],
+        year: "2026",
+        image: "/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg",
+        color: "from-gray-100 to-white"
+    },
+    {
         id: 1,
-        title: "Bisiona 2026",
+        title: "Bisiona",
         subtitle: "Propuesta de Identidad para IX Jornadas de Arte y Diseño Gráfico",
         category: "Identidad • UI/UX",
         typology: ["Identidad", "UI/UX"],
@@ -70,6 +79,7 @@ const projects = [
 export default function ProyectosPage() {
     const router = useRouter();
     const projectsGridRef = useRef<HTMLDivElement>(null);
+    const introHeadingRef = useRef<HTMLHeadingElement>(null);
     const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [hoveredProject, setHoveredProject] = useState<number | null>(null);
@@ -77,7 +87,7 @@ export default function ProyectosPage() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     // Filtrar proyectos basado en las categorías seleccionadas
-    const filteredProjects = projects.filter(project => {
+    const filteredProjects = projects.filter(project => project.id !== 4).filter(project => {
         if (selectedFilters.has('all') || selectedFilters.size === 0) return true;
 
         return Array.from(selectedFilters).some(filter => {
@@ -197,8 +207,32 @@ export default function ProyectosPage() {
             router.push('/pilab5');
         } else if (projectId === 5) {
             router.push('/scifiart');
+        } else if (projectId === 6) {
+            router.push('/sileo');
         }
     };
+
+    useEffect(() => {
+        const phrases = introHeadingRef.current?.querySelectorAll('.project-intro-phrase');
+
+        if (!phrases?.length) return;
+
+        const animation = gsap.fromTo(
+            phrases,
+            { yPercent: 115 },
+            {
+                yPercent: 0,
+                duration: 0.85,
+                stagger: 0.12,
+                ease: 'power3.out',
+                delay: 0.1,
+            }
+        );
+
+        return () => {
+            animation.kill();
+        };
+    }, []);
 
     useEffect(() => {
         // Pequeño delay para asegurar que el DOM esté listo
@@ -296,16 +330,36 @@ export default function ProyectosPage() {
 
             {/* Header Section */}
             <div className="pt-32 pb-16 px-8 max-w-6xl mx-auto xl-reduced-project-margins xxl-reduced-project-margins xxl-projects-page-container">
-                <div className="mb-16">
-                    <MaskedHeading
-                        text="PROYECTOS"
-                        className="text-[42px] sm:text-[56px] md:text-[80px] lg:text-[120px] font-bold text-black leading-none mb-4"
-                    />
+                <div className="mb-16 grid gap-10 lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.65fr)] lg:items-start lg:gap-16">
+                    <h1
+                        ref={introHeadingRef}
+                        className="max-w-4xl text-2xl font-semibold leading-tight tracking-[-0.025em] text-black lg:text-3xl xl:text-4xl"
+                    >
+                        <span className="block overflow-hidden">
+                            <span className="project-intro-phrase block">
+                            Una selección de mis mejores proyectos.
+                            </span>
+                        </span>
+                        <span className="block overflow-hidden">
+                            <span className="project-intro-phrase block">
+                            Explorando la relación entre
+                            </span>
+                        </span>
+                        <span className="block overflow-hidden text-gray-300">
+                            <span className="project-intro-phrase block">
+                            identidad, diseño y tecnología.
+                            </span>
+                        </span>
+                    </h1>
+
+                    <p className="max-w-md text-base leading-relaxed text-gray-500 sm:text-lg lg:pt-2">
+                    Proyectos que exploran distintas formas de conectar diseño y tecnología. Cada propuesta responde a un contexto y una forma de entender la interacción.
+                    </p>
                 </div>
 
                 {/* Filter Dropdown con HeroUI */}
                 <div className="mb-12">
-                    <Dropdown onOpenChange={(open) => setIsDropdownOpen(open)}>
+                    <Dropdown onOpenChange={(open) => setIsDropdownOpen(open)} shouldBlockScroll={false}>
                         <DropdownTrigger>
                             <Button
                                 className="backdrop-blur-sm bg-white/10 border border-black/20 rounded-3xl px-6 py-3 text-black font-medium hover:bg-white/20 transition-all duration-300 min-w-[220px]"

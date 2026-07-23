@@ -4,13 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NavBar from './components/NavBar';
 import TextPressure from './components/TextPressure';
-import ScrollReveal from './components/ScrollReveal';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollVelocity from './components/ScrollVelocity';
 import Threads from './components/Threads';
 import { motion } from 'framer-motion';
-import MaskedHeading from './components/MaskedHeading';
 import MaskedLine from './components/MaskedLine';
 import MaskedTextHover from './components/MaskedTextHover';
 import ImageTooltip from './components/ImageTooltip';
@@ -21,10 +19,43 @@ import GradualBlur from '../components/GradualBlur';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const homeIntroLines = [
+  'Diseño innovador, sintético y accesible.',
+  'Un lenguaje visual creativo enfocado',
+  'en la funcionalidad.',
+];
+
+function ScrollFillLine({ text }: { text: string }) {
+  const words = text.split(' ');
+
+  return (
+    <>
+      {words.map((word, wordIndex) => (
+        <span
+          key={`${word}-${wordIndex}`}
+          className={`inline-block whitespace-nowrap ${wordIndex < words.length - 1 ? 'mr-[0.28em]' : ''}`}
+        >
+          {word.split('').map((letter, letterIndex) => (
+            <span
+              key={`${letter}-${wordIndex}-${letterIndex}`}
+              className="home-intro-letter"
+            >
+              {letter}
+            </span>
+          ))}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export default function Home() {
   const router = useRouter();
   const backgroundRef = useRef<HTMLDivElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
+  const homeIntroRef = useRef<HTMLHeadingElement>(null);
+  const specialtiesHeadingRef = useRef<HTMLHeadingElement>(null);
+  const featuredHeadingRef = useRef<HTMLHeadingElement>(null);
   const serviciosRef = useRef<HTMLHeadingElement>(null);
 
   const diseñoRef = useRef<HTMLParagraphElement>(null);
@@ -63,6 +94,87 @@ export default function Home() {
         scrub: true,
       },
     });
+  }, []);
+
+  useEffect(() => {
+    const letters = Array.from(
+      homeIntroRef.current?.querySelectorAll<HTMLElement>('.home-intro-letter') ?? []
+    );
+    const phrases = homeIntroRef.current?.querySelectorAll('.home-intro-phrase');
+
+    if (!letters.length || !phrases?.length || !homeIntroRef.current) return;
+
+    const revealAnimation = gsap.fromTo(
+      phrases,
+      { yPercent: 115 },
+      {
+        yPercent: 0,
+        duration: 0.85,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: homeIntroRef.current,
+          start: 'top 88%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    );
+
+    const updateFill = (progress: number) => {
+      const filledLetters = Math.floor(progress * (letters.length + 1));
+
+      letters.forEach((letter, index) => {
+        letter.style.color = index < filledLetters ? '#000000' : '#d1d5db';
+      });
+    };
+
+    updateFill(0);
+
+    const trigger = ScrollTrigger.create({
+      trigger: homeIntroRef.current,
+      start: 'top 82%',
+      end: 'bottom 35%',
+      onUpdate: (self) => updateFill(self.progress),
+    });
+
+    return () => {
+      trigger.kill();
+      revealAnimation.scrollTrigger?.kill();
+      revealAnimation.kill();
+      letters.forEach((letter) => {
+        letter.style.removeProperty('color');
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    const headings = [specialtiesHeadingRef.current, featuredHeadingRef.current].filter(
+      (heading): heading is HTMLHeadingElement => Boolean(heading)
+    );
+
+    const animations = headings.map((heading) =>
+      gsap.fromTo(
+        heading.querySelectorAll('.home-section-heading-phrase'),
+        { yPercent: 115 },
+        {
+          yPercent: 0,
+          duration: 0.85,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: heading,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      )
+    );
+
+    return () => {
+      animations.forEach((animation) => {
+        animation.scrollTrigger?.kill();
+        animation.kill();
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -318,59 +430,95 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ScrollReveal */}
-        <div ref={revealRef} className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mt-[100px] md:mt-[200px] mb-[20px]">
-          <div className="max-w-[1200px] pr-[20px] md:pr-[215px]">
-            <ScrollReveal textClassName="text-black text-[34px] md:text-[clamp(1.6rem,4vw,3rem)] text-left leading-snug">
-              Diseño innovador, sintético y accesible. Un lenguaje visual creativo enfocado en la funcionalidad.
-            </ScrollReveal>
+        {/* Texto introductorio */}
+        <div ref={revealRef} className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mt-[100px] md:mt-[200px] mb-[40px]">
+          <div className="flex flex-col items-start xl:flex-row xl:items-end xl:justify-between xl:gap-12">
+            <div className="max-w-4xl">
+              <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
+                Enfoque y valores
+              </p>
+
+              <h2
+                ref={homeIntroRef}
+                className="text-2xl font-semibold leading-tight tracking-[-0.025em] text-black lg:text-3xl xl:text-4xl"
+              >
+                {homeIntroLines.map((line) => (
+                  <span key={line} className="block overflow-hidden">
+                    <span className="home-intro-phrase block">
+                      <ScrollFillLine text={line} />
+                    </span>
+                  </span>
+                ))}
+              </h2>
+            </div>
+
+            <a
+              href="mailto:albaantondesign@gmail.com"
+              className="curzr-hover group mt-8 inline-flex w-full items-center justify-between gap-8 rounded-full border border-black bg-white px-5 py-3 text-sm font-medium text-black transition-colors duration-300 hover:bg-black hover:text-white sm:w-[260px] xl:mt-0 xl:flex-shrink-0"
+            >
+              <span>Empezar un proyecto</span>
+              <img
+                src="/svg/arrow_right_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-5 w-5 flex-shrink-0 transition-[filter] duration-300 group-hover:invert"
+              />
+            </a>
           </div>
         </div>
 
         {/* Botones de especialidades */}
         <div className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mb-[140px]">
-          <div className="flex flex-wrap gap-3">
-            <button className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
-              Diseño Gráfico
-            </button>
-            <button className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
+          <div className="flex flex-wrap gap-2">
+            <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
+              Arquitectura de Información
+            </span>
+            <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
               Producto Digital
-            </button>
-            <button className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
+            </span>
+            <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
               Sistemas Visuales
-            </button>
-            <button className="curzr-hover px-4 py-2 border-2 border-black rounded-full text-black font-medium hover:bg-black hover:text-white transition-colors cursor-pointer">
-              Frontend
-            </button>
+            </span>
+            <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
+              Desarrollo
+            </span>
           </div>
         </div>
 
-        {/* SERVICIOS */}
-        <div className="hidden md:flex justify-center mt-[10px]">
-          <div className="w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]">
-            <MaskedHeading
-              text="ESPECIALIDADES"
-              className="text-[36px] text-black font-bold mb-[65px]"
-            />
-          </div>
+        {/* ESPECIALIDADES */}
+        <div className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mt-[10px] mb-12 md:mb-[65px]">
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
+            Especialidades
+          </p>
+
+          <h2
+            ref={specialtiesHeadingRef}
+            className="max-w-4xl text-2xl font-semibold leading-tight tracking-[-0.025em] text-black lg:text-3xl xl:text-4xl"
+          >
+            <span className="block overflow-hidden">
+              <span className="home-section-heading-phrase block">
+                Áreas que definen mi práctica.
+              </span>
+            </span>
+          </h2>
         </div>
 
         {/* Línea superior animada */}
         <div
           ref={lineRefTop}
-          className="h-[2px] bg-black origin-left hidden md:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* DISEÑO UI/UX */}
         <ImageTooltip imageSrc="/video/Adobe Express - feed_synthminddesign (1).gif" alt="Diseño UI/UX">
           <div
-            className="h-[104px] hidden md:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
             style={{ textAlign: 'left', ...getBlurStyle('diseño') }}
             onMouseEnter={() => setHovered('diseño')}
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={diseñoRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              DISEÑO UI/UX
+              DISEÑO INTERACCIÓN
             </p>
           </div>
         </ImageTooltip>
@@ -378,19 +526,19 @@ export default function Home() {
         {/* Línea inferior animada */}
         <div
           ref={lineRefBottom}
-          className="h-[2px] bg-black origin-left hidden md:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* MOTION GRAPHICS */}
-        <ImageTooltip imageSrc="/video/Adobe Express - animacionlogobisiona7sg.gif" alt="Motion Graphics">
+        <ImageTooltip imageSrc="/video/white.gif" alt="Desarrollo web y app">
           <div
-            className="h-[104px] hidden md:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
             style={{ textAlign: 'left', ...getBlurStyle('motion') }}
             onMouseEnter={() => setHovered('motion')}
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={motionRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              MOTION GRAPHICS
+            DESARROLLO WEB Y APP
             </p>
           </div>
         </ImageTooltip>
@@ -398,19 +546,19 @@ export default function Home() {
         {/* Línea extra animada */}
         <div
           ref={lineRefExtra}
-          className="h-[2px] bg-black origin-left hidden md:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* PROGRAMACION CREATIVA */}
         <ImageTooltip imageSrc="/video/Adobe Express - audioreactivsisi12con audio.gif" alt="Programación Creativa">
           <div
-            className="h-[104px] hidden md:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
             style={{ textAlign: 'left', ...getBlurStyle('desarrollo') }}
             onMouseEnter={() => setHovered('desarrollo')}
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={desarrolloRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              PROGRAMACION CREATIVA
+              MOTION DESIGN
             </p>
           </div>
         </ImageTooltip>
@@ -418,19 +566,19 @@ export default function Home() {
         {/* Nueva línea animada */}
         <div
           ref={lineRefNew}
-          className="h-[2px] bg-black origin-left hidden md:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* BRANDING */}
-        <ImageTooltip imageSrc="/images/raspberrypi5icon.png" alt="Branding">
+        <ImageTooltip imageSrc="/video/Adobe Express - animacionlogobisiona7sg.gif" alt="Design Systems">
           <div
-            className="h-[104px] hidden md:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
             style={{ textAlign: 'left', ...getBlurStyle('desarrollo2') }}
             onMouseEnter={() => setHovered('desarrollo2')}
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={desarrollo2Ref} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              BRANDING
+              DESIGN SYSTEMS
             </p>
           </div>
         </ImageTooltip>
@@ -438,43 +586,24 @@ export default function Home() {
         {/* Línea final animada */}
         <div
           ref={lineRefFinal}
-          className="h-[2px] bg-black origin-left mb-[100px] hidden md:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="h-[2px] bg-black origin-left mb-[100px] hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* Mobile Layout - Visible only on small screens */}
-        <div className="block md:hidden px-4">
-          <h2 className="text-[36px] text-black font-bold mb-12 text-center">ESPECIALIDADES</h2>
-
+        <div className="block lg:hidden px-4">
           <div className="space-y-0">
-            {/* DISEÑO UI/UX */}
+            {/* DISEÑO INTERACCIÓN */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
                   Diseño<br />
-                  UI/UX
+                  Interacción
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
                   src="/video/Adobe Express - feed_synthminddesign (1).gif"
-                  alt="Diseño UI/UX"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-
-            {/* MOTION GRAPHICS */}
-            <div className="flex items-center justify-between py-8 border-b border-gray-300">
-              <div className="flex-1">
-                <p className="text-black text-[24px] font-medium">
-                  Motion<br />
-                  Graphics
-                </p>
-              </div>
-              <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
-                <img
-                  src="/video/Adobe Express - animacionlogobisiona7sg.gif"
-                  alt="Motion Graphics"
+                  alt="Diseño Interacción"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -490,24 +619,42 @@ export default function Home() {
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
-                  src="/video/Adobe Express - audioreactivsisi12con audio.gif"
-                  alt="Desarrollo Web y App"
+                  src="/video/white.gif"
+                  alt="Desarrollo web y app"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            {/* BRANDING */}
+            {/* MOTION DESIGN */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  Branding
+                  Motion<br />
+                  Design
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
-                  src="/images/raspberrypi5icon.png"
-                  alt="Branding"
+                  src="/video/Adobe Express - audioreactivsisi12con audio.gif"
+                  alt="Motion Design"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* DESIGN SYSTEMS */}
+            <div className="flex items-center justify-between py-8 border-b border-gray-300">
+              <div className="flex-1">
+                <p className="text-black text-[24px] font-medium">
+                  Design<br />
+                  Systems
+                </p>
+              </div>
+              <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
+                <img
+                  src="/video/Adobe Express - animacionlogobisiona7sg.gif"
+                  alt="Design Systems"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -519,17 +666,112 @@ export default function Home() {
 
         {/* MIS TRABAJOS DESTACADOS */}
         <div className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mt-[100px] mb-[60px]">
-          <div className="max-w-[1200px] pr-[20px] md:pr-[215px]">
-            <ScrollReveal textClassName="text-black text-[34px] md:text-[clamp(1.6rem,4vw,3rem)] font-bold text-left leading-snug">
-              Trabajos destacados
-            </ScrollReveal>
-          </div>
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
+            Trabajos destacados
+          </p>
+
+          <h2
+            ref={featuredHeadingRef}
+            className="max-w-4xl text-2xl font-semibold leading-tight tracking-[-0.025em] text-black lg:text-3xl xl:text-4xl"
+          >
+            <span className="block overflow-hidden">
+              <span className="home-section-heading-phrase block">
+                Proyectos que conectan diseño y tecnología.
+              </span>
+            </span>
+          </h2>
         </div>
       </main>
 
       {/* Scroll horizontal de imágenes con efecto - Desktop */}
       <div ref={carouselRef} className="hidden md:block">
         <HorizontalScrollGallery itemCount={3}>
+          <div className="relative w-screen h-full flex-shrink-0 flex items-center justify-center" style={{ paddingRight: '16px' }}>
+            <div
+              onClick={() => router.push('/sileo')}
+              onMouseEnter={(e) => {
+                setHoveredCarousel(0);
+                setShowCarouselTooltip(true);
+                setMousePosition({ x: e.clientX, y: e.clientY });
+              }}
+              onMouseLeave={() => {
+                setHoveredCarousel(null);
+                setShowCarouselTooltip(false);
+              }}
+              onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
+              className="w-[1200px] h-[700px] md:w-[85vw] md:h-[50vw] lg:w-[88vw] lg:h-[52vw] xl:w-[80vw] xl:h-[48vw] max-w-[1600px] max-h-[900px]"
+              style={{
+                borderRadius: '50px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+                position: 'relative',
+                cursor: 'pointer',
+                isolation: 'isolate',
+                WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <img
+                src="/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg"
+                alt="Sileo App"
+                className="cursor-pointer"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  zIndex: 0
+                }}
+              />
+
+              <div
+                className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 35%, transparent 65%)',
+                  opacity: hoveredCarousel === 0 ? 1 : 0,
+                  zIndex: 20
+                }}
+              >
+                <div className="absolute top-10 left-10 right-32">
+                  <MaskedTextHover
+                    text="Sileo App"
+                    className="text-white text-4xl font-bold mb-3 leading-tight"
+                    isVisible={hoveredCarousel === 0}
+                    delay={0}
+                  />
+                  <MaskedTextHover
+                    text="Identidad visual e interfaz de una aplicación de productividad accesible"
+                    className="text-white/90 text-base leading-snug"
+                    isVisible={hoveredCarousel === 0}
+                    delay={0.1}
+                  />
+                </div>
+
+                <div className="absolute top-10 right-10">
+                  <MaskedTextHover
+                    text="2026"
+                    className="text-white text-xl font-medium"
+                    isVisible={hoveredCarousel === 0}
+                    delay={0.15}
+                  />
+                </div>
+              </div>
+
+              <div className="absolute bottom-10 left-6 right-6 pointer-events-none" style={{ zIndex: 30 }}>
+                <div className="flex gap-3">
+                  <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-4 py-2">
+                    <span className="text-black text-sm font-medium">Identidad</span>
+                  </div>
+                  <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-4 py-2">
+                    <span className="text-black text-sm font-medium">UI/UX</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="relative w-screen h-full flex-shrink-0 flex items-center justify-center" style={{ paddingRight: '16px' }}>
             <div
               onClick={() => window.location.href = '/bisiona2026'}
@@ -582,7 +824,7 @@ export default function Home() {
                 {/* Top Left: Title and Subtitle */}
                 <div className="absolute top-10 left-10 right-32">
                   <MaskedTextHover
-                    text="Bisiona 2026"
+                    text="Bisiona"
                     className="text-white text-4xl font-bold mb-3 leading-tight"
                     isVisible={hoveredCarousel === 1}
                     delay={0}
@@ -704,97 +946,52 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative w-screen h-full flex-shrink-0 flex items-center justify-center" style={{ paddingRight: '16px' }}>
-            <div
-              onClick={() => router.push('/duneinfografia')}
-              onMouseEnter={(e) => {
-                setHoveredCarousel(3);
-                setShowCarouselTooltip(true);
-                setMousePosition({ x: e.clientX, y: e.clientY });
-              }}
-              onMouseLeave={() => {
-                setHoveredCarousel(null);
-                setShowCarouselTooltip(false);
-              }}
-              onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="w-[1200px] h-[700px] md:w-[85vw] md:h-[50vw] lg:w-[88vw] lg:h-[52vw] xl:w-[80vw] xl:h-[48vw] max-w-[1600px] max-h-[900px]"
-              style={{
-                borderRadius: '50px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                position: 'relative',
-                cursor: 'pointer',
-                isolation: 'isolate',
-                WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <img
-                src="/images/mockupinfografiadune.jpg"
-                alt="Destacados 3"
-                className="cursor-pointer"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden',
-                  zIndex: 0
-                }}
-              />
-
-              {/* Hover Overlay - Gradient */}
-              <div
-                className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 35%, transparent 65%)',
-                  opacity: hoveredCarousel === 3 ? 1 : 0,
-                  zIndex: 20
-                }}
-              >
-                {/* Top Left: Title and Subtitle */}
-                <div className="absolute top-10 left-10 right-32">
-                  <MaskedTextHover
-                    text="Dune Infografía"
-                    className="text-white text-4xl font-bold mb-3 leading-tight"
-                    isVisible={hoveredCarousel === 3}
-                    delay={0}
-                  />
-                  <MaskedTextHover
-                    text="Infografía sobre las películas de la saga DUNE"
-                    className="text-white/90 text-base leading-snug"
-                    isVisible={hoveredCarousel === 3}
-                    delay={0.1}
-                  />
-                </div>
-
-                {/* Top Right: Year */}
-                <div className="absolute top-10 right-10">
-                  <MaskedTextHover
-                    text="2025"
-                    className="text-white text-xl font-medium"
-                    isVisible={hoveredCarousel === 3}
-                    delay={0.15}
-                  />
-                </div>
-              </div>
-
-              {/* Bottom Tags */}
-              <div className="absolute bottom-10 left-6 right-6 pointer-events-none" style={{ zIndex: 30 }}>
-                <div className="flex gap-3">
-                  <div className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-full px-4 py-2">
-                    <span className="text-white text-sm font-medium">Infografía</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </HorizontalScrollGallery>
       </div>
 
       {/* Imágenes apiladas verticalmente - Mobile */}
       <div ref={mobileCarouselRef} className="block md:hidden px-4 py-8 space-y-6">
+        <div className="mobile-carousel-item relative w-full">
+          <div
+            onClick={() => router.push('/sileo')}
+            style={{
+              width: '100%',
+              height: '400px',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+              position: 'relative',
+              cursor: 'pointer'
+            }}
+          >
+            <img
+              src="/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg"
+              alt="Sileo App"
+              className="cursor-pointer"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+                borderRadius: '24px',
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
+            />
+            <div className="absolute bottom-8 left-4 flex gap-2 pointer-events-none">
+              <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-3 py-1.5">
+                <span className="text-black text-xs font-medium">Identidad</span>
+              </div>
+              <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-3 py-1.5">
+                <span className="text-black text-xs font-medium">UI/UX</span>
+              </div>
+            </div>
+          </div>
+          <p className="text-black text-sm font-normal mt-3">
+            Identidad visual e interfaz de una aplicación de productividad accesible
+          </p>
+        </div>
+
         <div className="mobile-carousel-item relative w-full">
           <div
             onClick={() => window.location.href = '/bisiona2026'}
@@ -865,39 +1062,6 @@ export default function Home() {
           <p className="text-black text-sm font-normal mt-3">Propuesta Motion Graphics para redes sociales de NARS</p>
         </div>
 
-        <div className="mobile-carousel-item relative w-full">
-          <div
-            style={{
-              width: '100%',
-              height: '400px',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-              position: 'relative'
-            }}
-          >
-            <img
-              src="/images/mockupinfografiadune.jpg"
-              alt="Destacados 3"
-              className="cursor-pointer"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-                borderRadius: '24px',
-                transform: 'translateZ(0)',
-                backfaceVisibility: 'hidden'
-              }}
-            />
-            <div className="absolute bottom-8 left-4 flex gap-2 pointer-events-none">
-              <div className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-full px-3 py-1.5">
-                <span className="text-white text-xs font-medium">Infografía</span>
-              </div>
-            </div>
-          </div>
-          <p className="text-black text-sm font-normal mt-3">Infografía sobre las películas de la saga DUNE</p>
-        </div>
       </div>
 
       <main className="relative min-h-screen flex flex-col items-center overflow-hidden">

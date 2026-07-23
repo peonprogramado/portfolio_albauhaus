@@ -79,7 +79,7 @@ export const Card = React.memo(
                             key={idx}
                             className={cn(
                                 "backdrop-blur-sm bg-white/10 border text-xs font-medium px-4 py-2 rounded-full transition-opacity duration-300",
-                                card.id === 1 || card.id === 4 ? 'border-black/20 text-black' : 'border-white/20 text-white',
+                                card.id === 1 || card.id === 4 || card.id === 6 ? 'border-black/20 text-black' : 'border-white/20 text-white',
                                 hovered === index ? "opacity-100" : "opacity-70"
                             )}
                         >
