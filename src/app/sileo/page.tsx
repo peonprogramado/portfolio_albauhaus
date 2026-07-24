@@ -307,20 +307,6 @@ const processSections = [
             </video>
           </div>
 
-          <div className="overflow-hidden rounded-2xl">
-            <video
-              className="block h-auto w-full"
-              controls
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            >
-              <source src="/images/sileo/feature1.mp4" type="video/mp4" />
-              Tu navegador no soporta el elemento de video.
-            </video>
-          </div>
         </div>
       </div>
     ),
@@ -344,15 +330,6 @@ const processSections = [
             , reflejando su función como una guía cercana, calmada y útil dentro
             de la aplicación.
           </p>
-        </div>
-
-        <div className="overflow-hidden rounded-2xl">
-          <img
-            src="/images/sileo/presentacion7.gif"
-            alt="Presentación animada del asistente Ora"
-            className="block h-auto w-full"
-            loading="lazy"
-          />
         </div>
 
         <div>
