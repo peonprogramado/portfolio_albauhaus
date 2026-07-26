@@ -242,7 +242,7 @@ export default function Bisiona2026Page() {
           preload="metadata"
         >
           <source
-            src="/images/bisiona/Grabación de pantalla 2026-07-21 a las 15.53.39.mp4"
+            src="/images/bisiona/bisiona-interaccion.mp4"
             type="video/mp4"
           />
           Tu navegador no soporta el elemento de video.
