@@ -28,6 +28,7 @@ const developmentTools = [
     'JavaScript',
     'Python',
     'React Native',
+    'Angular',
 ];
 
 const studies = [
@@ -378,9 +379,6 @@ export default function AboutPage() {
                                     {tool}
                                 </span>
                             ))}
-                            <span className="curzr-hover cursor-pointer rounded-full border-2 border-black px-4 py-2 font-medium text-black transition-colors hover:bg-black hover:text-white">
-                                Angular
-                            </span>
                         </div>
                     </section>
 
