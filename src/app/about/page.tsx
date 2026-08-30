@@ -47,9 +47,18 @@ const studies = [
 ];
 
 const courses = [
-    'Marketing Digital e Inteligencia Artificial orientado al crecimiento de tu empresa → UNED',
-    'Retos de la Ciberseguridad en la Sociedad Digital Actual → UNED',
-    'Programming with JavaScript → Meta',
+    {
+        title: 'Marketing Digital e Inteligencia Artificial orientado al crecimiento de tu empresa → UNED',
+        href: null,
+    },
+    {
+        title: 'Retos de la Ciberseguridad en la Sociedad Digital Actual → UNED',
+        href: null,
+    },
+    {
+        title: 'Meta Front-End Developer → Meta',
+        href: 'https://www.coursera.org/account/accomplishments/professional-cert/certificate/313SWB0TT07X',
+    },
 ];
 
 function ScrollFillLine({ text }: { text: string }) {
@@ -387,11 +396,22 @@ export default function AboutPage() {
                             Cursos y certificados
                         </h2>
                         <div ref={coursesTextRef} className="space-y-3">
-                            {courses.map((course) => (
-                                <div key={course} className="overflow-hidden">
-                                    <p className="course-text-phrase text-base leading-relaxed text-black sm:text-lg">
-                                        {course}
-                                    </p>
+                            {courses.map(({ title, href }) => (
+                                <div key={title} className="overflow-hidden">
+                                    {href ? (
+                                        <a
+                                            href={href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="course-text-phrase curzr-hover inline-block cursor-pointer text-base leading-relaxed text-black transition-opacity hover:opacity-60 sm:text-lg"
+                                        >
+                                            {title}
+                                        </a>
+                                    ) : (
+                                        <p className="course-text-phrase text-base leading-relaxed text-black sm:text-lg">
+                                            {title}
+                                        </p>
+                                    )}
                                 </div>
                             ))}
                         </div>
