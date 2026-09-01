@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import VariableProximity from '../../components/VariableProximity';
 import Image from 'next/image';
 import MaskedHeading from './MaskedHeading';
+import { useLanguage } from '../context/LanguageContext';
 
 const socials = [
     { label: "Instagram", href: "https://www.instagram.com/albauhaus/" },
@@ -13,24 +14,18 @@ const socials = [
     { label: "Github", href: "https://github.com/albauhaus" },
 ];
 
-const footerLinks = [
-    { label: "Inicio", href: "/" },
-    { label: "Sobre mí", href: "/about" },
-    { label: "Proyectos", href: "/proyectos" },
-];
-
 const Footer: React.FC = () => {
     const router = useRouter();
     const footerRef = useRef<HTMLElement>(null);
+    const { t } = useLanguage();
+    const footerLinks = [
+        { label: t("Inicio", "Home"), href: "/" },
+        { label: t("Sobre mí", "About me"), href: "/about" },
+        { label: t("Proyectos", "Projects"), href: "/proyectos" },
+    ];
 
-    const handleNavigation = (href: string, label: string) => {
-        if (label === "Inicio") {
-            router.push("/");
-        } else if (label === "Sobre mí") {
-            router.push("/about");
-        } else if (label === "Proyectos") {
-            router.push("/proyectos");
-        }
+    const handleNavigation = (href: string) => {
+        router.push(href);
     };
 
     return (
@@ -40,7 +35,7 @@ const Footer: React.FC = () => {
                 <div className="md:hidden">
                     <div className="text-left mb-6">
                         <MaskedHeading
-                            text="¿Tienes alguna idea?¿Dudas?"
+                            text={t("¿Tienes alguna idea? ¿Dudas?", "Have an idea? Any questions?")}
                             className="text-[20px] font-normal text-white"
                         />
                     </div>
@@ -48,7 +43,7 @@ const Footer: React.FC = () => {
                     <div className="mb-8">
                         <h2 className="text-[48px] leading-none font-bold tracking-tight mb-6">
                             <VariableProximity
-                                label="TRABAJEMOS JUNTOS"
+                                label={t("TRABAJEMOS JUNTOS", "LET'S WORK TOGETHER")}
                                 fromFontVariationSettings="'wght' 400, 'wdth' 100"
                                 toFontVariationSettings="'wght' 900, 'wdth' 150"
                                 containerRef={footerRef}
@@ -61,11 +56,11 @@ const Footer: React.FC = () => {
                             className="curzr-hover hover:opacity-60 transition-opacity duration-300"
                             type="button"
                             onClick={() => window.location.href = 'mailto:albaantondesign@gmail.com'}
-                            aria-label="Enviar email"
+                            aria-label={t("Enviar email", "Send email")}
                         >
                             <Image
                                 src="/svg/flechafooter.svg"
-                                alt="Contactar"
+                                alt={t("Contactar", "Get in touch")}
                                 width={60}
                                 height={60}
                                 className="w-16 h-16"
@@ -88,7 +83,7 @@ const Footer: React.FC = () => {
                     </div>
 
                     <p className="text-white/60 text-xs mb-12">
-                        Diseño gráfico en A Coruña · Web · UI/UX ·<br />
+                        {t("Diseño gráfico en A Coruña", "Graphic design in A Coruña")} · Web · UI/UX ·<br />
                         Motion Graphics · 3D
                     </p>
 
@@ -106,7 +101,7 @@ const Footer: React.FC = () => {
                 <div className="hidden md:block">
                     <div className="text-center mb-8">
                         <MaskedHeading
-                            text="¿Tienes alguna idea?¿Dudas?"
+                            text={t("¿Tienes alguna idea? ¿Dudas?", "Have an idea? Any questions?")}
                             className="text-[28px] font-normal text-white"
                         />
                     </div>
@@ -115,7 +110,7 @@ const Footer: React.FC = () => {
                         <div className="flex items-center justify-center gap-4 md:gap-6">
                             <h2 className="leading-none font-bold tracking-tight" style={{ fontSize: 'clamp(60px, 8vw, 110px)' }}>
                                 <VariableProximity
-                                    label="TRABAJEMOS JUNTOS"
+                                    label={t("TRABAJEMOS JUNTOS", "LET'S WORK TOGETHER")}
                                     fromFontVariationSettings="'wght' 400, 'wdth' 100"
                                     toFontVariationSettings="'wght' 900, 'wdth' 150"
                                     containerRef={footerRef}
@@ -128,11 +123,11 @@ const Footer: React.FC = () => {
                                 className="curzr-hover flex-shrink-0 hover:opacity-60 transition-opacity duration-300"
                                 type="button"
                                 onClick={() => window.location.href = 'mailto:albaantondesign@gmail.com'}
-                                aria-label="Enviar email"
+                                aria-label={t("Enviar email", "Send email")}
                             >
                                 <Image
                                     src="/svg/flechafooter.svg"
-                                    alt="Contactar"
+                                    alt={t("Contactar", "Get in touch")}
                                     width={60}
                                     height={60}
                                     className="w-12 h-12 md:w-16 md:h-16"
@@ -168,7 +163,7 @@ const Footer: React.FC = () => {
                                 Alba Antón
                             </p>
                             <p className="text-white/60 text-xs md:text-sm mt-[54px]">
-                                Diseño gráfico en A Coruña · Web ·<br />
+                                {t("Diseño gráfico en A Coruña", "Graphic design in A Coruña")} · Web ·<br />
                                 UI/UX · Motion Graphics · 3D
                             </p>
                         </div>
@@ -177,7 +172,7 @@ const Footer: React.FC = () => {
                             {footerLinks.map((link) => (
                                 <button
                                     key={link.label}
-                                    onClick={() => handleNavigation(link.href, link.label)}
+                                    onClick={() => handleNavigation(link.href)}
                                     className="curzr-hover text-white text-[24px] font-normal hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-0 font-inherit text-left"
                                 >
                                     {link.label}

@@ -3,6 +3,15 @@
 @import "./components/loading.css";
 @import "tw-animate-css";
 
+/* Blanco suavizado para reducir el deslumbramiento sin perder contraste. */
+@theme {
+  --color-white: #fafafa;
+}
+
+:root {
+  --surface-white: #fafafa;
+}
+
 /* Large Screen Optimizations for Project Pages */
 @media (min-width: 1280px) {
   /* Larger media containers for XL screens */
@@ -241,15 +250,16 @@ body {
   font-family: var(--font-geist-sans), "Geist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+  background-color: var(--surface-white);
 }
 
 ::selection {
-  color: #fff;
+  color: var(--surface-white);
   background-color: #000;
 }
 
 ::-moz-selection {
-  color: #fff;
+  color: var(--surface-white);
   background-color: #000;
 }
 

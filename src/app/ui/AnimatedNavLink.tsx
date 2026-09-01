@@ -1,30 +1,24 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 // import { useLoading } from "../components/SimpleLoadingProvider";
 
 interface Props {
+    href: string;
     text: string;
     isWhiteBackground?: boolean;
     isInFooter?: boolean;
 }
 
-export default function AnimatedNavLink({ text, isWhiteBackground = false, isInFooter = false }: Props) {
+export default function AnimatedNavLink({ href, text, isWhiteBackground = false, isInFooter = false }: Props) {
     const containerRef = useRef<HTMLSpanElement>(null);
     const [isHovered, setIsHovered] = useState(false);
     const router = useRouter();
     // const { showLoadingForNavigation } = useLoading();
 
     const handleClick = () => {
-        if (text === "Proyectos") {
-            router.push("/proyectos");
-        } else if (text === "Inicio") {
-            router.push("/");
-        } else if (text === "Sobre mí") {
-            router.push("/about");
-        } else if (text === "Contacto") {
+        if (href === "#contacto") {
             // Scroll to footer or contact section on current page
             const footer = document.querySelector('footer');
             if (footer) {
@@ -33,6 +27,8 @@ export default function AnimatedNavLink({ text, isWhiteBackground = false, isInF
                 // If no footer on current page, navigate to home and then scroll
                 router.push("/#contacto");
             }
+        } else {
+            router.push(href);
         }
     };
 
@@ -42,7 +38,7 @@ export default function AnimatedNavLink({ text, isWhiteBackground = false, isInF
     return (
         <span
             ref={containerRef}
-            className={`relative inline-block cursor-pointer curzr-hover text-sm font-medium tracking-wide transition-all duration-300 px-4 py-2 rounded-full ${textColor}`}
+            className={`relative inline-block cursor-pointer curzr-hover whitespace-nowrap text-xs font-medium tracking-wide transition-all duration-300 px-2 py-2 rounded-full sm:px-3 sm:text-sm ${textColor}`}
             style={{
                 backgroundColor: isHovered ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
                 boxShadow: isHovered

@@ -15,15 +15,10 @@ import ImageTooltip from './components/ImageTooltip';
 import Footer from './components/Footer';
 import HorizontalScrollGallery from '../components/HorizontalScrollGallery';
 import GradualBlur from '../components/GradualBlur';
+import { useLanguage } from './context/LanguageContext';
 // import { useLoading } from './components/SimpleLoadingProvider';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const homeIntroLines = [
-  'Diseño innovador, sintético y accesible.',
-  'Un lenguaje visual creativo enfocado',
-  'en la funcionalidad.',
-];
 
 function ScrollFillLine({ text }: { text: string }) {
   const words = text.split(' ');
@@ -51,6 +46,18 @@ function ScrollFillLine({ text }: { text: string }) {
 
 export default function Home() {
   const router = useRouter();
+  const { language, t } = useLanguage();
+  const homeIntroLines = language === 'es'
+    ? [
+        'Diseño innovador, sintético y accesible.',
+        'Un lenguaje visual creativo enfocado',
+        'en la funcionalidad.',
+      ]
+    : [
+        'Innovative, concise and accessible design.',
+        'A creative visual language focused',
+        'on functionality.',
+      ];
   const backgroundRef = useRef<HTMLDivElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
   const homeIntroRef = useRef<HTMLHeadingElement>(null);
@@ -85,7 +92,7 @@ export default function Home() {
     if (!backgroundRef.current || !revealRef.current) return;
 
     gsap.to(backgroundRef.current, {
-      backgroundColor: '#ffffff',
+      backgroundColor: '#fafafa',
       ease: 'none',
       scrollTrigger: {
         trigger: revealRef.current,
@@ -145,7 +152,7 @@ export default function Home() {
         letter.style.removeProperty('color');
       });
     };
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     const headings = [specialtiesHeadingRef.current, featuredHeadingRef.current].filter(
@@ -403,7 +410,7 @@ export default function Home() {
             text="ALBA ANTÓN"
             fontFamily="Roboto Flex"
             minFontSize={320}
-            textColor="#FFFFFF"
+            textColor="#FAFAFA"
           />
         </div>
 
@@ -417,7 +424,7 @@ export default function Home() {
               text="ALBA"
               fontFamily="Roboto Flex"
               minFontSize={100}
-              textColor="#FFFFFF"
+              textColor="#FAFAFA"
             />
           </div>
           <div style={{ width: '100%', height: '200px' }}>
@@ -425,7 +432,7 @@ export default function Home() {
               text="ANTÓN"
               fontFamily="Roboto Flex"
               minFontSize={100}
-              textColor="#FFFFFF"
+              textColor="#FAFAFA"
             />
           </div>
         </div>
@@ -435,7 +442,7 @@ export default function Home() {
           <div className="flex flex-col items-start xl:flex-row xl:items-end xl:justify-between xl:gap-12">
             <div className="max-w-4xl">
               <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
-                Enfoque y valores
+                {t('Enfoque y valores', 'Approach and values')}
               </p>
 
               <h2
@@ -456,7 +463,7 @@ export default function Home() {
               href="mailto:albaantondesign@gmail.com"
               className="curzr-hover group mt-8 inline-flex w-full items-center justify-between gap-8 rounded-full border border-black bg-white px-5 py-3 text-sm font-medium text-black transition-colors duration-300 hover:bg-black hover:text-white sm:w-[260px] xl:mt-0 xl:flex-shrink-0"
             >
-              <span>Empezar un proyecto</span>
+              <span>{t('Empezar un proyecto', 'Start a project')}</span>
               <img
                 src="/svg/arrow_right_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"
                 alt=""
@@ -471,16 +478,16 @@ export default function Home() {
         <div className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mb-[140px]">
           <div className="flex flex-wrap gap-2">
             <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
-              Arquitectura de Información
+              {t('Arquitectura de Información', 'Information Architecture')}
             </span>
             <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
-              Producto Digital
+              {t('Producto Digital', 'Digital Product')}
             </span>
             <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
-              Sistemas Visuales
+              {t('Sistemas Visuales', 'Visual Systems')}
             </span>
             <span className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500">
-              Desarrollo
+              {t('Desarrollo', 'Development')}
             </span>
           </div>
         </div>
@@ -488,7 +495,7 @@ export default function Home() {
         {/* ESPECIALIDADES */}
         <div className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mt-[10px] mb-12 md:mb-[65px]">
           <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
-            Especialidades
+            {t('Especialidades', 'Expertise')}
           </p>
 
           <h2
@@ -497,7 +504,7 @@ export default function Home() {
           >
             <span className="block overflow-hidden">
               <span className="home-section-heading-phrase block">
-                Áreas que definen mi práctica.
+                {t('Áreas que definen mi práctica.', 'Areas that define my practice.')}
               </span>
             </span>
           </h2>
@@ -518,7 +525,7 @@ export default function Home() {
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={diseñoRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              DISEÑO INTERACCIÓN
+              {t('DISEÑO INTERACCIÓN', 'INTERACTION DESIGN')}
             </p>
           </div>
         </ImageTooltip>
@@ -538,7 +545,7 @@ export default function Home() {
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={motionRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-            DESARROLLO WEB Y APP
+            {t('DESARROLLO WEB Y APP', 'WEB & APP DEVELOPMENT')}
             </p>
           </div>
         </ImageTooltip>
@@ -596,8 +603,8 @@ export default function Home() {
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  Diseño<br />
-                  Interacción
+                  {t('Diseño', 'Interaction')}<br />
+                  {t('Interacción', 'Design')}
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
@@ -613,8 +620,8 @@ export default function Home() {
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  Desarrollo<br />
-                  Web y App
+                  {t('Desarrollo', 'Web & App')}<br />
+                  {t('Web y App', 'Development')}
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
@@ -667,7 +674,7 @@ export default function Home() {
         {/* MIS TRABAJOS DESTACADOS */}
         <div className="w-full px-[20px] md:px-[50px] lg:px-[80px] xl:px-[120px] mt-[100px] mb-[60px]">
           <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
-            Trabajos destacados
+            {t('Trabajos destacados', 'Featured work')}
           </p>
 
           <h2
@@ -676,7 +683,7 @@ export default function Home() {
           >
             <span className="block overflow-hidden">
               <span className="home-section-heading-phrase block">
-                Proyectos que conectan diseño y tecnología.
+                {t('Proyectos que conectan diseño y tecnología.', 'Projects connecting design and technology.')}
               </span>
             </span>
           </h2>
@@ -742,7 +749,7 @@ export default function Home() {
                     delay={0}
                   />
                   <MaskedTextHover
-                    text="Identidad visual e interfaz de una aplicación de productividad accesible"
+                    text={t('Identidad visual e interfaz de una aplicación de productividad accesible', 'Visual identity and interface for an accessible productivity app')}
                     className="text-white/90 text-base leading-snug"
                     isVisible={hoveredCarousel === 0}
                     delay={0.1}
@@ -762,7 +769,7 @@ export default function Home() {
               <div className="absolute bottom-10 left-6 right-6 pointer-events-none" style={{ zIndex: 30 }}>
                 <div className="flex gap-3">
                   <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-4 py-2">
-                    <span className="text-black text-sm font-medium">Identidad</span>
+                    <span className="text-black text-sm font-medium">{t('Identidad', 'Brand identity')}</span>
                   </div>
                   <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-4 py-2">
                     <span className="text-black text-sm font-medium">UI/UX</span>
@@ -830,7 +837,7 @@ export default function Home() {
                     delay={0}
                   />
                   <MaskedTextHover
-                    text="Identidad IX Jornadas de Arte y Diseño EASDPP"
+                    text={t('Identidad IX Jornadas de Arte y Diseño EASDPP', 'Identity for the 9th EASDPP Art and Design Conference')}
                     className="text-white/90 text-base leading-snug"
                     isVisible={hoveredCarousel === 1}
                     delay={0.1}
@@ -917,7 +924,7 @@ export default function Home() {
                     delay={0}
                   />
                   <MaskedTextHover
-                    text="Propuesta Motion Graphics para redes sociales de NARS"
+                    text={t('Propuesta Motion Graphics para redes sociales de NARS', 'Motion Graphics proposal for NARS social media')}
                     className="text-white/90 text-base leading-snug"
                     isVisible={hoveredCarousel === 2}
                     delay={0.1}
@@ -980,7 +987,7 @@ export default function Home() {
             />
             <div className="absolute bottom-8 left-4 flex gap-2 pointer-events-none">
               <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-3 py-1.5">
-                <span className="text-black text-xs font-medium">Identidad</span>
+                <span className="text-black text-xs font-medium">{t('Identidad', 'Brand identity')}</span>
               </div>
               <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-3 py-1.5">
                 <span className="text-black text-xs font-medium">UI/UX</span>
@@ -988,7 +995,7 @@ export default function Home() {
             </div>
           </div>
           <p className="text-black text-sm font-normal mt-3">
-            Identidad visual e interfaz de una aplicación de productividad accesible
+            {t('Identidad visual e interfaz de una aplicación de productividad accesible', 'Visual identity and interface for an accessible productivity app')}
           </p>
         </div>
 
@@ -1025,7 +1032,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <p className="text-black text-sm font-normal mt-3">Identidad IX Jornadas de Arte y Diseño EASDPP</p>
+          <p className="text-black text-sm font-normal mt-3">{t('Identidad IX Jornadas de Arte y Diseño EASDPP', 'Identity for the 9th EASDPP Art and Design Conference')}</p>
         </div>
 
         <div className="mobile-carousel-item relative w-full">
@@ -1059,7 +1066,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <p className="text-black text-sm font-normal mt-3">Propuesta Motion Graphics para redes sociales de NARS</p>
+          <p className="text-black text-sm font-normal mt-3">{t('Propuesta Motion Graphics para redes sociales de NARS', 'Motion Graphics proposal for NARS social media')}</p>
         </div>
 
       </div>
@@ -1104,7 +1111,7 @@ export default function Home() {
                   transition: 'filter 0.3s ease-in-out'
                 }}
               />
-              Proyectos
+              {t('Proyectos', 'Projects')}
             </button>
           </div>
 
@@ -1133,7 +1140,7 @@ export default function Home() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          Ver proyecto
+          {t('Ver proyecto', 'View project')}
         </motion.figcaption>
       )}
     </>

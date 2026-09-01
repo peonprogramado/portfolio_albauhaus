@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 import CustomCursor from "./CustomCursor";
 import MaskedHeading from "./MaskedHeading";
+import { useLanguage } from "../context/LanguageContext";
 
 type ProjectDetailLayoutProps = {
   title: string;
@@ -38,6 +39,27 @@ export default function ProjectDetailLayout({
   children,
 }: ProjectDetailLayoutProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+
+  const translateNode = (node: ReactNode): ReactNode => {
+    if (typeof node === "string") return t(node);
+    if (Array.isArray(node)) return node.map(translateNode);
+    if (!React.isValidElement<Record<string, unknown>>(node)) return node;
+
+    const translatedProps: Record<string, unknown> = {};
+    const props = node.props;
+
+    if (typeof props.alt === "string") translatedProps.alt = t(props.alt);
+    if (typeof props.title === "string") translatedProps.title = t(props.title);
+    if (typeof props["aria-label"] === "string") {
+      translatedProps["aria-label"] = t(props["aria-label"] as string);
+    }
+    if ("children" in props) {
+      translatedProps.children = translateNode(props.children as ReactNode);
+    }
+
+    return React.cloneElement(node, translatedProps);
+  };
 
   useEffect(() => {
     const media = contentRef.current?.querySelectorAll(".animate-element");
@@ -85,7 +107,7 @@ export default function ProjectDetailLayout({
                     key={tag}
                     className="cursor-default rounded-full border border-gray-400 px-3 py-1.5 text-xs text-gray-500"
                   >
-                    {tag}
+                    {t(tag)}
                   </span>
                 ))}
               </div>
@@ -94,20 +116,20 @@ export default function ProjectDetailLayout({
             <div className="project-info-scroll lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pb-6 lg:pr-4">
               <section className="max-w-xl">
                 <div className="text-[15px] leading-relaxed text-gray-600">
-                  {description}
+                  {translateNode(description)}
                 </div>
               </section>
             </div>
 
             <div className="mt-8 border-t border-black/15 bg-white pt-5 lg:mt-0 lg:shrink-0 lg:pr-4">
               <p className="mb-1 text-xs uppercase tracking-[0.18em] text-gray-400">
-                {clientLabel}
+                {t(clientLabel)}
               </p>
-              <p className="text-sm text-black">{client}</p>
+              <p className="text-sm text-black">{t(client)}</p>
             </div>
           </aside>
 
-          <div className="min-w-0 space-y-8">{children}</div>
+          <div className="min-w-0 space-y-8">{translateNode(children)}</div>
         </div>
 
         {processSections.length > 0 && (
@@ -117,13 +139,13 @@ export default function ProjectDetailLayout({
           >
           <header className="grid gap-4 border-b border-black/15 py-8 sm:py-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:gap-8 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12">
             <p className="text-xs uppercase tracking-[0.18em] text-gray-400">
-              Caso de estudio
+              {t("Caso de estudio")}
             </p>
             <h2
               id="project-process-title"
               className="max-w-3xl text-2xl font-normal leading-tight text-black lg:text-3xl xl:text-4xl"
             >
-              {projectTitle}
+              {t(projectTitle)}
             </h2>
           </header>
 
@@ -139,18 +161,18 @@ export default function ProjectDetailLayout({
               >
                 <div className="lg:pr-4">
                   <h3 className="text-2xl font-bold leading-tight text-black lg:text-3xl xl:text-4xl">
-                    {section.title}
+                    {t(section.title)}
                   </h3>
                 </div>
 
                 <div className="flex max-w-4xl flex-col gap-8">
                   <p className="text-[15px] font-medium leading-relaxed text-black">
-                    {section.lead}
+                    {translateNode(section.lead)}
                   </p>
 
                   {section.body && (
                     <div className="max-w-3xl text-[15px] leading-relaxed text-gray-600">
-                      {section.body}
+                      {translateNode(section.body)}
                     </div>
                   )}
                 </div>
@@ -159,7 +181,7 @@ export default function ProjectDetailLayout({
                   <div className="max-w-3xl overflow-hidden rounded-2xl lg:col-start-2">
                     <img
                       src={section.image.src}
-                      alt={section.image.alt}
+                      alt={t(section.image.alt)}
                       className="block h-auto w-full"
                     />
                   </div>

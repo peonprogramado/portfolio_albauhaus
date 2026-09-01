@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 interface BasicLoadingProps {
     children: React.ReactNode;
 }
 
 export default function BasicLoading({ children }: BasicLoadingProps) {
+    const { t } = useLanguage();
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
 
@@ -67,7 +69,7 @@ export default function BasicLoading({ children }: BasicLoadingProps) {
                             </div>
 
                             <p className="mt-6 text-black/60 uppercase tracking-wide">
-                                Cargando...
+                                {t('Cargando...', 'Loading...')}
                             </p>
                         </div>
                     </motion.div>

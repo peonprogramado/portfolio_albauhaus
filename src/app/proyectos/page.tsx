@@ -10,6 +10,7 @@ import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react';
 import { FocusCards } from '@/components/ui/focus-cards';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,6 +79,7 @@ const projects = [
 
 export default function ProyectosPage() {
     const router = useRouter();
+    const { language, t } = useLanguage();
     const projectsGridRef = useRef<HTMLDivElement>(null);
     const introHeadingRef = useRef<HTMLHeadingElement>(null);
     const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
@@ -97,24 +99,36 @@ export default function ProyectosPage() {
             if (filter === 'infografia') return project.category.includes('Infografía');
             return false;
         });
-    });
+    }).map((project) => ({
+        ...project,
+        title: project.id === 3 ? t(project.title, 'Dune Infographic') : project.title,
+        subtitle: t(project.subtitle, ({
+            1: 'Identity proposal for the 9th Art and Graphic Design Conference',
+            2: 'Motion Graphics proposal for NARS social media',
+            3: 'Infographic about the films in the DUNE saga',
+            4: 'Advertising graphics for a fictional Raspberry Pi shop campaign',
+            5: 'Infographic on the influence of the avant-garde on science-fiction art',
+            6: 'Visual identity and interface for an accessible productivity app',
+        } as Record<number, string>)[project.id]),
+        typology: project.typology.map((type) => t(type, type === 'Identidad' ? 'Brand identity' : type === 'Infografía' ? 'Infographic' : type)),
+    }));
 
     console.log('selectedFilters actual:', selectedFilters);
     console.log('filteredProjects:', filteredProjects.length);
 
     // Opciones del filtro
     const filterOptions = [
-        { value: 'all', label: 'Todos los proyectos' },
+        { value: 'all', label: t('Todos los proyectos', 'All projects') },
         { value: 'ui-ux', label: 'UI/UX' },
-        { value: 'identidad', label: 'Identidad' },
-        { value: 'infografia', label: 'Infografía' },
+        { value: 'identidad', label: t('Identidad', 'Brand identity') },
+        { value: 'infografia', label: t('Infografía', 'Infographic') },
         { value: 'motion', label: 'Motion Graphics' }
     ];
 
     // Obtener label de los filtros seleccionados
     const getSelectedLabel = () => {
         if (selectedFilters.has('all') || selectedFilters.size === 0) {
-            return 'Todos los proyectos';
+            return t('Todos los proyectos', 'All projects');
         }
 
         const selectedLabels = Array.from(selectedFilters)
@@ -321,7 +335,7 @@ export default function ProyectosPage() {
             clearTimeout(timer);
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, [selectedFilters]); // Solo re-animar cuando cambie el filtro seleccionado, no cuando se abra/cierre el dropdown
+    }, [selectedFilters, language]); // Reanimar cuando cambian el filtro o el idioma
 
     return (
         <div className="min-h-screen bg-white">
@@ -337,23 +351,23 @@ export default function ProyectosPage() {
                     >
                         <span className="block overflow-hidden">
                             <span className="project-intro-phrase block">
-                            Una selección de mis mejores proyectos.
+                            {t('Una selección de mis mejores proyectos.', 'A selection of my best projects.')}
                             </span>
                         </span>
                         <span className="block overflow-hidden">
                             <span className="project-intro-phrase block">
-                            Explorando la relación entre
+                            {t('Explorando la relación entre', 'Exploring the relationship between')}
                             </span>
                         </span>
                         <span className="block overflow-hidden text-gray-300">
                             <span className="project-intro-phrase block">
-                            identidad, diseño y tecnología.
+                            {t('identidad, diseño y tecnología.', 'identity, design and technology.')}
                             </span>
                         </span>
                     </h1>
 
                     <p className="max-w-md text-base leading-relaxed text-gray-500 sm:text-lg lg:pt-2">
-                    Proyectos que exploran distintas formas de conectar diseño y tecnología. Cada propuesta responde a un contexto y una forma de entender la interacción.
+                    {t('Proyectos que exploran distintas formas de conectar diseño y tecnología. Cada propuesta responde a un contexto y una forma de entender la interacción.', 'Projects that explore different ways of connecting design and technology. Each proposal responds to a context and a distinct way of understanding interaction.')}
                     </p>
                 </div>
 
@@ -366,7 +380,7 @@ export default function ProyectosPage() {
                                 endContent={
                                     <img
                                         src="/svg/Vector.svg"
-                                        alt="Arrow"
+                                        alt={t('Abrir filtros', 'Open filters')}
                                         className={`w-3 h-3 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
                                     />
                                 }
@@ -375,7 +389,7 @@ export default function ProyectosPage() {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
-                            aria-label="Filter options"
+                            aria-label={t('Opciones de filtro', 'Filter options')}
                             onSelectionChange={handleFilterChange}
                             selectedKeys={selectedFilters}
                             selectionMode="multiple"
@@ -418,7 +432,7 @@ export default function ProyectosPage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    Ver Proyecto
+                    {t('Ver Proyecto', 'View project')}
                 </motion.figcaption>
             )}
 

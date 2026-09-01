@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TextPressureProps {
     text?: string;
@@ -29,12 +30,13 @@ const TextPressure: React.FC<TextPressureProps> = ({
     flex = true,
     stroke = false,
     scale = false,
-    textColor = '#FFFFFF',
+    textColor = '#FAFAFA',
     strokeColor = '#FF0000',
     strokeWidth = 2,
     className = '',
     minFontSize = 24,
 }) => {
+    const { t } = useLanguage();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLHeadingElement | null>(null);
     const spansRef = useRef<Array<HTMLSpanElement | null>>([]);
@@ -211,7 +213,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
                 className="relative w-full h-full overflow-hidden bg-transparent flex items-center justify-center"
             >
                 <div className="text-white/50 text-lg">
-                    Cargando fuente...
+                    {t('Cargando fuente...', 'Loading font...')}
                 </div>
             </div>
         );

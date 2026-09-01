@@ -7,6 +7,7 @@ import CustomCursor from "../components/CustomCursor";
 import TiltedCard from "../../components/TiltedCard";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "../context/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,14 +51,37 @@ const courses = [
     {
         title: 'Marketing Digital e Inteligencia Artificial orientado al crecimiento de tu empresa → UNED',
         href: null,
+        group: 'courses',
     },
     {
         title: 'Retos de la Ciberseguridad en la Sociedad Digital Actual → UNED',
         href: null,
+        group: 'courses',
     },
     {
         title: 'Meta Front-End Developer → Meta',
         href: 'https://www.coursera.org/account/accomplishments/professional-cert/certificate/313SWB0TT07X',
+        group: 'development',
+    },
+    {
+        title: 'Advanced React → Meta',
+        href: 'https://www.coursera.org/account/accomplishments/verify/41VSU4OU7ZPX',
+        group: 'development',
+    },
+    {
+        title: 'Foundations of Project Management → Google',
+        href: 'https://www.coursera.org/account/accomplishments/verify/AOFU8RSE1XOY',
+        group: 'other',
+    },
+    {
+        title: 'Hands-on quantum error correction with Google Quantum AI → Google Quantum AI',
+        href: 'https://www.coursera.org/account/accomplishments/verify/DJTUEWWM0TQX',
+        group: 'other',
+    },
+    {
+        title: 'AWS Billing and Cost Management → Amazon Web Services (AWS)',
+        href: null,
+        group: 'other',
     },
 ];
 
@@ -86,6 +110,32 @@ function ScrollFillLine({ text }: { text: string }) {
 }
 
 export default function AboutPage() {
+    const { t } = useLanguage();
+    const localizedStudies = studies.map((study, index) => ({
+        ...study,
+        title: t(study.title, [
+            'BA in Graphic Design → EASD Pablo Picasso',
+            'BSc in Computer Science → UNED',
+            "Master's Degree in Interaction Design and User Experience (UX) → UOC",
+        ][index]),
+    }));
+    const localizedCourses = courses.map((course, index) => ({
+        ...course,
+        title: t(course.title, [
+            'Digital Marketing and Artificial Intelligence for Business Growth → UNED',
+            'Cybersecurity Challenges in Today’s Digital Society → UNED',
+            'Meta Front-End Developer → Meta',
+            'Advanced React → Meta',
+            'Foundations of Project Management → Google',
+            'Hands-on quantum error correction with Google Quantum AI → Google Quantum AI',
+            'AWS Billing and Cost Management → Amazon Web Services (AWS)',
+        ][index]),
+    }));
+    const courseGroups = [
+        { key: 'courses', label: t('Cursos UNED', 'UNED Courses') },
+        { key: 'development', label: t('Desarrollo', 'Development') },
+        { key: 'other', label: t('Otros', 'Other') },
+    ];
     const contentRef = useRef<HTMLDivElement>(null);
     const introHeadingRef = useRef<HTMLHeadingElement>(null);
     const studiesTimelineRef = useRef<HTMLDivElement>(null);
@@ -250,7 +300,7 @@ export default function AboutPage() {
                 <section className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.82fr)] lg:gap-20">
                     <div className="max-w-xl">
                         <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
-                            Sobre mí
+                            {t('Sobre mí', 'About me')}
                         </p>
 
                         <h1
@@ -259,17 +309,38 @@ export default function AboutPage() {
                         >
                             <span className="block overflow-hidden">
                                 <span className="about-intro-phrase block">
-                                    <ScrollFillLine text="Hola 👋, soy Alba" />
+                                    <ScrollFillLine text={t('Hola 👋, soy Alba', "Hi 👋, I'm Alba")} />
                                 </span>
                             </span>
                         </h1>
 
                         <div className="max-w-lg space-y-4 text-base leading-relaxed text-gray-600 sm:text-lg">
                             <p className="animate-element">
-                                Soy diseñadora gráfica, situada en A Coruña. Actualmente estudio Ingeniería Informática y un Máster Universitario en Diseño de Interacción y Experiencia de Usuario (UX). Diseño interfaces y sistemas de diseño con criterio técnico, enfoque visual y coherencia.
+                                {t(
+                                    'Soy diseñadora de interacción en A Coruña, con formación en Diseño Gráfico.',
+                                    'I am an interaction designer based in A Coruña, with a background in Graphic Design.',
+                                )}{' '}
+                                {t(
+                                    'Actualmente estudio Ingeniería Informática y un Máster en Diseño de Interacción y Experiencia de Usuario (UX).',
+                                    "I am currently studying Computer Science and a Master's Degree in Interaction Design and User Experience (UX).",
+                                )}
                             </p>
                             <p className="animate-element">
-                                Me interesa construir experiencias digitales claras, escalables y cuidadas hasta el último detalle.
+                                {t(
+                                    'Creo interfaces y sistemas de diseño con',
+                                    'I create interfaces and design systems with',
+                                )}{' '}
+                                {t(
+                                    'criterio técnico, claridad y coherencia',
+                                    'technical judgement, clarity and consistency',
+                                )}
+                                {t('. En desarrollo, busco crear código limpio, mantenible y fácil de comprender.', '. In development, I aim to create clean, maintainable and easy-to-understand code.')}
+                            </p>
+                            <p className="animate-element">
+                                {t(
+                                    'Me interesa construir experiencias digitales claras, escalables y cuidadas hasta el último detalle.',
+                                    'I am interested in building clear, scalable digital experiences, carefully crafted down to the last detail.',
+                                )}
                             </p>
                         </div>
                     </div>
@@ -277,8 +348,8 @@ export default function AboutPage() {
                     <div className="animate-element w-full max-w-[440px] justify-self-center lg:justify-self-end">
                         <TiltedCard
                             imageSrc="/images/imagenlinkedin1.jpg"
-                            altText="Alba Antón - Foto de perfil"
-                            captionText="Yo"
+                            altText={t('Alba Antón - Foto de perfil', 'Alba Antón — Profile photo')}
+                            captionText={t('Yo', 'Me')}
                             containerHeight="400px"
                             containerWidth="100%"
                             imageHeight="400px"
@@ -303,10 +374,10 @@ export default function AboutPage() {
                 <div className="mt-28 border-b border-gray-200 lg:mt-40">
                     <section className="border-t border-gray-200 py-10 md:grid md:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.5fr)] md:gap-12 lg:py-12">
                         <h2 className="mb-7 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm md:mb-0">
-                            Estudios
+                            {t('Estudios', 'Education')}
                         </h2>
                         <div ref={studiesMobileTextRef} className="space-y-7 sm:hidden">
-                            {studies.map((study) => (
+                            {localizedStudies.map((study) => (
                                 <div key={study.title}>
                                     {study.period && (
                                         <p className="mb-2 text-sm font-medium text-gray-500">{study.period}</p>
@@ -322,7 +393,7 @@ export default function AboutPage() {
 
                         <div className="hidden min-h-[190px] grid-cols-[7.5rem_1.25rem_minmax(0,1fr)] gap-x-6 sm:grid">
                             <div className="grid grid-rows-3 gap-y-4">
-                                {studies.map((study) => (
+                                {localizedStudies.map((study) => (
                                     <p key={study.title} className="text-sm font-medium text-gray-500">
                                         {study.period || '\u00a0'}
                                     </p>
@@ -348,7 +419,7 @@ export default function AboutPage() {
                             </div>
 
                             <div ref={studiesDesktopTextRef} className="grid grid-rows-3 gap-y-4">
-                                {studies.map((study) => (
+                                {localizedStudies.map((study) => (
                                     <div key={study.title} className="overflow-hidden">
                                         <p className="study-text-phrase text-base leading-relaxed text-black sm:text-lg">
                                             {study.title}
@@ -361,7 +432,7 @@ export default function AboutPage() {
 
                     <section className="animate-element border-t border-gray-200 py-10 md:grid md:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.5fr)] md:gap-12 lg:py-12">
                         <h2 className="mb-7 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm md:mb-0">
-                            Software de diseño
+                            {t('Software de diseño', 'Design software')}
                         </h2>
                         <div className="flex flex-wrap gap-2">
                             {designTools.map((tool) => (
@@ -377,7 +448,7 @@ export default function AboutPage() {
 
                     <section className="animate-element border-t border-gray-200 py-10 md:grid md:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.5fr)] md:gap-12 lg:py-12">
                         <h2 className="mb-7 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm md:mb-0">
-                            Tecnologías de desarrollo
+                            {t('Tecnologías de desarrollo', 'Development technologies')}
                         </h2>
                         <div className="flex flex-wrap gap-2">
                             {developmentTools.map((tool) => (
@@ -393,25 +464,39 @@ export default function AboutPage() {
 
                     <section className="border-t border-gray-200 py-10 md:grid md:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.5fr)] md:gap-12 lg:py-12">
                         <h2 className="mb-7 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm md:mb-0">
-                            Cursos y certificados
+                            {t('Cursos y certificados', 'Courses and certificates')}
                         </h2>
-                        <div ref={coursesTextRef} className="space-y-3">
-                            {courses.map(({ title, href }) => (
-                                <div key={title} className="overflow-hidden">
-                                    {href ? (
-                                        <a
-                                            href={href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="course-text-phrase curzr-hover inline-block cursor-pointer text-base leading-relaxed text-black transition-opacity hover:opacity-60 sm:text-lg"
-                                        >
-                                            {title}
-                                        </a>
-                                    ) : (
-                                        <p className="course-text-phrase text-base leading-relaxed text-black sm:text-lg">
-                                            {title}
-                                        </p>
-                                    )}
+                        <div ref={coursesTextRef} className="space-y-9">
+                            {courseGroups.map((group) => (
+                                <div
+                                    key={group.key}
+                                    className="grid gap-3 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-6"
+                                >
+                                    <p className="text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:pt-1.5 sm:text-sm">
+                                        {group.label}
+                                    </p>
+                                    <div className="space-y-3">
+                                        {localizedCourses
+                                            .filter((course) => course.group === group.key)
+                                            .map(({ title, href }) => (
+                                                <div key={title} className="overflow-hidden">
+                                                    {href ? (
+                                                        <a
+                                                            href={href}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="course-text-phrase curzr-hover inline-block cursor-pointer text-base leading-relaxed text-black transition-opacity hover:opacity-60 sm:text-lg"
+                                                        >
+                                                            {title}
+                                                        </a>
+                                                    ) : (
+                                                        <p className="course-text-phrase text-base leading-relaxed text-black sm:text-lg">
+                                                            {title}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            ))}
+                                    </div>
                                 </div>
                             ))}
                         </div>
