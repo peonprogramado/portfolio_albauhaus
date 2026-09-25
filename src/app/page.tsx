@@ -92,7 +92,7 @@ export default function Home() {
     if (!backgroundRef.current || !revealRef.current) return;
 
     gsap.to(backgroundRef.current, {
-      backgroundColor: '#fafafa',
+      backgroundColor: '#fdfdfd',
       ease: 'none',
       scrollTrigger: {
         trigger: revealRef.current,
@@ -410,7 +410,7 @@ export default function Home() {
             text="ALBA ANTÓN"
             fontFamily="Roboto Flex"
             minFontSize={320}
-            textColor="#FAFAFA"
+            textColor="#FDFDFD"
           />
         </div>
 
@@ -424,7 +424,7 @@ export default function Home() {
               text="ALBA"
               fontFamily="Roboto Flex"
               minFontSize={100}
-              textColor="#FAFAFA"
+              textColor="#FDFDFD"
             />
           </div>
           <div style={{ width: '100%', height: '200px' }}>
@@ -432,7 +432,7 @@ export default function Home() {
               text="ANTÓN"
               fontFamily="Roboto Flex"
               minFontSize={100}
-              textColor="#FAFAFA"
+              textColor="#FDFDFD"
             />
           </div>
         </div>
@@ -525,7 +525,7 @@ export default function Home() {
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={diseñoRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              {t('DISEÑO INTERACCIÓN', 'INTERACTION DESIGN')}
+              {t('DISEÑO DE INTERACCIÓN', 'INTERACTION DESIGN')}
             </p>
           </div>
         </ImageTooltip>
@@ -537,7 +537,7 @@ export default function Home() {
         />
 
         {/* MOTION GRAPHICS */}
-        <ImageTooltip imageSrc="/video/white.gif" alt="Desarrollo web y app">
+        <ImageTooltip imageSrc="/video/white.gif" alt={t('Desarrollo frontend', 'Frontend development')}>
           <div
             className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
             style={{ textAlign: 'left', ...getBlurStyle('motion') }}
@@ -545,7 +545,7 @@ export default function Home() {
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={motionRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-            {t('DESARROLLO WEB Y APP', 'WEB & APP DEVELOPMENT')}
+            {t('DESARROLLO FRONTEND', 'FRONTEND DEVELOPMENT')}
             </p>
           </div>
         </ImageTooltip>
@@ -565,7 +565,7 @@ export default function Home() {
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={desarrolloRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              MOTION DESIGN
+              {t('DISEÑO DE MOVIMIENTO', 'MOTION DESIGN')}
             </p>
           </div>
         </ImageTooltip>
@@ -577,7 +577,7 @@ export default function Home() {
         />
 
         {/* BRANDING */}
-        <ImageTooltip imageSrc="/video/Adobe Express - animacionlogobisiona7sg.gif" alt="Design Systems">
+        <ImageTooltip imageSrc="/video/Adobe Express - animacionlogobisiona7sg.gif" alt={t('Sistemas de diseño', 'Design Systems')}>
           <div
             className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
             style={{ textAlign: 'left', ...getBlurStyle('desarrollo2') }}
@@ -585,7 +585,7 @@ export default function Home() {
             onMouseLeave={() => setHovered(null)}
           >
             <p ref={desarrollo2Ref} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
-              DESIGN SYSTEMS
+              {t('SISTEMAS DE DISEÑO', 'DESIGN SYSTEMS')}
             </p>
           </div>
         </ImageTooltip>
@@ -599,69 +599,69 @@ export default function Home() {
         {/* Mobile Layout - Visible only on small screens */}
         <div className="block lg:hidden px-4">
           <div className="space-y-0">
-            {/* DISEÑO INTERACCIÓN */}
+            {/* DISEÑO DE INTERACCIÓN */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  {t('Diseño', 'Interaction')}<br />
+                  {t('Diseño de', 'Interaction')}<br />
                   {t('Interacción', 'Design')}
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
                   src="/video/Adobe Express - feed_synthminddesign (1).gif"
-                  alt="Diseño Interacción"
+                  alt={t('Diseño de interacción', 'Interaction design')}
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            {/* DESARROLLO WEB Y APP */}
+            {/* DESARROLLO FRONTEND */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  {t('Desarrollo', 'Web & App')}<br />
-                  {t('Web y App', 'Development')}
+                  {t('Desarrollo', 'Frontend')}<br />
+                  {t('Frontend', 'Development')}
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
                   src="/video/white.gif"
-                  alt="Desarrollo web y app"
+                  alt={t('Desarrollo frontend', 'Frontend development')}
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            {/* MOTION DESIGN */}
+            {/* DISEÑO DE MOVIMIENTO */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  Motion<br />
-                  Design
+                  {t('Diseño de', 'Motion')}<br />
+                  {t('movimiento', 'Design')}
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
                   src="/video/Adobe Express - audioreactivsisi12con audio.gif"
-                  alt="Motion Design"
+                  alt={t('Diseño de movimiento', 'Motion Design')}
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            {/* DESIGN SYSTEMS */}
+            {/* SISTEMAS DE DISEÑO */}
             <div className="flex items-center justify-between py-8 border-b border-gray-300">
               <div className="flex-1">
                 <p className="text-black text-[24px] font-medium">
-                  Design<br />
-                  Systems
+                  {t('Sistemas de', 'Design')}<br />
+                  {t('diseño', 'Systems')}
                 </p>
               </div>
               <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden ml-12">
                 <img
                   src="/video/Adobe Express - animacionlogobisiona7sg.gif"
-                  alt="Design Systems"
+                  alt={t('Sistemas de diseño', 'Design Systems')}
                   className="w-full h-full object-cover"
                 />
               </div>

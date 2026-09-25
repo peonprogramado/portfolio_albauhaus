@@ -21,14 +21,14 @@ const processSections = [
   {
     title: "Objetivo",
     lead:
-      "Transformar los guiones de Dune en datos estructurados y visualizaciones comprensibles, haciendo visibles las relaciones, apariciones y relevancia de sus personajes.",
+      "El objetivo era transformar los guiones de Dune en datos estructurados y representarlos mediante distintas visualizaciones comprensibles y creativas, haciendo visibles las relaciones, apariciones y curiosidades de sus personajes.",
     body:
-      "La propuesta busca combinar el análisis computacional con el diseño para ofrecer una nueva forma de explorar su universo narrativo.",
+      "La propuesta combina el análisis computacional con el diseño para ofrecer una nueva forma de explorar su universo narrativo. Entre las diferentes gráficas, destaca un diagrama de cuerdas (chord diagram) cuya composición circular imita la característica forma de la boca de un gusano de arena y conecta las relaciones entre personajes con uno de los elementos más reconocibles de la saga.",
   },
   {
     title: "Interacción",
     lead:
-      "La infografía estática evoluciona hacia una serie de visualizaciones interactivas desarrolladas con Python, que permiten explorar los datos de forma más dinámica..",
+      "La infografía estática evoluciona hacia una serie de visualizaciones interactivas desarrolladas con Python, que permiten explorar los datos de forma más dinámica.",
     body:
       "El usuario puede descubrir patrones, comparar personajes y visualizar sus relaciones desde diferentes perspectivas, convirtiendo la información original en una experiencia más explorable.",
   },

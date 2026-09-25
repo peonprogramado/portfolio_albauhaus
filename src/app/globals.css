@@ -5,11 +5,11 @@
 
 /* Blanco suavizado para reducir el deslumbramiento sin perder contraste. */
 @theme {
-  --color-white: #fafafa;
+  --color-white: #fdfdfd;
 }
 
 :root {
-  --surface-white: #fafafa;
+  --surface-white: #fdfdfd;
 }
 
 /* Large Screen Optimizations for Project Pages */

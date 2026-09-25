@@ -14,7 +14,11 @@ const socials = [
     { label: "Github", href: "https://github.com/albauhaus" },
 ];
 
-const Footer: React.FC = () => {
+type FooterProps = {
+    compactTopSpacing?: boolean;
+};
+
+const Footer: React.FC<FooterProps> = ({ compactTopSpacing = false }) => {
     const router = useRouter();
     const footerRef = useRef<HTMLElement>(null);
     const { t } = useLanguage();
@@ -29,7 +33,10 @@ const Footer: React.FC = () => {
     };
 
     return (
-        <footer ref={footerRef} className="w-full bg-black text-white mt-40 pb-16 pt-20">
+        <footer
+            ref={footerRef}
+            className={`w-full bg-black text-white pb-16 pt-20 ${compactTopSpacing ? "mt-16" : "mt-40"}`}
+        >
             <div className="w-full max-w-[1200px] mx-auto px-8 xl-reduced-project-margins xxl-reduced-project-margins">
                 {/* Mobile Layout */}
                 <div className="md:hidden">

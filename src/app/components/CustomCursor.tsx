@@ -158,7 +158,7 @@ export default function CustomCursor() {
                 
                 // Escalar el dot también
                 this.dot.style.transform = "scale(1.5)";
-                this.dot.style.backgroundColor = "#fafafa";
+                this.dot.style.backgroundColor = "#fdfdfd";
             }
 
             hoverout() {

@@ -91,7 +91,7 @@ export default function ProjectDetailLayout({
 
       <main
         ref={contentRef}
-        className="mx-auto max-w-[1600px] px-5 pb-20 pt-28 sm:px-8 lg:pt-32"
+        className="mx-auto max-w-[1600px] px-5 pb-8 pt-28 sm:px-8 lg:pt-32"
       >
         <div className="items-start gap-8 lg:grid lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] xl:gap-12 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)]">
           <aside className="mb-12 lg:sticky lg:top-28 lg:mb-0 lg:flex lg:h-[calc(100vh-8rem)] lg:flex-col lg:overflow-hidden">
@@ -150,10 +150,14 @@ export default function ProjectDetailLayout({
           </header>
 
           <div>
-            {processSections.map((section) => (
+            {processSections.map((section, index) => (
               <article
                 key={section.title}
-                className={`grid gap-8 border-b border-black/15 py-14 sm:py-16 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:gap-8 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12 ${
+                className={`grid gap-8 py-14 sm:py-16 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:gap-8 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12 ${
+                  index < processSections.length - 1
+                    ? "border-b border-black/15"
+                    : ""
+                } ${
                   section.compact
                     ? "lg:min-h-[18rem] lg:py-16"
                     : "lg:min-h-[22rem] lg:py-20"
@@ -193,7 +197,7 @@ export default function ProjectDetailLayout({
         )}
       </main>
 
-      <Footer />
+      <Footer compactTopSpacing />
     </div>
   );
 }

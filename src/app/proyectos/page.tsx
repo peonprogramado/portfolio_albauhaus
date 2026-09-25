@@ -16,6 +16,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
     {
+        id: 7,
+        title: "Kinetik — Plugin Figma",
+        subtitle: "Plugin de Figma para crear y organizar Motion Design Tokens",
+        category: "UI/UX • Desarrollo",
+        typology: ["Plugin Figma", "Design Systems"],
+        year: "2026",
+        image: "/images/kinetik-cover.png",
+        color: "from-black to-emerald-950"
+    },
+    {
         id: 6,
         title: "Sileo App",
         subtitle: "Identidad visual e interfaz de una aplicación de productividad accesible",
@@ -101,7 +111,11 @@ export default function ProyectosPage() {
         });
     }).map((project) => ({
         ...project,
-        title: project.id === 3 ? t(project.title, 'Dune Infographic') : project.title,
+        title: project.id === 3
+            ? t(project.title, 'Dune Infographic')
+            : project.id === 7
+              ? t(project.title, 'Kinetik — Figma Plugin')
+              : project.title,
         subtitle: t(project.subtitle, ({
             1: 'Identity proposal for the 9th Art and Graphic Design Conference',
             2: 'Motion Graphics proposal for NARS social media',
@@ -109,8 +123,18 @@ export default function ProyectosPage() {
             4: 'Advertising graphics for a fictional Raspberry Pi shop campaign',
             5: 'Infographic on the influence of the avant-garde on science-fiction art',
             6: 'Visual identity and interface for an accessible productivity app',
+            7: 'Figma plugin for creating and organising Motion Design Tokens',
         } as Record<number, string>)[project.id]),
-        typology: project.typology.map((type) => t(type, type === 'Identidad' ? 'Brand identity' : type === 'Infografía' ? 'Infographic' : type)),
+        typology: project.typology.map((type) => t(
+            type,
+            type === 'Identidad'
+                ? 'Brand identity'
+                : type === 'Infografía'
+                  ? 'Infographic'
+                  : type === 'Plugin Figma'
+                    ? 'Figma Plugin'
+                    : type
+        )),
     }));
 
     console.log('selectedFilters actual:', selectedFilters);
@@ -211,7 +235,13 @@ export default function ProyectosPage() {
 
     // Manejar click en proyecto
     const handleProjectClick = (projectId: number) => {
-        if (projectId === 1) {
+        if (projectId === 7) {
+            window.open(
+                'https://www.figma.com/community/plugin/1677245855050443527/kinetik-motion-design-tokens',
+                '_blank',
+                'noopener,noreferrer'
+            );
+        } else if (projectId === 1) {
             router.push('/bisiona2026');
         } else if (projectId === 2) {
             router.push('/nars');
