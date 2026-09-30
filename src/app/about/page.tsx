@@ -371,7 +371,7 @@ export default function AboutPage() {
                 </section>
 
                 {/* Perfil y experiencia */}
-                <div className="mt-28 border-b border-gray-200 lg:mt-40">
+                <div className="mt-28 lg:mt-40">
                     <section className="border-t border-gray-200 py-10 md:grid md:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.5fr)] md:gap-12 lg:py-12">
                         <h2 className="mb-7 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm md:mb-0">
                             {t('Estudios', 'Education')}

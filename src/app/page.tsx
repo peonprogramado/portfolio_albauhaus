@@ -6,14 +6,11 @@ import NavBar from './components/NavBar';
 import TextPressure from './components/TextPressure';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ScrollVelocity from './components/ScrollVelocity';
 import Threads from './components/Threads';
 import { motion } from 'framer-motion';
 import MaskedLine from './components/MaskedLine';
-import MaskedTextHover from './components/MaskedTextHover';
 import ImageTooltip from './components/ImageTooltip';
 import Footer from './components/Footer';
-import HorizontalScrollGallery from '../components/HorizontalScrollGallery';
 import GradualBlur from '../components/GradualBlur';
 import { useLanguage } from './context/LanguageContext';
 // import { useLoading } from './components/SimpleLoadingProvider';
@@ -86,6 +83,54 @@ export default function Home() {
   const [hoveredCarousel, setHoveredCarousel] = useState<number | null>(null);
   const [showCarouselTooltip, setShowCarouselTooltip] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [featuredFilter, setFeaturedFilter] = useState<'all' | 'identity' | 'uiux' | 'motion'>('all');
+  const featuredProjects = [
+    {
+      id: 0,
+      title: 'Sileo App',
+      description: t(
+        'Identidad visual e interfaz de una aplicación de productividad accesible',
+        'Visual identity and interface for an accessible productivity app'
+      ),
+      year: '2026',
+      image: '/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg',
+      alt: 'Sileo App',
+      href: '/sileo',
+      categories: ['identity', 'uiux'],
+      tags: [t('Identidad', 'Brand identity'), 'UI/UX'],
+    },
+    {
+      id: 1,
+      title: 'Bisiona',
+      description: t(
+        'Identidad IX Jornadas de Arte y Diseño EASDPP',
+        'Identity for the 9th EASDPP Art and Design Conference'
+      ),
+      year: '2025',
+      image: '/video/pegatinas.gif',
+      alt: 'Destacados',
+      href: '/bisiona2026',
+      categories: ['identity'],
+      tags: ['Branding'],
+    },
+    {
+      id: 2,
+      title: 'NARS',
+      description: t(
+        'Propuesta Motion Graphics para redes sociales de NARS',
+        'Motion Graphics proposal for NARS social media'
+      ),
+      year: '2024',
+      image: '/images/nars/0.png',
+      alt: 'SynthMind Design',
+      href: '/nars',
+      categories: ['motion'],
+      tags: ['Motion Graphics'],
+    },
+  ];
+  const visibleFeaturedProjects = featuredFilter === 'all'
+    ? featuredProjects
+    : featuredProjects.filter((project) => project.categories.includes(featuredFilter));
   // const { showLoadingForNavigation } = useLoading();
 
   useEffect(() => {
@@ -392,7 +437,7 @@ export default function Home() {
       <div style={{ width: '100%', height: '600px', position: 'absolute', top: '-100px', left: 0, zIndex: 1, pointerEvents: 'none' }}>
         <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
       </div>
-      <main className="relative min-h-screen flex flex-col items-center overflow-hidden">
+      <main className="relative flex flex-col items-center overflow-hidden">
         {/* Fondo animado */}
         <div
           ref={backgroundRef}
@@ -690,10 +735,38 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Scroll horizontal de imágenes con efecto - Desktop */}
-      <div ref={carouselRef} className="hidden md:block">
-        <HorizontalScrollGallery itemCount={3}>
-          <div className="relative w-screen h-full flex-shrink-0 flex items-center justify-center" style={{ paddingRight: '16px' }}>
+      {/* Trabajos destacados en cuadrícula editorial - Desktop */}
+      <div
+        ref={carouselRef}
+        className="hidden px-[50px] pb-8 md:block lg:px-[80px] xl:px-[120px]"
+      >
+        <div className="mb-8 flex flex-wrap gap-2">
+          {([
+            { value: 'all', label: t('Todos', 'All work') },
+            { value: 'identity', label: t('Identidad', 'Brand identity') },
+            { value: 'uiux', label: 'UI/UX' },
+            { value: 'motion', label: 'Motion Graphics' },
+          ] as const).map((filter) => (
+            <button
+              key={filter.value}
+              type="button"
+              aria-pressed={featuredFilter === filter.value}
+              onClick={() => setFeaturedFilter(filter.value)}
+              className={`curzr-hover rounded-full border px-4 py-2 text-sm transition-colors duration-200 ${
+                featuredFilter === filter.value
+                  ? 'border-black bg-black text-white'
+                  : 'border-black/15 bg-transparent text-black hover:border-black/35 hover:bg-black/[0.035]'
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-5 gap-6">
+          <div
+            className={`${visibleFeaturedProjects.some((project) => project.id === 0) ? 'block' : 'hidden'} relative col-span-5`}
+          >
             <div
               onClick={() => router.push('/sileo')}
               onMouseEnter={(e) => {
@@ -706,9 +779,9 @@ export default function Home() {
                 setShowCarouselTooltip(false);
               }}
               onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="w-[1200px] h-[700px] md:w-[85vw] md:h-[50vw] lg:w-[88vw] lg:h-[52vw] xl:w-[80vw] xl:h-[48vw] max-w-[1600px] max-h-[900px]"
+              className="group aspect-[2.35/1] w-full"
               style={{
-                borderRadius: '50px',
+                borderRadius: '28px',
                 overflow: 'hidden',
                 boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
                 position: 'relative',
@@ -721,7 +794,7 @@ export default function Home() {
               <img
                 src="/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg"
                 alt="Sileo App"
-                className="cursor-pointer"
+                className="cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.025]"
                 style={{
                   width: '100%',
                   height: '100%',
@@ -733,53 +806,31 @@ export default function Home() {
                 }}
               />
 
-              <div
-                className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 35%, transparent 65%)',
-                  opacity: hoveredCarousel === 0 ? 1 : 0,
-                  zIndex: 20
-                }}
-              >
-                <div className="absolute top-10 left-10 right-32">
-                  <MaskedTextHover
-                    text="Sileo App"
-                    className="text-white text-4xl font-bold mb-3 leading-tight"
-                    isVisible={hoveredCarousel === 0}
-                    delay={0}
-                  />
-                  <MaskedTextHover
-                    text={t('Identidad visual e interfaz de una aplicación de productividad accesible', 'Visual identity and interface for an accessible productivity app')}
-                    className="text-white/90 text-base leading-snug"
-                    isVisible={hoveredCarousel === 0}
-                    delay={0.1}
-                  />
-                </div>
-
-                <div className="absolute top-10 right-10">
-                  <MaskedTextHover
-                    text="2026"
-                    className="text-white text-xl font-medium"
-                    isVisible={hoveredCarousel === 0}
-                    delay={0.15}
-                  />
-                </div>
-              </div>
-
-              <div className="absolute bottom-10 left-6 right-6 pointer-events-none" style={{ zIndex: 30 }}>
-                <div className="flex gap-3">
-                  <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-4 py-2">
-                    <span className="text-black text-sm font-medium">{t('Identidad', 'Brand identity')}</span>
+              <div className="pointer-events-none absolute bottom-4 left-4 z-10">
+                <div className="flex gap-2">
+                  <div className="rounded-full border border-black/20 bg-white/10 px-4 py-2 text-xs font-medium text-black opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                    <span>{t('Identidad', 'Brand identity')}</span>
                   </div>
-                  <div className="backdrop-blur-sm bg-black/5 border border-black/20 rounded-full px-4 py-2">
-                    <span className="text-black text-sm font-medium">UI/UX</span>
+                  <div className="rounded-full border border-black/20 bg-white/10 px-4 py-2 text-xs font-medium text-black opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                    <span>UI/UX</span>
                   </div>
                 </div>
               </div>
             </div>
+            <div className="mt-4 space-y-1">
+              <div className="flex items-baseline justify-between">
+                <h3 className="text-lg font-semibold text-black">Sileo App</h3>
+                <p className="text-xs uppercase tracking-wider text-gray-500">2026</p>
+              </div>
+              <p className="text-sm text-gray-600">
+                {t('Identidad visual e interfaz de una aplicación de productividad accesible', 'Visual identity and interface for an accessible productivity app')}
+              </p>
+            </div>
           </div>
 
-          <div className="relative w-screen h-full flex-shrink-0 flex items-center justify-center" style={{ paddingRight: '16px' }}>
+          <div
+            className={`${visibleFeaturedProjects.some((project) => project.id === 1) ? 'block' : 'hidden'} relative ${featuredFilter === 'all' ? 'col-span-2' : 'col-span-5'}`}
+          >
             <div
               onClick={() => window.location.href = '/bisiona2026'}
               onMouseEnter={(e) => {
@@ -792,9 +843,9 @@ export default function Home() {
                 setShowCarouselTooltip(false);
               }}
               onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="w-[1200px] h-[700px] md:w-[85vw] md:h-[50vw] lg:w-[88vw] lg:h-[52vw] xl:w-[80vw] xl:h-[48vw] max-w-[1600px] max-h-[900px]"
+              className="group h-[clamp(360px,38vw,560px)] w-full"
               style={{
-                borderRadius: '50px',
+                borderRadius: '28px',
                 overflow: 'hidden',
                 boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
                 position: 'relative',
@@ -807,7 +858,7 @@ export default function Home() {
               <img
                 src="/video/pegatinas.gif"
                 alt="Destacados"
-                className="cursor-pointer"
+                className="cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.025]"
                 style={{
                   width: '100%',
                   height: '100%',
@@ -819,54 +870,28 @@ export default function Home() {
                 }}
               />
 
-              {/* Hover Overlay - Gradient */}
-              <div
-                className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 35%, transparent 65%)',
-                  opacity: hoveredCarousel === 1 ? 1 : 0,
-                  zIndex: 20
-                }}
-              >
-                {/* Top Left: Title and Subtitle */}
-                <div className="absolute top-10 left-10 right-32">
-                  <MaskedTextHover
-                    text="Bisiona"
-                    className="text-white text-4xl font-bold mb-3 leading-tight"
-                    isVisible={hoveredCarousel === 1}
-                    delay={0}
-                  />
-                  <MaskedTextHover
-                    text={t('Identidad IX Jornadas de Arte y Diseño EASDPP', 'Identity for the 9th EASDPP Art and Design Conference')}
-                    className="text-white/90 text-base leading-snug"
-                    isVisible={hoveredCarousel === 1}
-                    delay={0.1}
-                  />
-                </div>
-
-                {/* Top Right: Year */}
-                <div className="absolute top-10 right-10">
-                  <MaskedTextHover
-                    text="2025"
-                    className="text-white text-xl font-medium"
-                    isVisible={hoveredCarousel === 1}
-                    delay={0.15}
-                  />
-                </div>
-              </div>
-
-              {/* Bottom Tags */}
-              <div className="absolute bottom-10 left-6 right-6 pointer-events-none" style={{ zIndex: 30 }}>
-                <div className="flex gap-3">
-                  <div className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-full px-4 py-2">
-                    <span className="text-white text-sm font-medium">Branding</span>
+              <div className="pointer-events-none absolute bottom-4 left-4 z-10">
+                <div className="flex gap-2">
+                  <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                    <span>Branding</span>
                   </div>
                 </div>
               </div>
             </div>
+            <div className="mt-4 space-y-1">
+              <div className="flex items-baseline justify-between">
+                <h3 className="text-lg font-semibold text-black">Bisiona</h3>
+                <p className="text-xs uppercase tracking-wider text-gray-500">2025</p>
+              </div>
+              <p className="text-sm text-gray-600">
+                {t('Identidad IX Jornadas de Arte y Diseño EASDPP', 'Identity for the 9th EASDPP Art and Design Conference')}
+              </p>
+            </div>
           </div>
 
-          <div className="relative w-screen h-full flex-shrink-0 flex items-center justify-center" style={{ paddingRight: '16px' }}>
+          <div
+            className={`${visibleFeaturedProjects.some((project) => project.id === 2) ? 'block' : 'hidden'} relative ${featuredFilter === 'all' ? 'col-span-3' : 'col-span-5'}`}
+          >
             <div
               onClick={() => router.push('/nars')}
               onMouseEnter={(e) => {
@@ -879,9 +904,9 @@ export default function Home() {
                 setShowCarouselTooltip(false);
               }}
               onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="w-[1200px] h-[700px] md:w-[85vw] md:h-[50vw] lg:w-[88vw] lg:h-[52vw] xl:w-[80vw] xl:h-[48vw] max-w-[1600px] max-h-[900px]"
+              className="group h-[clamp(360px,38vw,560px)] w-full"
               style={{
-                borderRadius: '50px',
+                borderRadius: '28px',
                 overflow: 'hidden',
                 boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
                 position: 'relative',
@@ -894,7 +919,7 @@ export default function Home() {
               <img
                 src="/images/nars/0.png"
                 alt="SynthMind Design"
-                className="cursor-pointer"
+                className="cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.025]"
                 style={{
                   width: '100%',
                   height: '100%',
@@ -906,54 +931,26 @@ export default function Home() {
                 }}
               />
 
-              {/* Hover Overlay - Gradient */}
-              <div
-                className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 35%, transparent 65%)',
-                  opacity: hoveredCarousel === 2 ? 1 : 0,
-                  zIndex: 20
-                }}
-              >
-                {/* Top Left: Title and Subtitle */}
-                <div className="absolute top-10 left-10 right-32">
-                  <MaskedTextHover
-                    text="NARS"
-                    className="text-white text-4xl font-bold mb-3 leading-tight"
-                    isVisible={hoveredCarousel === 2}
-                    delay={0}
-                  />
-                  <MaskedTextHover
-                    text={t('Propuesta Motion Graphics para redes sociales de NARS', 'Motion Graphics proposal for NARS social media')}
-                    className="text-white/90 text-base leading-snug"
-                    isVisible={hoveredCarousel === 2}
-                    delay={0.1}
-                  />
-                </div>
-
-                {/* Top Right: Year */}
-                <div className="absolute top-10 right-10">
-                  <MaskedTextHover
-                    text="2024"
-                    className="text-white text-xl font-medium"
-                    isVisible={hoveredCarousel === 2}
-                    delay={0.15}
-                  />
-                </div>
-              </div>
-
-              {/* Bottom Tags */}
-              <div className="absolute bottom-10 left-6 right-6 pointer-events-none" style={{ zIndex: 30 }}>
-                <div className="flex gap-3">
-                  <div className="backdrop-blur-sm bg-white/20 border border-white/30 rounded-full px-4 py-2">
-                    <span className="text-white text-sm font-medium">Motion Graphics</span>
+              <div className="pointer-events-none absolute bottom-4 left-4 z-10">
+                <div className="flex gap-2">
+                  <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                    <span>Motion Graphics</span>
                   </div>
                 </div>
               </div>
             </div>
+            <div className="mt-4 space-y-1">
+              <div className="flex items-baseline justify-between">
+                <h3 className="text-lg font-semibold text-black">NARS</h3>
+                <p className="text-xs uppercase tracking-wider text-gray-500">2024</p>
+              </div>
+              <p className="text-sm text-gray-600">
+                {t('Propuesta Motion Graphics para redes sociales de NARS', 'Motion Graphics proposal for NARS social media')}
+              </p>
+            </div>
           </div>
 
-        </HorizontalScrollGallery>
+        </div>
       </div>
 
       {/* Imágenes apiladas verticalmente - Mobile */}
@@ -1071,14 +1068,14 @@ export default function Home() {
 
       </div>
 
-      <main className="relative min-h-screen flex flex-col items-center overflow-hidden">
+      <main className="relative flex min-h-screen flex-col items-center overflow-hidden md:min-h-0">
 
         {/* Texto final */}
         <div className="w-full pt-0 pb-4 mt-[40px]" style={{ lineHeight: 0.8 }}>
 
-          {/* Botón encima del ScrollVelocity */}
+          {/* Acceso al listado de proyectos */}
           <div
-            className="w-full flex justify-center mb-20"
+            className="mb-10 flex w-full justify-center"
             style={{
               position: 'relative',
               zIndex: 15,
@@ -1114,21 +1111,14 @@ export default function Home() {
               {t('Proyectos', 'Projects')}
             </button>
           </div>
-
-          <ScrollVelocity
-            texts={["BRANDING UIUX MOTION GRAPHICS APP", "BRANDING UIUX MOTION GRAPHICS APP"]}
-            velocity={100}
-            className="text-[90px] text-black font-bold text-center whitespace-nowrap"
-            numCopies={2}
-          />
         </div>
 
-        <Footer />
+        <Footer compactTopSpacing />
 
       </main >
 
       {/* Tooltip para carrusel */}
-      {showCarouselTooltip && hoveredCarousel && (
+      {showCarouselTooltip && hoveredCarousel !== null && (
         <motion.figcaption
           className="pointer-events-none fixed left-0 top-0 rounded-[12px] bg-white px-[10px] py-[4px] text-[10px] text-[#2d2d2d] opacity-0 z-[100] hidden sm:block"
           style={{

@@ -51,17 +51,17 @@ export default function BasicLoading({ children }: BasicLoadingProps) {
                             filter: "blur(10px)",
                             transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }
                         }}
-                        className="fixed inset-0 z-[9999] bg-white flex items-center justify-center"
+                        className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-white"
                     >
-                        <div className="text-center">
+                        <div className="w-full px-6 text-center sm:w-auto sm:px-0">
                             <h1
-                                className="text-[200px] font-black text-black mb-8"
+                                className="mb-8 text-[clamp(96px,38vw,200px)] font-black leading-none text-black"
                                 style={{ fontFamily: 'Bebas Neue, sans-serif' }}
                             >
                                 {progress}%
                             </h1>
 
-                            <div className="w-[400px] h-[2px] bg-gray-200 mx-auto">
+                            <div className="mx-auto h-[2px] w-full max-w-[400px] overflow-hidden bg-gray-200">
                                 <div
                                     className="h-full bg-black transition-all duration-100"
                                     style={{ width: `${progress}%` }}

@@ -43,7 +43,9 @@ export default function ProjectDetailLayout({
 
   const translateNode = (node: ReactNode): ReactNode => {
     if (typeof node === "string") return t(node);
-    if (Array.isArray(node)) return node.map(translateNode);
+    if (Array.isArray(node)) {
+      return React.Children.map(node, (child) => translateNode(child));
+    }
     if (!React.isValidElement<Record<string, unknown>>(node)) return node;
 
     const translatedProps: Record<string, unknown> = {};
@@ -134,7 +136,7 @@ export default function ProjectDetailLayout({
 
         {processSections.length > 0 && (
           <section
-            className="mt-12 border-t border-black sm:mt-16 lg:mt-20"
+            className="mt-12 sm:mt-16 lg:mt-20"
             aria-labelledby="project-process-title"
           >
           <header className="grid gap-4 border-b border-black/15 py-8 sm:py-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:gap-8 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import AnimatedNavLink from "../ui/AnimatedNavLink";
 import { useLanguage, type Language } from "../context/LanguageContext";
 
@@ -14,6 +15,8 @@ export default function NavBar() {
     const [isWhiteBackground, setIsWhiteBackground] = useState(false);
     const [isInFooter, setIsInFooter] = useState(false);
     const { language, setLanguage } = useLanguage();
+    const shouldReduceMotion = useReducedMotion();
+    const isLightNavigation = isWhiteBackground && !isInFooter;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -80,32 +83,50 @@ export default function NavBar() {
                             </li>
                         ))}
                         <li
-                            className={`ml-1 flex items-center rounded-full border p-0.5 text-[11px] font-semibold transition-colors sm:ml-2 ${
-                                isInFooter
-                                    ? "border-white/35 text-white"
-                                    : isWhiteBackground
-                                      ? "border-black/25 text-black"
-                                      : "border-white/25 text-white"
+                            className={`relative ml-1 flex items-center rounded-full border p-[3px] text-[11px] font-semibold tracking-[-0.01em] backdrop-blur-xl backdrop-saturate-150 transition-[background-color,border-color,box-shadow] duration-300 sm:ml-2 ${
+                                isLightNavigation
+                                    ? "border-black/[0.08] bg-black/[0.055] shadow-[inset_0_1px_1px_rgba(0,0,0,0.04),0_1px_0_rgba(255,255,255,0.8)]"
+                                    : "border-white/[0.16] bg-white/[0.10] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_1px_4px_rgba(0,0,0,0.12)]"
                             }`}
+                            role="radiogroup"
                             aria-label={language === "es" ? "Seleccionar idioma" : "Select language"}
                         >
                             {(["es", "en"] as Language[]).map((option) => (
-                                <button
+                                <motion.button
                                     key={option}
                                     type="button"
-                                    aria-pressed={language === option}
+                                    role="radio"
+                                    aria-checked={language === option}
                                     aria-label={option === "es" ? "Español" : "English"}
                                     onClick={() => setLanguage(option)}
-                                    className={`curzr-hover rounded-full px-2 py-1 transition-all ${
+                                    whileTap={shouldReduceMotion ? undefined : { scale: 0.92 }}
+                                    transition={{ type: "spring", stiffness: 650, damping: 32, mass: 0.55 }}
+                                    className={`curzr-hover relative isolate min-w-[30px] rounded-full px-2 py-1 outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-1 ${
                                         language === option
-                                            ? isInFooter || !isWhiteBackground
-                                                ? "bg-white text-black"
-                                                : "bg-gray-200/70 text-black"
-                                            : "opacity-55 hover:opacity-100"
+                                            ? "text-black"
+                                            : isLightNavigation
+                                              ? "text-black/45 hover:text-black/70"
+                                              : "text-white/55 hover:text-white/85"
                                     }`}
                                 >
-                                    {option.toUpperCase()}
-                                </button>
+                                    {language === option && (
+                                        <motion.span
+                                            layoutId="language-segment-selection"
+                                            initial={false}
+                                            transition={
+                                                shouldReduceMotion
+                                                    ? { duration: 0 }
+                                                    : { type: "spring", stiffness: 520, damping: 34, mass: 0.7 }
+                                            }
+                                            className={`absolute inset-0 -z-10 rounded-full ${
+                                                isLightNavigation
+                                                    ? "bg-white/85 shadow-[0_1px_3px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                                                    : "bg-white/95 shadow-[0_1px_4px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,1)]"
+                                            }`}
+                                        />
+                                    )}
+                                    <span className="relative z-10">{option.toUpperCase()}</span>
+                                </motion.button>
                             ))}
                         </li>
                     </ul>

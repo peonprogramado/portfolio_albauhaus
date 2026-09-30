@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { useRouter } from "next/navigation";
+import { motion, useReducedMotion } from "framer-motion";
 import VariableProximity from '../../components/VariableProximity';
 import Image from 'next/image';
 import MaskedHeading from './MaskedHeading';
@@ -21,6 +22,7 @@ type FooterProps = {
 const Footer: React.FC<FooterProps> = ({ compactTopSpacing = false }) => {
     const router = useRouter();
     const footerRef = useRef<HTMLElement>(null);
+    const shouldReduceMotion = useReducedMotion();
     const { t } = useLanguage();
     const footerLinks = [
         { label: t("Inicio", "Home"), href: "/" },
@@ -35,8 +37,25 @@ const Footer: React.FC<FooterProps> = ({ compactTopSpacing = false }) => {
     return (
         <footer
             ref={footerRef}
-            className={`w-full bg-black text-white pb-16 pt-20 ${compactTopSpacing ? "mt-16" : "mt-40"}`}
+            className={`relative w-full bg-black pb-16 pt-20 text-white ${compactTopSpacing ? "mt-16" : "mt-40"}`}
         >
+            <motion.div
+                aria-hidden="true"
+                className={`pointer-events-none absolute bottom-full left-0 w-full ${compactTopSpacing ? "h-16" : "h-40"}`}
+                initial={shouldReduceMotion ? false : { opacity: 0.45 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={
+                    shouldReduceMotion
+                        ? { duration: 0 }
+                        : { duration: 1.5, ease: [0.25, 0.1, 0.25, 1] }
+                }
+                style={{
+                    background:
+                        "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.008) 28%, rgba(0, 0, 0, 0.035) 50%, rgba(0, 0, 0, 0.11) 68%, rgba(0, 0, 0, 0.28) 80%, rgba(0, 0, 0, 0.52) 90%, rgba(0, 0, 0, 0.78) 96%, #000 100%)",
+                }}
+            />
+
             <div className="w-full max-w-[1200px] mx-auto px-8 xl-reduced-project-margins xxl-reduced-project-margins">
                 {/* Mobile Layout */}
                 <div className="md:hidden">

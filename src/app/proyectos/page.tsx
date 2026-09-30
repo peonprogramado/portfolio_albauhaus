@@ -16,16 +16,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
     {
-        id: 7,
-        title: "Kinetik — Plugin Figma",
-        subtitle: "Plugin de Figma para crear y organizar Motion Design Tokens",
-        category: "UI/UX • Desarrollo",
-        typology: ["Plugin Figma", "Design Systems"],
-        year: "2026",
-        image: "/images/kinetik-cover.png",
-        color: "from-black to-emerald-950"
-    },
-    {
         id: 6,
         title: "Sileo App",
         subtitle: "Identidad visual e interfaz de una aplicación de productividad accesible",
@@ -34,6 +24,16 @@ const projects = [
         year: "2026",
         image: "/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg",
         color: "from-gray-100 to-white"
+    },
+    {
+        id: 7,
+        title: "Kinetik — Plugin Figma",
+        subtitle: "Plugin de Figma para crear y organizar Motion Design Tokens",
+        category: "UI/UX • Desarrollo",
+        typology: ["Plugin Figma", "Design Systems"],
+        year: "2026",
+        image: "/images/kinetik-cover.png",
+        color: "from-black to-emerald-950"
     },
     {
         id: 1,
