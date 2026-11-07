@@ -36,6 +36,17 @@ const projects = [
         color: "from-black to-emerald-950"
     },
     {
+        id: 8,
+        title: "EyeCanvas Specs SmartGlasses app",
+        subtitle: "Aplicación de canvas colaborativo diseñada para gafas inteligentes",
+        category: "UI/UX",
+        typology: ["UI/UX"],
+        year: "2026",
+        image: "/images/eyecanvas/thumbnailcuadrado.gif",
+        color: "from-gray-900 to-black",
+        comingSoon: true
+    },
+    {
         id: 1,
         title: "Bisiona",
         subtitle: "Propuesta de Identidad para IX Jornadas de Arte y Diseño Gráfico",
@@ -124,6 +135,7 @@ export default function ProyectosPage() {
             5: 'Infographic on the influence of the avant-garde on science-fiction art',
             6: 'Visual identity and interface for an accessible productivity app',
             7: 'Figma plugin for creating and organising Motion Design Tokens',
+            8: 'Collaborative canvas app designed for smart glasses',
         } as Record<number, string>)[project.id]),
         typology: project.typology.map((type) => t(
             type,
@@ -450,7 +462,7 @@ export default function ProyectosPage() {
             </div >
 
             {/* Tooltip */}
-            {showTooltip && hoveredProject && (
+            {showTooltip && hoveredProject !== null && (
                 <motion.figcaption
                     className="pointer-events-none fixed left-0 top-0 rounded-[12px] bg-white px-[10px] py-[4px] text-[10px] text-[#2d2d2d] opacity-0 z-[100] hidden sm:block"
                     style={{
@@ -462,7 +474,9 @@ export default function ProyectosPage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    {t('Ver Proyecto', 'View project')}
+                    {hoveredProject === 8
+                        ? t('Próximamente', 'Coming Soon')
+                        : t('Ver Proyecto', 'View project')}
                 </motion.figcaption>
             )}
 

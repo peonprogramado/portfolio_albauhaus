@@ -25,9 +25,10 @@ const designTools = [
 const developmentTools = [
     'React',
     'Flutter',
-    'HTML/CSS',
-    'JavaScript',
+    'HTML/CSS/Js',
     'Python',
+    'Swift',
+    'C',
     'React Native',
     'Angular',
 ];

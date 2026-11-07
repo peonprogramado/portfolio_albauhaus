@@ -11,6 +11,7 @@ type ProjectCard = {
     year: string;
     image: string;
     color: string;
+    comingSoon?: boolean;
     src?: string;
     gif?: string;
 };
@@ -59,7 +60,8 @@ export const Card = React.memo(
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onMouseMove={onMouseMove}
-                onClick={onClick}
+                onClick={card.comingSoon ? undefined : onClick}
+                aria-disabled={card.comingSoon || undefined}
                 className="relative overflow-hidden rounded-2xl aspect-square mb-4"
                 style={{
                     transition: hovered !== null ? 'all 0.3s ease-out' : 'none',
@@ -112,7 +114,10 @@ export function FocusCards({
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-6 lg:scale-90 xl:scale-100 xl:gap-8">
             {cards.map((card, index) => (
-                <div key={card.id} className="project-item group cursor-pointer curzr-hover">
+                <div
+                    key={card.id}
+                    className={`project-item group curzr-hover ${card.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
+                >
                     <Card
                         card={card}
                         index={index}
