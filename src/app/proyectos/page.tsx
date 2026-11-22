@@ -43,8 +43,7 @@ const projects = [
         typology: ["UI/UX"],
         year: "2026",
         image: "/images/eyecanvas/thumbnailcuadrado.gif",
-        color: "from-gray-900 to-black",
-        comingSoon: true
+        color: "from-gray-900 to-black"
     },
     {
         id: 1,
@@ -250,6 +249,12 @@ export default function ProyectosPage() {
         if (projectId === 7) {
             window.open(
                 'https://www.figma.com/community/plugin/1677245855050443527/kinetik-motion-design-tokens',
+                '_blank',
+                'noopener,noreferrer'
+            );
+        } else if (projectId === 8) {
+            window.open(
+                'https://medium.com/@albaantondesign/is-it-possible-to-adapt-a-collaborative-canvas-for-smart-glasses-b418c4311364?sharedUserId=albaantondesign',
                 '_blank',
                 'noopener,noreferrer'
             );
@@ -474,9 +479,7 @@ export default function ProyectosPage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    {hoveredProject === 8
-                        ? t('Próximamente', 'Coming Soon')
-                        : t('Ver Proyecto', 'View project')}
+                    {t('Ver Proyecto', 'View project')}
                 </motion.figcaption>
             )}
 
