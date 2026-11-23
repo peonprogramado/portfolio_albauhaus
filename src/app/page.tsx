@@ -190,7 +190,6 @@ export default function Home() {
       startX: event.clientX,
       startScrollLeft: featuredScrollRef.current.scrollLeft,
     };
-    featuredScrollRef.current.setPointerCapture(event.pointerId);
   };
 
   const moveFeaturedDrag = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -199,7 +198,10 @@ export default function Home() {
     if (!container || !drag.isDragging) return;
 
     const distance = event.clientX - drag.startX;
-    if (Math.abs(distance) > 4) drag.hasMoved = true;
+    if (Math.abs(distance) > 4 && !drag.hasMoved) {
+      drag.hasMoved = true;
+      container.setPointerCapture(event.pointerId);
+    }
     container.scrollLeft = drag.startScrollLeft - distance;
   };
 
@@ -255,7 +257,7 @@ export default function Home() {
     const container = featuredScrollRef.current;
     if (!container) return;
 
-    container.scrollTo({ left: 0, behavior: 'smooth' });
+    container.scrollTo({ left: 0, behavior: 'auto' });
     setFeaturedProgress(0);
     setFeaturedActiveIndex(0);
   }, []);
@@ -892,7 +894,7 @@ export default function Home() {
           onPointerMove={moveFeaturedDrag}
           onPointerUp={stopFeaturedDrag}
           onPointerCancel={stopFeaturedDrag}
-          className="snap-x snap-mandatory cursor-grab select-none overflow-x-auto overscroll-x-contain scroll-smooth px-[50px] pb-3 active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:px-[80px] xl:px-[120px]"
+          className="snap-x snap-mandatory cursor-grab select-none overflow-x-auto overscroll-x-contain scroll-smooth pl-[56px] pr-[50px] pb-3 active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:pl-[88px] lg:pr-[80px] xl:pl-[128px] xl:pr-[120px]"
         >
           <div className="flex w-max items-start gap-6">
             {visibleFeaturedProjects.map((project) => {
@@ -912,7 +914,7 @@ export default function Home() {
                 <article
                   key={project.id}
                   data-featured-card
-                  className={`flex-none snap-start ${widthClass}`}
+                  className={`flex-none snap-start first:scroll-ml-[56px] lg:first:scroll-ml-[88px] xl:first:scroll-ml-[128px] ${widthClass}`}
                   style={{
                     transition: 'filter 0.3s ease-out, transform 0.3s ease-out',
                     filter:

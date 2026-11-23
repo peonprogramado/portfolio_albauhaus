@@ -104,6 +104,7 @@ export default function ProyectosPage() {
     const introHeadingRef = useRef<HTMLHeadingElement>(null);
     const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [viewMode, setViewMode] = useState<'grid' | 'text'>('grid');
 
     // Filtrar proyectos basado en las categorías seleccionadas
     const filteredProjects = projects.filter(project => project.id !== 4).filter(project => {
@@ -356,7 +357,7 @@ export default function ProyectosPage() {
             clearTimeout(timer);
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, [selectedFilters, language]); // Reanimar cuando cambian el filtro o el idioma
+    }, [selectedFilters, language, viewMode]); // Reanimar cuando cambian el filtro, el idioma o la vista
 
     return (
         <div className="min-h-screen bg-white">
@@ -392,7 +393,7 @@ export default function ProyectosPage() {
                 </div>
 
                 {/* Filter Dropdown con HeroUI */}
-                <div className="mb-12">
+                <div className="mb-12 flex flex-wrap items-center justify-between gap-4">
                     <Dropdown onOpenChange={(open) => setIsDropdownOpen(open)} shouldBlockScroll={false}>
                         <DropdownTrigger>
                             <Button
@@ -426,14 +427,97 @@ export default function ProyectosPage() {
                             ))}
                         </DropdownMenu>
                     </Dropdown>
+
+                    <div
+                        role="radiogroup"
+                        aria-label={t('Vista de proyectos', 'Project view')}
+                        className="relative grid grid-cols-2 rounded-full border border-black/5 bg-black/[0.035] p-1 shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)]"
+                    >
+                        <span
+                            aria-hidden="true"
+                            className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-white shadow-[0_2px_12px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                                viewMode === 'text' ? 'translate-x-full' : 'translate-x-0'
+                            }`}
+                        />
+                        <button
+                            type="button"
+                            role="radio"
+                            aria-checked={viewMode === 'grid'}
+                            onClick={() => setViewMode('grid')}
+                            className={`curzr-hover relative z-10 min-w-[78px] rounded-full px-5 py-2.5 text-sm transition-colors duration-300 ${
+                                viewMode === 'grid' ? 'text-black' : 'text-gray-400 hover:text-gray-600'
+                            }`}
+                        >
+                            {t('Rejilla', 'Grid')}
+                        </button>
+                        <button
+                            type="button"
+                            role="radio"
+                            aria-checked={viewMode === 'text'}
+                            onClick={() => setViewMode('text')}
+                            className={`curzr-hover relative z-10 min-w-[78px] rounded-full px-5 py-2.5 text-sm transition-colors duration-300 ${
+                                viewMode === 'text' ? 'text-black' : 'text-gray-400 hover:text-gray-600'
+                            }`}
+                        >
+                            {t('Texto', 'Text')}
+                        </button>
+                    </div>
                 </div>
 
-                {/* Projects Grid with Focus Effect */}
+                {/* Projects Grid / Text View */}
                 <div ref={projectsGridRef} className="mb-20 xl-large-project-media xxl-large-project-media xxl-projects-grid-media">
-                    <FocusCards
-                        cards={filteredProjects}
-                        onCardClick={handleProjectClick}
-                    />
+                    {viewMode === 'grid' ? (
+                        <FocusCards
+                            cards={filteredProjects}
+                            onCardClick={handleProjectClick}
+                        />
+                    ) : (
+                        <div className="relative left-1/2 w-[calc(100vw-40px)] max-w-[1800px] -translate-x-1/2 overflow-hidden border-y border-gray-300 sm:w-[calc(100vw-64px)]">
+                            <div
+                                role="row"
+                                className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1fr)_auto] items-center gap-10 border-b border-gray-300 px-2 py-5 text-base text-gray-400 md:grid"
+                            >
+                                <span role="columnheader">{t('Proyecto', 'Project')}</span>
+                                <span role="columnheader">{t('Descripción', 'Description')}</span>
+                                <span role="columnheader">{t('Servicios', 'Services')}</span>
+                                <span role="columnheader" className="text-right">{t('Año', 'Year')}</span>
+                            </div>
+
+                            <div role="table" aria-label={t('Lista de proyectos', 'Project list')}>
+                                {filteredProjects.map((project) => (
+                                    <button
+                                        key={project.id}
+                                        type="button"
+                                        role="row"
+                                        aria-label={`${project.cursorLabel}: ${project.title}`}
+                                        data-cursor-label={project.cursorLabel}
+                                        onClick={() => handleProjectClick(project.id)}
+                                        className="project-item curzr-hover group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5 gap-y-4 border-b border-gray-300 px-2 py-7 text-left transition-colors duration-300 last:border-b-0 hover:bg-black/[0.025] md:min-h-[104px] md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1fr)_auto] md:gap-10 md:py-8"
+                                    >
+                                        <span role="cell" className="project-inner-element text-lg font-medium text-black md:text-[22px]">
+                                            {project.title}
+                                        </span>
+                                        <span role="cell" className="project-inner-element col-span-2 row-start-2 text-[15px] leading-relaxed text-gray-500 md:col-span-1 md:row-start-auto md:text-lg">
+                                            {project.subtitle}
+                                        </span>
+                                        <span role="cell" className="project-inner-element col-span-2 row-start-3 flex flex-wrap gap-1.5 md:col-span-1 md:row-start-auto">
+                                            {project.typology.map((type) => (
+                                                <span
+                                                    key={type}
+                                                    className="rounded-full bg-black/[0.045] px-3 py-1 text-sm text-black transition-colors duration-300 group-hover:bg-black/[0.075] md:text-[17px]"
+                                                >
+                                                    {type}
+                                                </span>
+                                            ))}
+                                        </span>
+                                        <span role="cell" className="project-inner-element col-start-2 row-start-1 text-base tabular-nums text-gray-500 md:col-start-auto md:row-start-auto md:text-right md:text-xl md:text-black">
+                                            {project.year}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div >
 
