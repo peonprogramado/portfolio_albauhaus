@@ -13,6 +13,8 @@ import ImageTooltip from './components/ImageTooltip';
 import Footer from './components/Footer';
 import GradualBlur from '../components/GradualBlur';
 import { useLanguage } from './context/LanguageContext';
+import Icon from '@mdi/react';
+import { mdiArrowRight } from '@mdi/js';
 // import { useLoading } from './components/SimpleLoadingProvider';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -77,13 +79,19 @@ export default function Home() {
   const imageRef2 = useRef<HTMLImageElement>(null);
   const imageRef3 = useRef<HTMLImageElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const featuredScrollRef = useRef<HTMLDivElement>(null);
+  const featuredDragRef = useRef({
+    isDragging: false,
+    hasMoved: false,
+    startX: 0,
+    startScrollLeft: 0,
+  });
   const mobileCarouselRef = useRef<HTMLDivElement>(null);
 
   const [hovered, setHovered] = useState<string | null>(null);
   const [hoveredCarousel, setHoveredCarousel] = useState<number | null>(null);
-  const [showCarouselTooltip, setShowCarouselTooltip] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [featuredFilter, setFeaturedFilter] = useState<'all' | 'identity' | 'uiux' | 'motion'>('all');
+  const [featuredProgress, setFeaturedProgress] = useState(0);
+  const [featuredActiveIndex, setFeaturedActiveIndex] = useState(0);
   const featuredProjects = [
     {
       id: 0,
@@ -127,11 +135,152 @@ export default function Home() {
       categories: ['motion'],
       tags: ['Motion Graphics'],
     },
+    {
+      id: 3,
+      title: t('Kinetik — Plugin Figma', 'Kinetik — Figma Plugin'),
+      description: t(
+        'Plugin de Figma para crear y organizar Motion Design Tokens',
+        'Figma plugin for creating and organising Motion Design Tokens'
+      ),
+      year: '2026',
+      image: '/images/kinetik-cover.png',
+      alt: 'Kinetik — Figma Plugin',
+      href: 'https://www.figma.com/community/plugin/1677245855050443527/kinetik-motion-design-tokens',
+      categories: ['uiux'],
+      tags: [t('Plugin Figma', 'Figma Plugin'), t('Sistemas de diseño', 'Design Systems')],
+      external: true,
+    },
   ];
-  const visibleFeaturedProjects = featuredFilter === 'all'
-    ? featuredProjects
-    : featuredProjects.filter((project) => project.categories.includes(featuredFilter));
+  const visibleFeaturedProjects = featuredProjects;
+  const featuredProgressWidth = visibleFeaturedProjects.length > 0
+    ? ((featuredProgress * Math.max(visibleFeaturedProjects.length - 1, 0) + 1) / visibleFeaturedProjects.length) * 100
+    : 0;
+
+  const updateFeaturedProgress = () => {
+    const container = featuredScrollRef.current;
+    if (!container) return;
+
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const progress = maxScroll > 0 ? container.scrollLeft / maxScroll : 0;
+    const cards = Array.from(container.querySelectorAll<HTMLElement>('[data-featured-card]'));
+    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    cards.forEach((card, index) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(cardCenter - containerCenter);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setFeaturedProgress(Math.min(Math.max(progress, 0), 1));
+    setFeaturedActiveIndex(closestIndex);
+  };
+
+  const startFeaturedDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0 || !featuredScrollRef.current) return;
+
+    featuredDragRef.current = {
+      isDragging: true,
+      hasMoved: false,
+      startX: event.clientX,
+      startScrollLeft: featuredScrollRef.current.scrollLeft,
+    };
+    featuredScrollRef.current.setPointerCapture(event.pointerId);
+  };
+
+  const moveFeaturedDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const container = featuredScrollRef.current;
+    const drag = featuredDragRef.current;
+    if (!container || !drag.isDragging) return;
+
+    const distance = event.clientX - drag.startX;
+    if (Math.abs(distance) > 4) drag.hasMoved = true;
+    container.scrollLeft = drag.startScrollLeft - distance;
+  };
+
+  const stopFeaturedDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!featuredScrollRef.current || !featuredDragRef.current.isDragging) return;
+
+    featuredDragRef.current.isDragging = false;
+    if (featuredScrollRef.current.hasPointerCapture(event.pointerId)) {
+      featuredScrollRef.current.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const handleFeaturedEdgeClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const container = featuredScrollRef.current;
+    if (!container || featuredDragRef.current.hasMoved) return;
+
+    const rect = container.getBoundingClientRect();
+    const edgeZone = Math.min(180, rect.width * 0.18);
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const cards = Array.from(
+      container.querySelectorAll<HTMLElement>('[data-featured-card]')
+    );
+    const firstSnapPosition = cards[0]?.offsetLeft ?? 0;
+    const canMoveLeft = container.scrollLeft > firstSnapPosition + 2;
+    const canMoveRight = container.scrollLeft < maxScroll - 2;
+    const direction = event.clientX <= rect.left + edgeZone && canMoveLeft
+      ? 'left'
+      : event.clientX >= rect.right - edgeZone && canMoveRight
+        ? 'right'
+        : null;
+
+    if (!direction) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const currentScroll = container.scrollLeft;
+    const nextPosition = direction === 'right'
+      ? cards.find((card) => card.offsetLeft > currentScroll + 4)?.offsetLeft ?? maxScroll
+      : [...cards]
+          .reverse()
+          .find((card) => card.offsetLeft < currentScroll - 4)?.offsetLeft ?? firstSnapPosition;
+
+    container.scrollTo({
+      left: Math.min(Math.max(nextPosition, firstSnapPosition), maxScroll),
+      behavior: 'smooth',
+    });
+  };
+
   // const { showLoadingForNavigation } = useLoading();
+
+  useEffect(() => {
+    const container = featuredScrollRef.current;
+    if (!container) return;
+
+    container.scrollTo({ left: 0, behavior: 'smooth' });
+    setFeaturedProgress(0);
+    setFeaturedActiveIndex(0);
+  }, []);
+
+  useEffect(() => {
+    const container = featuredScrollRef.current;
+    if (!container) return;
+
+    const handleWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const canScrollLeft = event.deltaY < 0 && container.scrollLeft > 0;
+      const canScrollRight = event.deltaY > 0 && container.scrollLeft < maxScroll - 1;
+
+      if (canScrollLeft || canScrollRight) {
+        event.preventDefault();
+        container.scrollLeft += event.deltaY * 1.15;
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, []);
 
   useEffect(() => {
     if (!backgroundRef.current || !revealRef.current) return;
@@ -176,7 +325,9 @@ export default function Home() {
       const filledLetters = Math.floor(progress * (letters.length + 1));
 
       letters.forEach((letter, index) => {
-        letter.style.color = index < filledLetters ? '#000000' : '#d1d5db';
+        letter.style.color = index < filledLetters
+          ? 'var(--home-intro-filled)'
+          : 'var(--home-intro-unfilled)';
       });
     };
 
@@ -437,11 +588,11 @@ export default function Home() {
       <div style={{ width: '100%', height: '600px', position: 'absolute', top: '-100px', left: 0, zIndex: 1, pointerEvents: 'none' }}>
         <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
       </div>
-      <main className="relative flex flex-col items-center overflow-hidden">
+      <main className="home-main relative flex flex-col items-center overflow-hidden">
         {/* Fondo animado */}
         <div
           ref={backgroundRef}
-          className="absolute inset-0 z-[-1]"
+          className="home-background absolute inset-0 z-[-1]"
           style={{ backgroundColor: '#000000' }}
         />
 
@@ -509,12 +660,7 @@ export default function Home() {
               className="curzr-hover group mt-8 inline-flex w-full items-center justify-between gap-8 rounded-full border border-black bg-white px-5 py-3 text-sm font-medium text-black transition-colors duration-300 hover:bg-black hover:text-white sm:w-[260px] xl:mt-0 xl:flex-shrink-0"
             >
               <span>{t('Empezar un proyecto', 'Start a project')}</span>
-              <img
-                src="/svg/arrow_right_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-5 w-5 flex-shrink-0 transition-[filter] duration-300 group-hover:invert"
-              />
+              <Icon path={mdiArrowRight} size={0.9} aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -558,7 +704,7 @@ export default function Home() {
         {/* Línea superior animada */}
         <div
           ref={lineRefTop}
-          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* DISEÑO UI/UX */}
@@ -578,7 +724,7 @@ export default function Home() {
         {/* Línea inferior animada */}
         <div
           ref={lineRefBottom}
-          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* MOTION GRAPHICS */}
@@ -598,7 +744,7 @@ export default function Home() {
         {/* Línea extra animada */}
         <div
           ref={lineRefExtra}
-          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* PROGRAMACION CREATIVA */}
@@ -618,7 +764,7 @@ export default function Home() {
         {/* Nueva línea animada */}
         <div
           ref={lineRefNew}
-          className="h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* BRANDING */}
@@ -638,7 +784,7 @@ export default function Home() {
         {/* Línea final animada */}
         <div
           ref={lineRefFinal}
-          className="h-[2px] bg-black origin-left mb-[100px] hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider h-[2px] bg-black origin-left mb-[100px] hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
         />
 
         {/* Mobile Layout - Visible only on small screens */}
@@ -735,223 +881,132 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Trabajos destacados en cuadrícula editorial - Desktop */}
-      <div
-        ref={carouselRef}
-        className="hidden px-[50px] pb-8 md:block lg:px-[80px] xl:px-[120px]"
-      >
-        <div className="mb-8 flex flex-wrap gap-2">
-          {([
-            { value: 'all', label: t('Todos', 'All work') },
-            { value: 'identity', label: t('Identidad', 'Brand identity') },
-            { value: 'uiux', label: 'UI/UX' },
-            { value: 'motion', label: 'Motion Graphics' },
-          ] as const).map((filter) => (
-            <button
-              key={filter.value}
-              type="button"
-              aria-pressed={featuredFilter === filter.value}
-              onClick={() => setFeaturedFilter(filter.value)}
-              className={`curzr-hover rounded-full border px-4 py-2 text-sm transition-colors duration-200 ${
-                featuredFilter === filter.value
-                  ? 'border-black bg-black text-white'
-                  : 'border-black/15 bg-transparent text-black hover:border-black/35 hover:bg-black/[0.035]'
-              }`}
-            >
-              {filter.label}
-            </button>
-          ))}
+      {/* Trabajos destacados con scroll horizontal - Desktop */}
+      <section ref={carouselRef} className="hidden pb-8 md:block">
+        <div
+          ref={featuredScrollRef}
+          data-cursor-carousel
+          onScroll={updateFeaturedProgress}
+          onClickCapture={handleFeaturedEdgeClick}
+          onPointerDown={startFeaturedDrag}
+          onPointerMove={moveFeaturedDrag}
+          onPointerUp={stopFeaturedDrag}
+          onPointerCancel={stopFeaturedDrag}
+          className="snap-x snap-mandatory cursor-grab select-none overflow-x-auto overscroll-x-contain scroll-smooth px-[50px] pb-3 active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:px-[80px] xl:px-[120px]"
+        >
+          <div className="flex w-max items-start gap-6">
+            {visibleFeaturedProjects.map((project) => {
+              const isSingleProject = visibleFeaturedProjects.length === 1;
+              const widthClass = isSingleProject
+                ? 'w-[calc(100vw-100px)] lg:w-[calc(100vw-160px)] xl:w-[calc(100vw-240px)]'
+                : project.id === 0
+                  ? 'w-[50vw] min-w-[500px] max-w-[700px]'
+                  : project.id === 1
+                    ? 'w-[46vw] min-w-[480px] max-w-[650px]'
+                    : project.id === 2
+                      ? 'w-[38vw] min-w-[420px] max-w-[560px]'
+                      : 'w-[34vw] min-w-[380px] max-w-[500px]';
+              const usesDarkTag = project.id === 0;
+
+              return (
+                <article
+                  key={project.id}
+                  data-featured-card
+                  className={`flex-none snap-start ${widthClass}`}
+                  style={{
+                    transition: 'filter 0.3s ease-out, transform 0.3s ease-out',
+                    filter:
+                      hoveredCarousel !== null && hoveredCarousel !== project.id
+                        ? 'blur(4px)'
+                        : 'none',
+                    transform:
+                      hoveredCarousel !== null && hoveredCarousel !== project.id
+                        ? 'scale(0.985)'
+                        : 'scale(1)',
+                  }}
+                >
+                  <button
+                    type="button"
+                    data-cursor-label={t('Ver proyecto', 'View project')}
+                    aria-label={t(`Ver ${project.title}`, `View ${project.title}`)}
+                    onClick={() => {
+                      if (featuredDragRef.current.hasMoved) {
+                        featuredDragRef.current.hasMoved = false;
+                        return;
+                      }
+                      if ('external' in project && project.external) {
+                        window.open(project.href, '_blank', 'noopener,noreferrer');
+                      } else {
+                        router.push(project.href);
+                      }
+                    }}
+                    onMouseEnter={() => {
+                      setHoveredCarousel(project.id);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredCarousel(null);
+                    }}
+                    className="curzr-hover group relative block h-[clamp(290px,32vw,460px)] w-full overflow-hidden rounded-[28px] text-left shadow-[0_4px_24px_rgba(0,0,0,0.1)]"
+                    style={{
+                      isolation: 'isolate',
+                      WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                    }}
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.alt}
+                      draggable={false}
+                      className="block h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                    />
+
+                    <div className="pointer-events-none absolute bottom-4 left-4 z-10 flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={`rounded-full border bg-white/10 px-4 py-2 text-xs font-medium opacity-75 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 ${
+                            usesDarkTag
+                              ? 'border-black/20 text-black'
+                              : 'border-white/20 text-white'
+                          }`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </button>
+
+                  <div className="mt-4 space-y-1">
+                    <div className="flex items-baseline justify-between gap-8">
+                      <h3 className="text-lg font-semibold text-black">{project.title}</h3>
+                      <p className="text-xs uppercase tracking-wider text-gray-500">{project.year}</p>
+                    </div>
+                    <p className="text-sm text-gray-600">{project.description}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="grid grid-cols-5 gap-6">
-          <div
-            className={`${visibleFeaturedProjects.some((project) => project.id === 0) ? 'block' : 'hidden'} relative col-span-5`}
-          >
+        <div className="mt-6 flex items-center gap-6 px-[50px] text-sm text-black lg:px-[80px] xl:px-[120px]">
+          <span className="min-w-[4.75rem] tabular-nums">
+            {String(Math.min(featuredActiveIndex + 1, visibleFeaturedProjects.length)).padStart(2, '0')} / {String(visibleFeaturedProjects.length).padStart(2, '0')}
+          </span>
+          <div className="relative h-px flex-1 overflow-hidden bg-black/15">
             <div
-              onClick={() => router.push('/sileo')}
-              onMouseEnter={(e) => {
-                setHoveredCarousel(0);
-                setShowCarouselTooltip(true);
-                setMousePosition({ x: e.clientX, y: e.clientY });
-              }}
-              onMouseLeave={() => {
-                setHoveredCarousel(null);
-                setShowCarouselTooltip(false);
-              }}
-              onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="group aspect-[2.35/1] w-full"
-              style={{
-                borderRadius: '28px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                position: 'relative',
-                cursor: 'pointer',
-                isolation: 'isolate',
-                WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <img
-                src="/images/sileo/16 - iPhone 15 - Isometric Style Rightblur 1.jpg"
-                alt="Sileo App"
-                className="cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden',
-                  zIndex: 0
-                }}
-              />
-
-              <div className="pointer-events-none absolute bottom-4 left-4 z-10">
-                <div className="flex gap-2">
-                  <div className="rounded-full border border-black/20 bg-white/10 px-4 py-2 text-xs font-medium text-black opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                    <span>{t('Identidad', 'Brand identity')}</span>
-                  </div>
-                  <div className="rounded-full border border-black/20 bg-white/10 px-4 py-2 text-xs font-medium text-black opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                    <span>UI/UX</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 space-y-1">
-              <div className="flex items-baseline justify-between">
-                <h3 className="text-lg font-semibold text-black">Sileo App</h3>
-                <p className="text-xs uppercase tracking-wider text-gray-500">2026</p>
-              </div>
-              <p className="text-sm text-gray-600">
-                {t('Identidad visual e interfaz de una aplicación de productividad accesible', 'Visual identity and interface for an accessible productivity app')}
-              </p>
-            </div>
+              className="absolute inset-y-0 left-0 bg-black transition-[width] duration-150 ease-out"
+              style={{ width: `${featuredProgressWidth}%` }}
+            />
           </div>
-
-          <div
-            className={`${visibleFeaturedProjects.some((project) => project.id === 1) ? 'block' : 'hidden'} relative ${featuredFilter === 'all' ? 'col-span-2' : 'col-span-5'}`}
+          <button
+            type="button"
+            onClick={() => router.push('/proyectos')}
+            className="curzr-hover underline decoration-1 underline-offset-4 transition-opacity hover:opacity-50"
           >
-            <div
-              onClick={() => window.location.href = '/bisiona2026'}
-              onMouseEnter={(e) => {
-                setHoveredCarousel(1);
-                setShowCarouselTooltip(true);
-                setMousePosition({ x: e.clientX, y: e.clientY });
-              }}
-              onMouseLeave={() => {
-                setHoveredCarousel(null);
-                setShowCarouselTooltip(false);
-              }}
-              onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="group h-[clamp(360px,38vw,560px)] w-full"
-              style={{
-                borderRadius: '28px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                position: 'relative',
-                cursor: 'pointer',
-                isolation: 'isolate',
-                WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <img
-                src="/video/pegatinas.gif"
-                alt="Destacados"
-                className="cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden',
-                  zIndex: 0
-                }}
-              />
-
-              <div className="pointer-events-none absolute bottom-4 left-4 z-10">
-                <div className="flex gap-2">
-                  <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                    <span>Branding</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 space-y-1">
-              <div className="flex items-baseline justify-between">
-                <h3 className="text-lg font-semibold text-black">Bisiona</h3>
-                <p className="text-xs uppercase tracking-wider text-gray-500">2025</p>
-              </div>
-              <p className="text-sm text-gray-600">
-                {t('Identidad IX Jornadas de Arte y Diseño EASDPP', 'Identity for the 9th EASDPP Art and Design Conference')}
-              </p>
-            </div>
-          </div>
-
-          <div
-            className={`${visibleFeaturedProjects.some((project) => project.id === 2) ? 'block' : 'hidden'} relative ${featuredFilter === 'all' ? 'col-span-3' : 'col-span-5'}`}
-          >
-            <div
-              onClick={() => router.push('/nars')}
-              onMouseEnter={(e) => {
-                setHoveredCarousel(2);
-                setShowCarouselTooltip(true);
-                setMousePosition({ x: e.clientX, y: e.clientY });
-              }}
-              onMouseLeave={() => {
-                setHoveredCarousel(null);
-                setShowCarouselTooltip(false);
-              }}
-              onMouseMove={(e) => setMousePosition({ x: e.clientX, y: e.clientY })}
-              className="group h-[clamp(360px,38vw,560px)] w-full"
-              style={{
-                borderRadius: '28px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                position: 'relative',
-                cursor: 'pointer',
-                isolation: 'isolate',
-                WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <img
-                src="/images/nars/0.png"
-                alt="SynthMind Design"
-                className="cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden',
-                  zIndex: 0
-                }}
-              />
-
-              <div className="pointer-events-none absolute bottom-4 left-4 z-10">
-                <div className="flex gap-2">
-                  <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white opacity-70 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                    <span>Motion Graphics</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 space-y-1">
-              <div className="flex items-baseline justify-between">
-                <h3 className="text-lg font-semibold text-black">NARS</h3>
-                <p className="text-xs uppercase tracking-wider text-gray-500">2024</p>
-              </div>
-              <p className="text-sm text-gray-600">
-                {t('Propuesta Motion Graphics para redes sociales de NARS', 'Motion Graphics proposal for NARS social media')}
-              </p>
-            </div>
-          </div>
-
+            {t('Todos los proyectos', 'All work')}
+          </button>
         </div>
-      </div>
+      </section>
 
       {/* Imágenes apiladas verticalmente - Mobile */}
       <div ref={mobileCarouselRef} className="block md:hidden px-4 py-8 space-y-6">
@@ -1068,71 +1123,8 @@ export default function Home() {
 
       </div>
 
-      <main className="relative flex min-h-screen flex-col items-center overflow-hidden md:min-h-0">
+      <Footer compactTopSpacing />
 
-        {/* Texto final */}
-        <div className="w-full pt-0 pb-4 mt-[40px]" style={{ lineHeight: 0.8 }}>
-
-          {/* Acceso al listado de proyectos */}
-          <div
-            className="mb-10 flex w-full justify-center"
-            style={{
-              position: 'relative',
-              zIndex: 15,
-            }}
-          >
-            <button
-              className="curzr-hover flex items-center gap-4 px-8 py-4 bg-white text-black font-medium rounded-full border-2 border-black hover:bg-black hover:text-white hover:border-black transition-all duration-300 ease-in-out group"
-              style={{
-                fontSize: '18px',
-                letterSpacing: '0.3px',
-              }}
-              onClick={() => {
-                window.location.href = '/proyectos';
-              }}
-              onMouseEnter={(e) => {
-                const svg = e.currentTarget.querySelector('img');
-                if (svg) svg.style.filter = 'brightness(0) invert(1)';
-              }}
-              onMouseLeave={(e) => {
-                const svg = e.currentTarget.querySelector('img');
-                if (svg) svg.style.filter = 'invert(0)';
-              }}
-            >
-              <img
-                src="/svg/mas.svg"
-                alt="+"
-                className="w-5 h-5 transition-all duration-300"
-                style={{
-                  filter: 'invert(0)',
-                  transition: 'filter 0.3s ease-in-out'
-                }}
-              />
-              {t('Proyectos', 'Projects')}
-            </button>
-          </div>
-        </div>
-
-        <Footer compactTopSpacing />
-
-      </main >
-
-      {/* Tooltip para carrusel */}
-      {showCarouselTooltip && hoveredCarousel !== null && (
-        <motion.figcaption
-          className="pointer-events-none fixed left-0 top-0 rounded-[12px] bg-white px-[10px] py-[4px] text-[10px] text-[#2d2d2d] opacity-0 z-[100] hidden sm:block"
-          style={{
-            x: mousePosition.x + 10,
-            y: mousePosition.y - 30,
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {t('Ver proyecto', 'View project')}
-        </motion.figcaption>
-      )}
     </>
   );
 }

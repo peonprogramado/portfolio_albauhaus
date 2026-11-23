@@ -10,6 +10,110 @@
 
 :root {
   --surface-white: #fdfdfd;
+  --home-intro-filled: #000000;
+  --home-intro-unfilled: #d1d5db;
+}
+
+html[data-contrast="soft"] {
+  color-scheme: light;
+  --surface-white: #fdfdfd;
+  --home-intro-filled: #000000;
+  --home-intro-unfilled: #d1d5db;
+}
+
+html[data-contrast="high"] {
+  color-scheme: light;
+  --surface-white: #ffffff;
+  --contrast-background: #ffffff;
+  --contrast-foreground: #000000;
+  --contrast-muted: rgba(0, 0, 0, 0.76);
+  --contrast-border: rgba(0, 0, 0, 0.48);
+  --home-intro-filled: #000000;
+  --home-intro-unfilled: #666666;
+}
+
+html[data-contrast="dark"] {
+  color-scheme: dark;
+  --surface-white: #0b0b0c;
+  --contrast-background: #0b0b0c;
+  --contrast-foreground: #f7f7f7;
+  --contrast-muted: rgba(255, 255, 255, 0.74);
+  --contrast-border: rgba(255, 255, 255, 0.34);
+  --home-intro-filled: #f7f7f7;
+  --home-intro-unfilled: #8a8a8a;
+}
+
+html:is([data-contrast="high"], [data-contrast="dark"]) body,
+html:is([data-contrast="high"], [data-contrast="dark"]) main,
+html:is([data-contrast="high"], [data-contrast="dark"]) footer {
+  background-color: var(--contrast-background) !important;
+  color: var(--contrast-foreground) !important;
+}
+
+/* La home conserva su fondo animado: negro en la cabecera y claro al hacer scroll. */
+html[data-contrast="high"] main.home-main {
+  background-color: transparent !important;
+}
+
+html[data-contrast="dark"] .home-background,
+html[data-contrast="dark"] [class~="bg-white"] {
+  background-color: var(--contrast-background) !important;
+}
+
+html[data-contrast="dark"] [class*="text-black"] {
+  color: var(--contrast-foreground) !important;
+}
+
+html:is([data-contrast="high"], [data-contrast="dark"]) [class*="text-gray"] {
+  color: var(--contrast-muted) !important;
+}
+
+html[data-contrast="dark"] [class*="border-black"],
+html[data-contrast="dark"] [class*="border-gray"] {
+  border-color: var(--contrast-border) !important;
+}
+
+html[data-contrast="high"] [class*="border-gray"] {
+  border-color: var(--contrast-border) !important;
+}
+
+html[data-contrast="dark"] .contrast-invert-icon {
+  color: var(--contrast-foreground) !important;
+}
+
+html[data-contrast="dark"] .home-specialty-divider {
+  background: #ffffff !important;
+}
+
+html[data-contrast="dark"] .academic-timeline-line {
+  filter: invert(1);
+}
+
+.project-section-lead {
+  background-color: #f0f0f0;
+}
+
+.project-case-meta {
+  background-color: #f0f0f0;
+}
+
+html[data-contrast="dark"] .project-section-lead {
+  background-color: #202022;
+}
+
+html[data-contrast="dark"] .project-case-meta {
+  background-color: #202022;
+}
+
+.project-detail-layout :is(p, li),
+.project-detail-layout :is(p, li) strong {
+  font-weight: 400 !important;
+}
+
+body,
+main,
+footer {
+  transition: background-color 240ms ease, color 240ms ease;
 }
 
 /* Large Screen Optimizations for Project Pages */
@@ -328,4 +432,104 @@ body[style] {
 
 .project-info-scroll::-webkit-scrollbar {
   display: none;
+}
+
+/* Apertura fluida del selector de contraste, inspirada en Liquid Glass. */
+.contrast-glass-trigger {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.contrast-glass-trigger--open {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.contrast-glass-panel {
+  transform-origin: 50% 24px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(210, 210, 210, 0.48));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 1px 0 0 rgba(255, 255, 255, 0.36),
+    inset -1px 0 0 rgba(0, 0, 0, 0.05),
+    0 14px 34px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  animation: contrast-liquid-open 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.contrast-glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 30% 9%, rgba(255, 255, 255, 0.92), transparent 28%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.24), transparent 48%, rgba(255, 255, 255, 0.12));
+  opacity: 0.72;
+  animation: contrast-glass-shimmer 760ms ease-out both;
+}
+
+.contrast-glass-panel::after {
+  content: "";
+  position: absolute;
+  inset: 5px auto 10px 4px;
+  width: 1px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.82), transparent);
+  opacity: 0.8;
+}
+
+.contrast-glass-option {
+  opacity: 0;
+  animation: contrast-glass-option-in 360ms cubic-bezier(0.2, 0.9, 0.25, 1.25) forwards;
+}
+
+@keyframes contrast-liquid-open {
+  0% {
+    opacity: 0.4;
+    transform: translateY(-3px) scaleX(0.76) scaleY(0.16);
+    filter: blur(8px);
+    border-radius: 999px;
+  }
+  56% {
+    opacity: 1;
+    transform: translateY(0) scaleX(1.07) scaleY(1.035);
+    filter: blur(0);
+  }
+  76% {
+    transform: scaleX(0.975) scaleY(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+    border-radius: 28px;
+  }
+}
+
+@keyframes contrast-glass-shimmer {
+  0% { opacity: 0; transform: translateY(-18%); }
+  48% { opacity: 0.92; }
+  100% { opacity: 0.72; transform: translateY(0); }
+}
+
+@keyframes contrast-glass-option-in {
+  from { opacity: 0; transform: translateY(-7px) scale(0.72); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contrast-glass-panel,
+  .contrast-glass-panel::before,
+  .contrast-glass-option {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Icon from "@mdi/react";
+import { mdiArrowRight } from "@mdi/js";
 import ProjectDetailLayout from "../components/ProjectDetailLayout";
 
 const processSections = [
@@ -113,6 +115,13 @@ export default function Bisiona2026Page() {
       client="EASD Pablo Picasso A Coruña"
       tags={["Identidad Viva", "Generativo"]}
       projectTitle="Identidad IX Jornadas de Arte y Diseño EASDPP"
+      caseMeta={{
+        role: "Diseñador y desarrollador",
+        roleEn: "Designer and developer",
+        developmentTime: "—",
+        developmentTimeEn: "—",
+        tools: "Figma, HTML, CSS, JavaScript, Python",
+      }}
       processSections={processSections}
       description={
         <div>
@@ -132,11 +141,11 @@ export default function Bisiona2026Page() {
               className="group flex w-full items-center justify-between gap-5 rounded-full border border-black px-5 py-3 text-base font-normal text-black transition-colors hover:bg-black hover:text-white sm:text-lg lg:w-3/4"
             >
               <span>Crea tu Bisiona</span>
-              <img
-                src="/svg/arrow_right_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"
-                alt=""
+              <Icon
+                path={mdiArrowRight}
+                size={1}
                 aria-hidden="true"
-                className="h-6 w-6 shrink-0 transition-[filter,transform] group-hover:translate-x-1 group-hover:invert"
+                className="shrink-0 transition-transform group-hover:translate-x-1"
               />
             </a>
             <a
@@ -146,11 +155,11 @@ export default function Bisiona2026Page() {
               className="group flex w-full items-center justify-between gap-5 rounded-full border border-black px-5 py-3 text-base font-normal text-black transition-colors hover:bg-black hover:text-white sm:text-lg lg:w-3/4"
             >
               <span>Prototipo Figma</span>
-              <img
-                src="/svg/arrow_right_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"
-                alt=""
+              <Icon
+                path={mdiArrowRight}
+                size={1}
                 aria-hidden="true"
-                className="h-6 w-6 shrink-0 transition-[filter,transform] group-hover:translate-x-1 group-hover:invert"
+                className="shrink-0 transition-transform group-hover:translate-x-1"
               />
             </a>
           </div>

@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import CustomCursor from '../components/CustomCursor';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { motion } from 'framer-motion';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react';
 import { FocusCards } from '@/components/ui/focus-cards';
 import { useLanguage } from '../context/LanguageContext';
+import Icon from '@mdi/react';
+import { mdiChevronDown } from '@mdi/js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,9 +104,6 @@ export default function ProyectosPage() {
     const introHeadingRef = useRef<HTMLHeadingElement>(null);
     const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-    const [showTooltip, setShowTooltip] = useState(false);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     // Filtrar proyectos basado en las categorías seleccionadas
     const filteredProjects = projects.filter(project => project.id !== 4).filter(project => {
@@ -146,6 +143,9 @@ export default function ProyectosPage() {
                     ? 'Figma Plugin'
                     : type
         )),
+        cursorLabel: project.id === 8
+            ? t('Ver caso de estudio', 'View case study')
+            : t('Ver proyecto', 'View project'),
     }));
 
     console.log('selectedFilters actual:', selectedFilters);
@@ -216,32 +216,6 @@ export default function ProyectosPage() {
 
         // Caso normal: actualizar con la nueva selección (sin "all")
         setSelectedFilters(newSelection);
-    };
-
-    // Función para manejar el blur de los proyectos
-    const getProjectBlurStyle = (projectId: number) => {
-        if (hoveredProject === null) return { transition: 'filter 0.3s ease' };
-        return hoveredProject === projectId
-            ? { filter: 'blur(8px)', transition: 'filter 0.3s ease' }
-            : { filter: 'none', transition: 'filter 0.3s ease' };
-    };
-
-    // Función para manejar el movimiento del mouse
-    const handleMouseMove = (e: React.MouseEvent) => {
-        setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    // Función para manejar el hover del proyecto
-    const handleProjectHover = (projectId: number, e: React.MouseEvent) => {
-        setHoveredProject(projectId);
-        setShowTooltip(true);
-        setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    // Función para manejar cuando se sale del hover
-    const handleProjectLeave = () => {
-        setHoveredProject(null);
-        setShowTooltip(false);
     };
 
     // Manejar click en proyecto
@@ -386,7 +360,6 @@ export default function ProyectosPage() {
 
     return (
         <div className="min-h-screen bg-white">
-            <CustomCursor />
             <NavBar />
 
             {/* Header Section */}
@@ -425,10 +398,11 @@ export default function ProyectosPage() {
                             <Button
                                 className="backdrop-blur-sm bg-white/10 border border-black/20 rounded-3xl px-6 py-3 text-black font-medium hover:bg-white/20 transition-all duration-300 min-w-[220px]"
                                 endContent={
-                                    <img
-                                        src="/svg/Vector.svg"
-                                        alt={t('Abrir filtros', 'Open filters')}
-                                        className={`w-3 h-3 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
+                                    <Icon
+                                        path={mdiChevronDown}
+                                        size={0.72}
+                                        aria-hidden="true"
+                                        className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
                                     />
                                 }
                             >
@@ -459,29 +433,9 @@ export default function ProyectosPage() {
                     <FocusCards
                         cards={filteredProjects}
                         onCardClick={handleProjectClick}
-                        onCardHover={handleProjectHover}
-                        onCardLeave={handleProjectLeave}
-                        onCardMouseMove={handleMouseMove}
                     />
                 </div>
             </div >
-
-            {/* Tooltip */}
-            {showTooltip && hoveredProject !== null && (
-                <motion.figcaption
-                    className="pointer-events-none fixed left-0 top-0 rounded-[12px] bg-white px-[10px] py-[4px] text-[10px] text-[#2d2d2d] opacity-0 z-[100] hidden sm:block"
-                    style={{
-                        x: mousePosition.x + 10,
-                        y: mousePosition.y - 30,
-                    }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    {t('Ver Proyecto', 'View project')}
-                </motion.figcaption>
-            )}
 
             <Footer />
         </div >

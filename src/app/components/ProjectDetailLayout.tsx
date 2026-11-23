@@ -1,10 +1,9 @@
 "use client";
 
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import CustomCursor from "./CustomCursor";
 import MaskedHeading from "./MaskedHeading";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -15,6 +14,13 @@ type ProjectDetailLayoutProps = {
   tags: string[];
   projectTitle: string;
   description: ReactNode;
+  caseMeta?: {
+    role: string;
+    roleEn?: string;
+    developmentTime: string;
+    developmentTimeEn?: string;
+    tools: string;
+  };
   processSections?: {
     title: string;
     lead: ReactNode;
@@ -23,6 +29,7 @@ type ProjectDetailLayoutProps = {
     image?: {
       src: string;
       alt: string;
+      caption?: ReactNode;
     };
   }[];
   children: ReactNode;
@@ -35,10 +42,12 @@ export default function ProjectDetailLayout({
   tags,
   projectTitle,
   description,
+  caseMeta,
   processSections = [],
   children,
 }: ProjectDetailLayoutProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [activeProcessSection, setActiveProcessSection] = useState(0);
   const { t } = useLanguage();
 
   const translateNode = (node: ReactNode): ReactNode => {
@@ -86,9 +95,54 @@ export default function ProjectDetailLayout({
     };
   }, []);
 
+  useEffect(() => {
+    if (!processSections.length) return;
+
+    const sections = processSections
+      .map((_, index) => document.getElementById(`project-process-${index}`))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (first, second) =>
+              Math.abs(first.boundingClientRect.top) -
+              Math.abs(second.boundingClientRect.top),
+          )[0];
+
+        if (!visibleSection) return;
+
+        const sectionIndex = Number(
+          visibleSection.target.getAttribute("data-process-index"),
+        );
+
+        if (!Number.isNaN(sectionIndex)) {
+          setActiveProcessSection(sectionIndex);
+        }
+      },
+      {
+        rootMargin: "-18% 0px -58% 0px",
+        threshold: 0,
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [processSections]);
+
+  const scrollToProcessSection = (index: number) => {
+    setActiveProcessSection(index);
+    document.getElementById(`project-process-${index}`)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-white">
-      <CustomCursor />
+    <div className="project-detail-layout min-h-screen bg-white">
       <NavBar />
 
       <main
@@ -136,65 +190,124 @@ export default function ProjectDetailLayout({
 
         {processSections.length > 0 && (
           <section
-            className="mt-12 sm:mt-16 lg:mt-20"
+            className="mt-16 sm:mt-20 lg:mt-28"
             aria-labelledby="project-process-title"
           >
-          <header className="grid gap-4 border-b border-black/15 py-8 sm:py-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:gap-8 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12">
-            <p className="text-xs uppercase tracking-[0.18em] text-gray-400">
-              {t("Caso de estudio")}
-            </p>
-            <h2
-              id="project-process-title"
-              className="max-w-3xl text-2xl font-normal leading-tight text-black lg:text-3xl xl:text-4xl"
-            >
-              {t(projectTitle)}
-            </h2>
-          </header>
-
-          <div>
-            {processSections.map((section, index) => (
-              <article
-                key={section.title}
-                className={`grid gap-8 py-14 sm:py-16 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:gap-8 xl:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12 ${
-                  index < processSections.length - 1
-                    ? "border-b border-black/15"
-                    : ""
-                } ${
-                  section.compact
-                    ? "lg:min-h-[18rem] lg:py-16"
-                    : "lg:min-h-[22rem] lg:py-20"
-                }`}
+            <header className="grid gap-5 pb-12 sm:pb-16 lg:grid-cols-[minmax(13rem,0.4fr)_minmax(0,1.6fr)] lg:gap-12 xl:grid-cols-[minmax(16rem,0.38fr)_minmax(0,1.62fr)]">
+              <p className="pt-1 text-xs uppercase tracking-[0.18em] text-gray-400">
+                {t("Caso de estudio")}
+              </p>
+              <h2
+                id="project-process-title"
+                className="max-w-5xl text-3xl font-normal leading-[1.08] tracking-[-0.025em] text-black sm:text-4xl lg:text-5xl"
               >
-                <div className="lg:pr-4">
-                  <h3 className="text-2xl font-bold leading-tight text-black lg:text-3xl xl:text-4xl">
-                    {t(section.title)}
-                  </h3>
-                </div>
+                {t(projectTitle)}
+              </h2>
+            </header>
 
-                <div className="flex max-w-4xl flex-col gap-8">
-                  <p className="text-[15px] font-medium leading-relaxed text-black">
-                    {translateNode(section.lead)}
+            {caseMeta && (
+              <div className="project-case-meta mb-12 grid gap-7 border-t border-black/10 px-6 py-7 text-center sm:grid-cols-3 sm:px-8 lg:mb-16 lg:px-10 lg:py-8">
+                <div>
+                  <p className="mb-2 text-base text-gray-500 sm:text-lg">
+                    {t("Rol", "Role")}
                   </p>
-
-                  {section.body && (
-                    <div className="max-w-3xl text-[15px] leading-relaxed text-gray-600">
-                      {translateNode(section.body)}
-                    </div>
-                  )}
+                  <p className="text-base text-black sm:text-lg">
+                    {t(caseMeta.role, caseMeta.roleEn)}
+                  </p>
                 </div>
 
-                {section.image && (
-                  <div className="max-w-3xl overflow-hidden rounded-2xl lg:col-start-2">
-                    <img
-                      src={section.image.src}
-                      alt={t(section.image.alt)}
-                      className="block h-auto w-full"
-                    />
-                  </div>
-                )}
-              </article>
-            ))}
-          </div>
+                <div>
+                  <p className="mb-2 text-base text-gray-500 sm:text-lg">
+                    {t("Tiempo de desarrollo", "Development time")}
+                  </p>
+                  <p className="text-base text-black sm:text-lg">
+                    {t(caseMeta.developmentTime, caseMeta.developmentTimeEn)}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="mb-2 text-base text-gray-500 sm:text-lg">
+                    {t("Herramientas", "Tools")}
+                  </p>
+                  <p className="text-base text-black sm:text-lg">
+                    {caseMeta.tools}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="lg:grid lg:grid-cols-[minmax(13rem,0.4fr)_minmax(0,1.6fr)] lg:items-start lg:gap-12 xl:grid-cols-[minmax(16rem,0.38fr)_minmax(0,1.62fr)]">
+              <nav
+                aria-label={t("Índice del caso de estudio", "Case study index")}
+                className="mb-8 flex gap-2 overflow-x-auto pb-2 lg:sticky lg:top-28 lg:mb-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:pb-0"
+              >
+                {processSections.map((section, index) => {
+                  const isActive = activeProcessSection === index;
+
+                  return (
+                    <button
+                      key={section.title}
+                      type="button"
+                      aria-current={isActive ? "step" : undefined}
+                      onClick={() => scrollToProcessSection(index)}
+                      className={`curzr-hover shrink-0 px-5 py-2 text-left text-sm transition-colors duration-300 lg:w-full lg:px-6 lg:py-2 lg:text-base ${
+                        isActive
+                          ? "font-medium text-black"
+                          : "text-gray-400 hover:text-gray-600"
+                      }`}
+                    >
+                      {index + 1}. {t(section.title)}
+                    </button>
+                  );
+                })}
+              </nav>
+
+              <div className="min-w-0">
+                {processSections.map((section, index) => (
+                  <article
+                    id={`project-process-${index}`}
+                    data-process-index={index}
+                    key={section.title}
+                    className={`scroll-mt-28 pb-20 sm:pb-24 lg:min-h-[70vh] lg:pb-32 ${
+                      index > 0 ? "pt-4 lg:pt-8" : ""
+                    }`}
+                  >
+                    <h3 className="mb-8 text-3xl font-normal leading-tight tracking-[-0.025em] text-black sm:text-4xl lg:mb-10 lg:text-[42px]">
+                      {index + 1}. {t(section.title)}
+                    </h3>
+
+                    <div className="project-process-copy flex max-w-5xl flex-col gap-7">
+                      <p className="project-section-lead rounded-[12px] px-5 py-4 text-[17px] font-normal leading-[1.75] text-gray-600 sm:px-6 sm:py-5 sm:text-lg lg:text-xl lg:leading-[1.75]">
+                        {translateNode(section.lead)}
+                      </p>
+
+                      {section.body && (
+                        <div className="max-w-4xl text-[16px] leading-[1.8] text-gray-500 sm:text-lg">
+                          {translateNode(section.body)}
+                        </div>
+                      )}
+
+                      {section.image && (
+                        <div className="mt-4 w-full">
+                          <div className="overflow-hidden rounded-[28px] bg-black/[0.025]">
+                            <img
+                              src={section.image.src}
+                              alt={t(section.image.alt)}
+                              className="block h-auto w-full"
+                            />
+                          </div>
+                          {section.image.caption && (
+                            <p className="mt-5 max-w-4xl text-[16px] leading-[1.8] text-gray-500 sm:text-lg">
+                              {translateNode(section.image.caption)}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </section>
         )}
       </main>

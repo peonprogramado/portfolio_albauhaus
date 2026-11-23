@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import CustomCursor from "../components/CustomCursor";
 import TiltedCard from "../../components/TiltedCard";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -290,7 +289,6 @@ export default function AboutPage() {
 
     return (
         <div className="min-h-screen bg-white">
-            <CustomCursor />
             <NavBar />
 
             <main
@@ -405,7 +403,7 @@ export default function AboutPage() {
                                 <img
                                     src="/svg/Group 1.svg"
                                     alt=""
-                                    className="absolute inset-y-0 h-full w-[18px] opacity-20"
+                                    className="academic-timeline-line absolute inset-y-0 h-full w-[18px] opacity-20"
                                 />
                                 <div
                                     ref={studiesTimelineRef}
@@ -414,7 +412,7 @@ export default function AboutPage() {
                                     <img
                                         src="/svg/Group 1.svg"
                                         alt=""
-                                        className="h-full w-[18px]"
+                                        className="academic-timeline-line h-full w-[18px]"
                                     />
                                 </div>
                             </div>

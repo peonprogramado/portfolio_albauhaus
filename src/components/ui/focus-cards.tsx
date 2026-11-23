@@ -14,6 +14,7 @@ type ProjectCard = {
     comingSoon?: boolean;
     src?: string;
     gif?: string;
+    cursorLabel?: string;
 };
 
 export const Card = React.memo(
@@ -57,6 +58,7 @@ export const Card = React.memo(
 
         return (
             <div
+                data-cursor-label={card.cursorLabel}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onMouseMove={onMouseMove}

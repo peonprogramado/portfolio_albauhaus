@@ -24,6 +24,12 @@ const processSections = [
       "Crear una pieza capaz de transformar el producto en el centro de una experiencia visual basada en la atracción.",
     body:
       "Traducir la atracción en un recurso visual, utilizando el magnetismo, el movimiento y la tensión para despertar el interés y dirigir la atención hacia el producto.",
+    image: {
+      src: "/images/aketchreels.png",
+      alt: "Bocetos del storyboard de las piezas de NARS",
+      caption:
+        "Se realizó una exploración exhaustiva mediante la iteración de escenas en un storyboard, con el objetivo de encontrar la secuencia visual capaz de transmitir la sensación de atracción, tensión y magnetismo.",
+    },
   },
   {
     title: "Prospectiva",
@@ -41,6 +47,13 @@ export default function NarsPage() {
       client="Proyecto Personal"
       tags={["Sensorial", "Provocador", "3D"]}
       projectTitle="Gráficas animadas para redes sociales de la marca NARS"
+      caseMeta={{
+        role: "Diseñador de movimiento y artista 3D",
+        roleEn: "Motion designer and 3D artist",
+        developmentTime: "3 semanas",
+        developmentTimeEn: "3 weeks",
+        tools: "Blender, After Effects",
+      }}
       processSections={processSections}
       description={
         <p>
@@ -78,14 +91,6 @@ export default function NarsPage() {
             className="h-full w-full object-cover"
           />
         </div>
-      </div>
-
-      <div className="animate-element overflow-hidden rounded-2xl bg-white aspect-[16/9]">
-        <img
-          src="/images/aketchreels.png"
-          alt="NARS - Sketch Reels"
-          className="h-full w-full object-contain"
-        />
       </div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">

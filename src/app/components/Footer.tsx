@@ -1,215 +1,136 @@
 "use client";
 
-import React, { useRef } from "react";
-import { useRouter } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
-import VariableProximity from '../../components/VariableProximity';
-import Image from 'next/image';
-import MaskedHeading from './MaskedHeading';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useEffect, useRef, useState } from "react";
+import Icon from "@mdi/react";
+import { mdiArrowTopRight, mdiArrowUp } from "@mdi/js";
+import VariableProximity from "../../components/VariableProximity";
+import { useLanguage } from "../context/LanguageContext";
 
 const socials = [
-    { label: "Instagram", href: "https://www.instagram.com/albauhaus/" },
-    { label: "Linkedin", href: "https://www.linkedin.com/in/alba-antón-8b1a80351" },
-    { label: "Behance", href: "https://www.behance.net/albaanton1/projects" },
-    { label: "Github", href: "https://github.com/albauhaus" },
+  { label: "Instagram", href: "https://www.instagram.com/albauhaus/" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/alba-antón-8b1a80351",
+  },
+  { label: "Behance", href: "https://www.behance.net/albaanton1/projects" },
+  { label: "GitHub", href: "https://github.com/albauhaus" },
 ];
 
 type FooterProps = {
-    compactTopSpacing?: boolean;
+  compactTopSpacing?: boolean;
 };
 
 const Footer: React.FC<FooterProps> = ({ compactTopSpacing = false }) => {
-    const router = useRouter();
-    const footerRef = useRef<HTMLElement>(null);
-    const shouldReduceMotion = useReducedMotion();
-    const { t } = useLanguage();
-    const footerLinks = [
-        { label: t("Inicio", "Home"), href: "/" },
-        { label: t("Sobre mí", "About me"), href: "/about" },
-        { label: t("Proyectos", "Projects"), href: "/proyectos" },
-    ];
+  const { t } = useLanguage();
+  const footerRef = useRef<HTMLElement>(null);
+  const [localTime, setLocalTime] = useState("");
 
-    const handleNavigation = (href: string) => {
-        router.push(href);
+  useEffect(() => {
+    const updateTime = () => {
+      setLocalTime(
+        new Intl.DateTimeFormat("es-ES", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Europe/Madrid",
+        }).format(new Date()),
+      );
     };
 
-    return (
-        <footer
-            ref={footerRef}
-            className={`relative w-full bg-black pb-16 pt-20 text-white ${compactTopSpacing ? "mt-16" : "mt-40"}`}
-        >
-            <motion.div
+    updateTime();
+    const timer = window.setInterval(updateTime, 30_000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <footer
+      ref={footerRef}
+      className={`w-full bg-white text-[#171717] ${
+        compactTopSpacing ? "mt-16" : "mt-24 lg:mt-32"
+      }`}
+    >
+      <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
+        <div className="border-t border-black/15">
+          <div className="grid gap-12 py-14 sm:py-20 lg:min-h-[18rem] lg:grid-cols-[minmax(0,1.5fr)_minmax(13rem,0.7fr)_minmax(10rem,0.35fr)] lg:items-center lg:gap-10 lg:py-10 xl:gap-16">
+            <a
+              href="mailto:albaantondesign@gmail.com?subject=Portfolio%20brief"
+              className="curzr-hover group inline-flex w-fit items-center gap-3 sm:gap-4"
+              aria-label={t("Contactar para trabajar juntos", "Get in touch to work together")}
+            >
+              <h2 className="max-w-3xl text-[clamp(2.5rem,4vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.04em]">
+                <VariableProximity
+                  label={t("Trabajemos juntos", "Let's work together")}
+                  fromFontVariationSettings="'wght' 400, 'wdth' 100"
+                  toFontVariationSettings="'wght' 900, 'wdth' 150"
+                  containerRef={footerRef}
+                  radius={120}
+                  falloff="exponential"
+                  style={{ fontFamily: "inherit" }}
+                />
+              </h2>
+              <span
                 aria-hidden="true"
-                className={`pointer-events-none absolute bottom-full left-0 w-full ${compactTopSpacing ? "h-16" : "h-40"}`}
-                initial={shouldReduceMotion ? false : { opacity: 0.45 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={
-                    shouldReduceMotion
-                        ? { duration: 0 }
-                        : { duration: 1.5, ease: [0.25, 0.1, 0.25, 1] }
-                }
-                style={{
-                    background:
-                        "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.008) 28%, rgba(0, 0, 0, 0.035) 50%, rgba(0, 0, 0, 0.11) 68%, rgba(0, 0, 0, 0.28) 80%, rgba(0, 0, 0, 0.52) 90%, rgba(0, 0, 0, 0.78) 96%, #000 100%)",
-                }}
-            />
+                className="flex shrink-0 items-center justify-center bg-white transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+              >
+                <Icon
+                  path={mdiArrowTopRight}
+                  className="contrast-invert-icon h-[clamp(2rem,3.1vw,3.5rem)] w-[clamp(2rem,3.1vw,3.5rem)] text-black"
+                />
+              </span>
+            </a>
 
-            <div className="w-full max-w-[1200px] mx-auto px-8 xl-reduced-project-margins xxl-reduced-project-margins">
-                {/* Mobile Layout */}
-                <div className="md:hidden">
-                    <div className="text-left mb-6">
-                        <MaskedHeading
-                            text={t("¿Tienes alguna idea? ¿Dudas?", "Have an idea? Any questions?")}
-                            className="text-[20px] font-normal text-white"
-                        />
-                    </div>
+            <p className="max-w-[17rem] text-base leading-[1.65] text-black/45 sm:text-lg lg:justify-self-center lg:text-[17px]">
+              {t(
+                "Diseño gráfico en A Coruña · Web · UI/UX · Motion Graphics · 3D",
+                "Graphic design in A Coruña · Web · UI/UX · Motion Graphics · 3D",
+              )}
+            </p>
 
-                    <div className="mb-8">
-                        <h2 className="text-[48px] leading-none font-bold tracking-tight mb-6">
-                            <VariableProximity
-                                label={t("TRABAJEMOS JUNTOS", "LET'S WORK TOGETHER")}
-                                fromFontVariationSettings="'wght' 400, 'wdth' 100"
-                                toFontVariationSettings="'wght' 900, 'wdth' 150"
-                                containerRef={footerRef}
-                                radius={120}
-                                falloff="exponential"
-                                style={{ fontFamily: 'inherit' }}
-                            />
-                        </h2>
-                        <button
-                            className="curzr-hover hover:opacity-60 transition-opacity duration-300"
-                            type="button"
-                            onClick={() => window.location.href = 'mailto:albaantondesign@gmail.com'}
-                            aria-label={t("Enviar email", "Send email")}
-                        >
-                            <Image
-                                src="/svg/flechafooter.svg"
-                                alt={t("Contactar", "Get in touch")}
-                                width={60}
-                                height={60}
-                                className="w-16 h-16"
-                            />
-                        </button>
-                    </div>
-
-                    <div className="flex flex-col gap-3 mb-8">
-                        {socials.map((item) => (
-                            <a
-                                key={item.label}
-                                href={item.href}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="curzr-hover inline-flex items-center justify-center px-5 py-3 rounded-full border border-white/70 text-base hover:bg-white hover:text-black transition-colors w-full"
-                            >
-                                {item.label}
-                            </a>
-                        ))}
-                    </div>
-
-                    <p className="text-white/60 text-xs mb-12">
-                        {t("Diseño gráfico en A Coruña", "Graphic design in A Coruña")} · Web · UI/UX ·<br />
-                        Motion Graphics · 3D
-                    </p>
-
-                    <div className="space-y-1">
-                        <p className="text-white text-[48px] font-medium leading-tight">
-                            ©2026
-                        </p>
-                        <p className="text-white text-[48px] font-medium leading-tight">
-                            Alba Antón
-                        </p>
-                    </div>
-                </div>
-
-                {/* Desktop Layout */}
-                <div className="hidden md:block">
-                    <div className="text-center mb-8">
-                        <MaskedHeading
-                            text={t("¿Tienes alguna idea? ¿Dudas?", "Have an idea? Any questions?")}
-                            className="text-[28px] font-normal text-white"
-                        />
-                    </div>
-
-                    <div className="mb-6 xl-large-project-media xxl-large-project-media">
-                        <div className="flex items-center justify-center gap-4 md:gap-6">
-                            <h2 className="leading-none font-bold tracking-tight" style={{ fontSize: 'clamp(60px, 8vw, 110px)' }}>
-                                <VariableProximity
-                                    label={t("TRABAJEMOS JUNTOS", "LET'S WORK TOGETHER")}
-                                    fromFontVariationSettings="'wght' 400, 'wdth' 100"
-                                    toFontVariationSettings="'wght' 900, 'wdth' 150"
-                                    containerRef={footerRef}
-                                    radius={120}
-                                    falloff="exponential"
-                                    style={{ fontFamily: 'inherit' }}
-                                />
-                            </h2>
-                            <button
-                                className="curzr-hover flex-shrink-0 hover:opacity-60 transition-opacity duration-300"
-                                type="button"
-                                onClick={() => window.location.href = 'mailto:albaantondesign@gmail.com'}
-                                aria-label={t("Enviar email", "Send email")}
-                            >
-                                <Image
-                                    src="/svg/flechafooter.svg"
-                                    alt={t("Contactar", "Get in touch")}
-                                    width={60}
-                                    height={60}
-                                    className="w-12 h-12 md:w-16 md:h-16"
-                                />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap justify-start gap-2 mb-12 mt-[40px] xl-project-text-separation xxl-project-text-separation">
-                        {socials.map((item) => (
-                            <a
-                                key={item.label}
-                                href={item.href}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="curzr-hover inline-flex items-center px-5 py-2 rounded-full border border-white/70 text-sm hover:bg-white hover:text-black transition-colors"
-                            >
-                                {item.label}
-                            </a>
-                        ))}
-                    </div>
-
-                    <div className="w-full mb-8">
-                        <div className="h-px bg-white/30" />
-                    </div>
-
-                    <div className="flex flex-row justify-between items-start gap-6 xl-project-text-separation xxl-project-text-separation">
-                        <div className="space-y-1 client-section">
-                            <p className="text-white text-[48px] font-medium leading-tight">
-                                ©2026
-                            </p>
-                            <p className="text-white text-[48px] font-medium leading-tight">
-                                Alba Antón
-                            </p>
-                            <p className="text-white/60 text-xs md:text-sm mt-[54px]">
-                                {t("Diseño gráfico en A Coruña", "Graphic design in A Coruña")} · Web ·<br />
-                                UI/UX · Motion Graphics · 3D
-                            </p>
-                        </div>
-
-                        <div className="flex flex-col items-start gap-3 description-section">
-                            {footerLinks.map((link) => (
-                                <button
-                                    key={link.label}
-                                    onClick={() => handleNavigation(link.href)}
-                                    className="curzr-hover text-white text-[24px] font-normal hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-0 font-inherit text-left"
-                                >
-                                    {link.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+            <div className="text-lg sm:text-xl lg:justify-self-end lg:text-right">
+              <p className="mb-2 text-base text-black/45 sm:text-lg">
+                {t("A Coruña, España", "A Coruña, Spain")}
+              </p>
+              <p className="tabular-nums" aria-label={t("Hora local", "Local time")}>
+                {localTime || "--:--"}
+              </p>
             </div>
-        </footer>
-    );
+          </div>
+
+          <div className="flex flex-col gap-7 pb-8 text-sm text-black/45 sm:pb-10 lg:flex-row lg:items-end lg:justify-between lg:pb-5 lg:text-base">
+            <p>© {new Date().getFullYear()} Alba Antón</p>
+
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="curzr-hover transition-colors hover:text-black"
+                >
+                  {social.label}
+                </a>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="curzr-hover inline-flex w-fit items-center gap-1 transition-colors hover:text-black"
+            >
+              {t("Volver arriba", "Back to top")}
+              <Icon path={mdiArrowUp} size={0.72} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

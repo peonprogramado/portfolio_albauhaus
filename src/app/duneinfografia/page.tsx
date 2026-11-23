@@ -48,6 +48,13 @@ export default function DuneInfografiaPage() {
       client="Proyecto Personal"
       tags={["Retrofuturista", "Informativo"]}
       projectTitle="Infografía y visualización de datos con Python de la saga Dune"
+      caseMeta={{
+        role: "Diseñador de información y desarrollador",
+        roleEn: "Information designer and developer",
+        developmentTime: "—",
+        developmentTimeEn: "—",
+        tools: "Python, Matplotlib",
+      }}
       processSections={processSections}
       description={
         <p>

@@ -55,6 +55,13 @@ export default function PiLab5Page() {
       client="Proyecto Personal"
       tags={["Inspirador", "Exploratorio"]}
       projectTitle="PiLab 5 - Gráficas publicitarias"
+      caseMeta={{
+        role: "Diseñador gráfico y diseñador de movimiento",
+        roleEn: "Graphic designer and motion designer",
+        developmentTime: "—",
+        developmentTimeEn: "—",
+        tools: "Illustrator, Photoshop, After Effects",
+      }}
       processSections={processSections}
       description={
         <p>
