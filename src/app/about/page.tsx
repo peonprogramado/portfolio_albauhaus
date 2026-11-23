@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import TiltedCard from "../../components/TiltedCard";
@@ -111,6 +111,7 @@ function ScrollFillLine({ text }: { text: string }) {
 
 export default function AboutPage() {
     const { t } = useLanguage();
+    const [profileAudience, setProfileAudience] = useState<'recruiters' | 'engineers'>('recruiters');
     const localizedStudies = studies.map((study, index) => ({
         ...study,
         title: t(study.title, [
@@ -298,9 +299,39 @@ export default function AboutPage() {
                 {/* Presentación */}
                 <section className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.82fr)] lg:gap-20">
                     <div className="max-w-xl">
-                        <p className="mb-4 text-xs font-medium uppercase tracking-[0.04em] text-gray-500 sm:text-sm">
-                            {t('Sobre mí', 'About me')}
-                        </p>
+                        <div
+                            role="radiogroup"
+                            aria-label={t('Tipo de presentación', 'Profile audience')}
+                            className="mb-4 flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.04em] sm:text-sm"
+                        >
+                            <button
+                                type="button"
+                                role="radio"
+                                aria-checked={profileAudience === 'recruiters'}
+                                onClick={() => setProfileAudience('recruiters')}
+                                className={`curzr-hover border-b pb-0.5 uppercase transition-colors duration-300 ${
+                                    profileAudience === 'recruiters'
+                                        ? 'border-gray-400 text-gray-500'
+                                        : 'border-transparent text-gray-400 hover:text-gray-500'
+                                }`}
+                            >
+                                {t('Para reclutadores', 'For recruiters')}
+                            </button>
+                            <span className="text-gray-300" aria-hidden="true">/</span>
+                            <button
+                                type="button"
+                                role="radio"
+                                aria-checked={profileAudience === 'engineers'}
+                                onClick={() => setProfileAudience('engineers')}
+                                className={`curzr-hover border-b pb-0.5 uppercase transition-colors duration-300 ${
+                                    profileAudience === 'engineers'
+                                        ? 'border-gray-400 text-gray-500'
+                                        : 'border-transparent text-gray-400 hover:text-gray-500'
+                                }`}
+                            >
+                                {t('Para ingenieros', 'For engineers')}
+                            </button>
+                        </div>
 
                         <h1
                             ref={introHeadingRef}
@@ -314,37 +345,75 @@ export default function AboutPage() {
                         </h1>
 
                         <div className="max-w-lg space-y-4 text-base leading-relaxed text-gray-600 sm:text-lg">
-                            <p className="animate-element">
-                                {t(
-                                    'Soy diseñadora de interacción en A Coruña, con formación en Diseño Gráfico.',
-                                    'I am an interaction designer based in A Coruña, with a background in Graphic Design.',
-                                )}{' '}
-                                {t(
-                                    'Actualmente estudio Ingeniería Informática y un Máster en Diseño de Interacción y Experiencia de Usuario (UX).',
-                                    "I am currently studying Computer Science and a Master's Degree in Interaction Design and User Experience (UX).",
-                                )}
-                            </p>
-                            <p className="animate-element">
-                                {t(
-                                    'Creo interfaces y sistemas de diseño con',
-                                    'I create interfaces and design systems with',
-                                )}{' '}
-                                {t(
-                                    'criterio técnico, claridad y coherencia',
-                                    'technical judgement, clarity and consistency',
-                                )}
-                                {t('. En desarrollo, busco crear código limpio, mantenible y fácil de comprender.', '. In development, I aim to create clean, maintainable and easy-to-understand code.')}
-                            </p>
-                            <p className="animate-element">
-                                {t(
-                                    'Me interesa construir experiencias digitales claras, escalables y cuidadas hasta el último detalle.',
-                                    'I am interested in building clear, scalable digital experiences, carefully crafted down to the last detail.',
-                                )}
-                            </p>
+                            {profileAudience === 'recruiters' ? (
+                                <>
+                                    <p className="animate-element">
+                                        {t(
+                                            'Soy diseñadora de interacción en A Coruña, con formación en Diseño Gráfico.',
+                                            'I am an interaction designer based in A Coruña, with a background in Graphic Design.',
+                                        )}{' '}
+                                        {t(
+                                            'Actualmente estudio Ingeniería Informática y un Máster en Diseño de Interacción y Experiencia de Usuario (UX).',
+                                            "I am currently studying Computer Science and a Master's Degree in Interaction Design and User Experience (UX).",
+                                        )}
+                                    </p>
+                                    <p className="animate-element">
+                                        {t(
+                                            'Creo interfaces y sistemas de diseño con',
+                                            'I create interfaces and design systems with',
+                                        )}{' '}
+                                        {t(
+                                            'criterio técnico, claridad y coherencia',
+                                            'technical judgement, clarity and consistency',
+                                        )}
+                                        {t('. En desarrollo, busco crear código limpio, mantenible y fácil de comprender.', '. In development, I aim to create clean, maintainable and easy-to-understand code.')}
+                                    </p>
+                                    <p className="animate-element">
+                                        {t(
+                                            'Me interesa construir experiencias digitales claras, escalables y cuidadas hasta el último detalle.',
+                                            'I am interested in building clear, scalable digital experiences, carefully crafted down to the last detail.',
+                                        )}
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <p>
+                                        {t('Combino ', 'I combine ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">interactionDesign</code>
+                                        {t(' e ', ' and ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">computerScience</code>
+                                        {'. '}
+                                        {t('Me interesan ', 'I am interested in ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">frontendArchitecture</code>
+                                        {', '}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">accessibility</code>
+                                        {t(' y ', ' and ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">performance</code>
+                                        {t('. Utilizo ', '. I use ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">Multisim</code>
+                                        {t(
+                                            ' para diseñar circuitos y sé traducir requisitos técnicos en decisiones de arquitectura, interfaz e implementación.',
+                                            ' for circuit design, and I translate technical requirements into architecture, interface and implementation decisions.',
+                                        )}
+                                    </p>
+                                    <p>
+                                        {t('Disfruto los hackathones por su combinación de ', 'I enjoy hackathons for their mix of ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">problemSolving</code>
+                                        {', '}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">rapidPrototyping</code>
+                                        {t(' y ', ' and ')}
+                                        <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">teamwork</code>
+                                        {'.'}
+                                    </p>
+                                </>
+                            )}
                         </div>
                     </div>
 
-                    <div className="animate-element w-full max-w-[440px] justify-self-center lg:justify-self-end">
+                    <div
+                        data-cursor-label={t('Yo', 'Me')}
+                        className="animate-element curzr-hover w-full max-w-[440px] justify-self-center lg:justify-self-end"
+                    >
                         <TiltedCard
                             imageSrc="/images/imagenlinkedin1.jpg"
                             altText={t('Alba Antón - Foto de perfil', 'Alba Antón — Profile photo')}
@@ -356,7 +425,7 @@ export default function AboutPage() {
                             scaleOnHover={1.05}
                             rotateAmplitude={8}
                             showMobileWarning={false}
-                            showTooltip={true}
+                            showTooltip={false}
                             displayOverlayContent={true}
                             overlayContent={
                                 <div className="flex h-full w-full items-start justify-end p-4">

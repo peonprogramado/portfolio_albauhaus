@@ -81,8 +81,8 @@ html[data-contrast="dark"] .contrast-invert-icon {
   color: var(--contrast-foreground) !important;
 }
 
-html[data-contrast="dark"] .home-specialty-divider {
-  background: #ffffff !important;
+html:is([data-contrast="high"], [data-contrast="dark"]) .home-specialty-divider {
+  background: var(--contrast-border) !important;
 }
 
 html[data-contrast="dark"] .academic-timeline-line {

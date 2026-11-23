@@ -706,13 +706,13 @@ export default function Home() {
         {/* Línea superior animada */}
         <div
           ref={lineRefTop}
-          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider hidden h-px origin-left bg-gray-300 lg:block lg:w-[calc(100%_-_160px)] xl:w-[calc(100%_-_240px)]"
         />
 
         {/* DISEÑO UI/UX */}
         <ImageTooltip imageSrc="/video/Adobe Express - feed_synthminddesign (1).gif" alt="Diseño UI/UX">
           <div
-            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="curzr-hover mx-auto hidden h-[104px] cursor-pointer items-center gap-12 px-2 lg:grid lg:w-[calc(100%_-_160px)] lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] xl:w-[calc(100%_-_240px)]"
             style={{ textAlign: 'left', ...getBlurStyle('diseño') }}
             onMouseEnter={() => setHovered('diseño')}
             onMouseLeave={() => setHovered(null)}
@@ -720,19 +720,25 @@ export default function Home() {
             <p ref={diseñoRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
               {t('DISEÑO DE INTERACCIÓN', 'INTERACTION DESIGN')}
             </p>
+            <MaskedLine className="text-base leading-relaxed text-gray-500">
+              {t(
+                'Interfaces claras, accesibles y centradas en las personas.',
+                'Clear, accessible interfaces centred around people.'
+              )}
+            </MaskedLine>
           </div>
         </ImageTooltip>
 
         {/* Línea inferior animada */}
         <div
           ref={lineRefBottom}
-          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider hidden h-px origin-left bg-gray-300 lg:block lg:w-[calc(100%_-_160px)] xl:w-[calc(100%_-_240px)]"
         />
 
         {/* MOTION GRAPHICS */}
         <ImageTooltip imageSrc="/video/white.gif" alt={t('Desarrollo frontend', 'Frontend development')}>
           <div
-            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="curzr-hover mx-auto hidden h-[104px] cursor-pointer items-center gap-12 px-2 lg:grid lg:w-[calc(100%_-_160px)] lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] xl:w-[calc(100%_-_240px)]"
             style={{ textAlign: 'left', ...getBlurStyle('motion') }}
             onMouseEnter={() => setHovered('motion')}
             onMouseLeave={() => setHovered(null)}
@@ -740,19 +746,25 @@ export default function Home() {
             <p ref={motionRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
             {t('DESARROLLO FRONTEND', 'FRONTEND DEVELOPMENT')}
             </p>
+            <MaskedLine className="text-base leading-relaxed text-gray-500">
+              {t(
+                'Implementación web cuidada, escalable y fácil de mantener.',
+                'Thoughtful, scalable web implementation that is easy to maintain.'
+              )}
+            </MaskedLine>
           </div>
         </ImageTooltip>
 
         {/* Línea extra animada */}
         <div
           ref={lineRefExtra}
-          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider hidden h-px origin-left bg-gray-300 lg:block lg:w-[calc(100%_-_160px)] xl:w-[calc(100%_-_240px)]"
         />
 
         {/* PROGRAMACION CREATIVA */}
         <ImageTooltip imageSrc="/video/Adobe Express - audioreactivsisi12con audio.gif" alt="Programación Creativa">
           <div
-            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="curzr-hover mx-auto hidden h-[104px] cursor-pointer items-center gap-12 px-2 lg:grid lg:w-[calc(100%_-_160px)] lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] xl:w-[calc(100%_-_240px)]"
             style={{ textAlign: 'left', ...getBlurStyle('desarrollo') }}
             onMouseEnter={() => setHovered('desarrollo')}
             onMouseLeave={() => setHovered(null)}
@@ -760,19 +772,25 @@ export default function Home() {
             <p ref={desarrolloRef} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
               {t('DISEÑO DE MOVIMIENTO', 'MOTION DESIGN')}
             </p>
+            <MaskedLine className="text-base leading-relaxed text-gray-500">
+              {t(
+                'Movimiento con intención para comunicar, orientar y dar ritmo.',
+                'Purposeful motion that communicates, guides and creates rhythm.'
+              )}
+            </MaskedLine>
           </div>
         </ImageTooltip>
 
         {/* Nueva línea animada */}
         <div
           ref={lineRefNew}
-          className="home-specialty-divider h-[2px] bg-black origin-left hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider hidden h-px origin-left bg-gray-300 lg:block lg:w-[calc(100%_-_160px)] xl:w-[calc(100%_-_240px)]"
         />
 
         {/* BRANDING */}
         <ImageTooltip imageSrc="/video/Adobe Express - animacionlogobisiona7sg.gif" alt={t('Sistemas de diseño', 'Design Systems')}>
           <div
-            className="h-[104px] hidden lg:flex items-center cursor-pointer curzr-hover w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px] pl-[29px] pr-[824px] lg:pl-[2%] lg:pr-[60%] xl:pl-[2.5%] xl:pr-[65%]"
+            className="curzr-hover mx-auto hidden h-[104px] cursor-pointer items-center gap-12 px-2 lg:grid lg:w-[calc(100%_-_160px)] lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] xl:w-[calc(100%_-_240px)]"
             style={{ textAlign: 'left', ...getBlurStyle('desarrollo2') }}
             onMouseEnter={() => setHovered('desarrollo2')}
             onMouseLeave={() => setHovered(null)}
@@ -780,13 +798,19 @@ export default function Home() {
             <p ref={desarrollo2Ref} className="text-black text-[24px] font-medium" style={{ whiteSpace: 'nowrap' }}>
               {t('SISTEMAS DE DISEÑO', 'DESIGN SYSTEMS')}
             </p>
+            <MaskedLine className="text-base leading-relaxed text-gray-500">
+              {t(
+                'Sistemas coherentes para crear productos digitales escalables.',
+                'Coherent systems for building scalable digital products.'
+              )}
+            </MaskedLine>
           </div>
         </ImageTooltip>
 
         {/* Línea final animada */}
         <div
           ref={lineRefFinal}
-          className="home-specialty-divider h-[2px] bg-black origin-left mb-[100px] hidden lg:block w-[999px] lg:w-[70vw] xl:w-[65vw] max-w-[1200px]"
+          className="home-specialty-divider mb-[100px] hidden h-px origin-left bg-gray-300 lg:block lg:w-[calc(100%_-_160px)] xl:w-[calc(100%_-_240px)]"
         />
 
         {/* Mobile Layout - Visible only on small screens */}

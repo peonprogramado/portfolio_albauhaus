@@ -472,7 +472,7 @@ export default function ProyectosPage() {
                             onCardClick={handleProjectClick}
                         />
                     ) : (
-                        <div className="relative left-1/2 w-[calc(100vw-40px)] max-w-[1800px] -translate-x-1/2 overflow-hidden border-y border-gray-300 sm:w-[calc(100vw-64px)]">
+                        <div className="w-full overflow-hidden border-y border-gray-300">
                             <div
                                 role="row"
                                 className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1fr)_auto] items-center gap-10 border-b border-gray-300 px-2 py-5 text-base text-gray-400 md:grid"

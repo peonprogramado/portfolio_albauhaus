@@ -52,7 +52,7 @@ export default function ImageTooltip({ children, imageSrc, alt = "Tooltip image"
   return (
     <div
       ref={containerRef}
-      className="relative inline-block"
+      className="relative block w-full"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
