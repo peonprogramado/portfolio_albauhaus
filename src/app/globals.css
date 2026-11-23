@@ -93,15 +93,7 @@ html[data-contrast="dark"] .academic-timeline-line {
   background-color: #f0f0f0;
 }
 
-.project-case-meta {
-  background-color: #f0f0f0;
-}
-
 html[data-contrast="dark"] .project-section-lead {
-  background-color: #202022;
-}
-
-html[data-contrast="dark"] .project-case-meta {
   background-color: #202022;
 }
 

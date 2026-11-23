@@ -49,10 +49,10 @@ export default function DuneInfografiaPage() {
       tags={["Retrofuturista", "Informativo"]}
       projectTitle="Infografía y visualización de datos con Python de la saga Dune"
       caseMeta={{
-        role: "Diseñador de información y desarrollador",
-        roleEn: "Information designer and developer",
-        developmentTime: "—",
-        developmentTimeEn: "—",
+        role: "Diseñador",
+        roleEn: "Designer",
+        developmentTime: "4 semanas",
+        developmentTimeEn: "4 weeks",
         tools: "Python, Matplotlib",
       }}
       processSections={processSections}

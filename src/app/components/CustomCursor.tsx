@@ -235,7 +235,7 @@ export default function CustomCursor() {
                 this.label.style.fontWeight = "500";
                 this.cursor.style.width = this.cursor.style.height = `${tooltipSize}px`;
                 this.cursor.style.top = this.cursor.style.left = `${tooltipSize / -2}px`;
-                this.cursor.style.backgroundColor = "rgba(24, 24, 27, 0.66)";
+                this.cursor.style.backgroundColor = "rgba(24, 24, 27, 0.52)";
                 this.cursor.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.16), 0 8px 30px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.16)";
                 this.cursor.style.backdropFilter = "blur(12px) saturate(150%)";
                 this.cursor.style.setProperty("-webkit-backdrop-filter", "blur(12px) saturate(150%)");
@@ -251,7 +251,7 @@ export default function CustomCursor() {
                 this.arrow.style.transform = direction === "left" ? "rotate(180deg)" : "rotate(0deg)";
                 this.cursor.style.width = this.cursor.style.height = `${navigationSize}px`;
                 this.cursor.style.top = this.cursor.style.left = `${navigationSize / -2}px`;
-                this.cursor.style.backgroundColor = "rgba(24, 24, 27, 0.66)";
+                this.cursor.style.backgroundColor = "rgba(24, 24, 27, 0.52)";
                 this.cursor.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.16), 0 8px 30px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.16)";
                 this.cursor.style.backdropFilter = "blur(12px) saturate(150%)";
                 this.cursor.style.setProperty("-webkit-backdrop-filter", "blur(12px) saturate(150%)");

@@ -118,8 +118,8 @@ export default function Bisiona2026Page() {
       caseMeta={{
         role: "Diseñador y desarrollador",
         roleEn: "Designer and developer",
-        developmentTime: "—",
-        developmentTimeEn: "—",
+        developmentTime: "5 semanas",
+        developmentTimeEn: "5 weeks",
         tools: "Figma, HTML, CSS, JavaScript, Python",
       }}
       processSections={processSections}

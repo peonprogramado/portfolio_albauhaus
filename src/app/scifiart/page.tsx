@@ -36,10 +36,10 @@ export default function SciFiArtPage() {
       tags={["Experimental"]}
       projectTitle="Infografía sobre la influencia de las vanguardias en el arte de ciencia ficción"
       caseMeta={{
-        role: "Diseñador de información y desarrollador creativo",
-        roleEn: "Information designer and creative developer",
-        developmentTime: "—",
-        developmentTimeEn: "—",
+        role: "Diseñador",
+        roleEn: "Designer",
+        developmentTime: "4 semanas",
+        developmentTimeEn: "4 weeks",
         tools: "p5.js, JavaScript",
       }}
       processSections={processSections}
