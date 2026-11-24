@@ -2,10 +2,26 @@
 
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import Icon from "@mdi/react";
+import { mdiArrowRight } from "@mdi/js";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import MaskedHeading from "./MaskedHeading";
 import { useLanguage } from "../context/LanguageContext";
+
+const projectSequence = [
+  { href: "/sileo", title: "Sileo App", titleEn: "Sileo App" },
+  { href: "/bisiona2026", title: "Bisiona", titleEn: "Bisiona" },
+  { href: "/nars", title: "NARS", titleEn: "NARS" },
+  {
+    href: "/duneinfografia",
+    title: "Dune Infografía",
+    titleEn: "Dune Infographic",
+  },
+  { href: "/scifiart", title: "SCI FI art", titleEn: "SCI FI art" },
+];
 
 type ProjectDetailLayoutProps = {
   title: string;
@@ -51,6 +67,14 @@ export default function ProjectDetailLayout({
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeProcessSection, setActiveProcessSection] = useState(0);
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const currentProjectIndex = projectSequence.findIndex(
+    (project) => project.href === pathname,
+  );
+  const nextProject =
+    currentProjectIndex >= 0
+      ? projectSequence[(currentProjectIndex + 1) % projectSequence.length]
+      : null;
 
   const translateNode = (node: ReactNode): ReactNode => {
     if (typeof node === "string") return t(node);
@@ -325,6 +349,30 @@ export default function ProjectDetailLayout({
                 ))}
               </div>
             </div>
+          </section>
+        )}
+
+        {nextProject && (
+          <section className="mt-8 sm:mt-12">
+            <Link
+              href={nextProject.href}
+              aria-label={`${t("Siguiente proyecto", "Next project")}: ${t(nextProject.title, nextProject.titleEn)}`}
+              className="curzr-hover group flex min-h-[42vh] flex-col items-center justify-center py-20 text-center sm:min-h-[50vh] sm:py-28 lg:min-h-[58vh]"
+              data-cursor-label={t("Ver proyecto", "View project")}
+            >
+              <span className="flex min-w-[220px] items-center justify-between gap-5 rounded-full border border-black px-5 py-3 text-base font-normal text-black transition-colors group-hover:bg-black group-hover:text-white sm:text-lg">
+                <span>{t("Siguiente proyecto", "Next project")}</span>
+                <Icon
+                  path={mdiArrowRight}
+                  size={1}
+                  aria-hidden="true"
+                  className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </span>
+              <span className="mt-7 text-4xl font-normal leading-none tracking-[-0.04em] text-black transition-opacity duration-300 group-hover:opacity-55 sm:text-6xl lg:text-7xl">
+                {t(nextProject.title, nextProject.titleEn)}
+              </span>
+            </Link>
           </section>
         )}
       </main>
