@@ -86,8 +86,8 @@ const Footer: React.FC<FooterProps> = ({ compactTopSpacing = false }) => {
 
             <p className="max-w-[17rem] text-base leading-[1.65] text-black/45 sm:text-lg lg:justify-self-center lg:text-[17px]">
               {t(
-                "Diseño gráfico en A Coruña · Web · UI/UX · Motion Graphics · 3D",
-                "Graphic design in A Coruña · Web · UI/UX · Motion Graphics · 3D",
+                "Ingeniería UX en A Coruña · Web · UI/UX · Motion Graphics · 3D",
+                "UX engineering in A Coruña · Web · UI/UX · Motion Graphics · 3D",
               )}
             </p>
 

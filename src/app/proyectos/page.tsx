@@ -394,7 +394,13 @@ export default function ProyectosPage() {
 
                 {/* Filter Dropdown con HeroUI */}
                 <div className="mb-12 flex flex-wrap items-center justify-between gap-4">
-                    <Dropdown onOpenChange={(open) => setIsDropdownOpen(open)} shouldBlockScroll={false}>
+                    <Dropdown
+                        placement="bottom-start"
+                        shouldFlip={false}
+                        offset={8}
+                        onOpenChange={(open) => setIsDropdownOpen(open)}
+                        shouldBlockScroll={false}
+                    >
                         <DropdownTrigger>
                             <Button
                                 className="backdrop-blur-sm bg-white/10 border border-black/20 rounded-3xl px-6 py-3 text-black font-medium hover:bg-white/20 transition-all duration-300 min-w-[220px]"
