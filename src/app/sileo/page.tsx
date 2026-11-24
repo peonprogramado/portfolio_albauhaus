@@ -130,14 +130,47 @@ const processSections = [
       </>
     ),
     body: (
-      <p>
-        Con ello, se pretende{" "}
-        <strong className="font-semibold text-black">
-          aumentar la tasa de tareas completadas
-        </strong>
-        , adaptando la experiencia a las necesidades, preferencias y forma de
-        organizarse de cada usuario.
-      </p>
+      <div>
+        <p>
+          Con ello, se pretende{" "}
+          <strong className="font-semibold text-black">
+            aumentar la tasa de tareas completadas
+          </strong>
+          , adaptando la experiencia a las necesidades, preferencias y forma de
+          organizarse de cada usuario.
+        </p>
+
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <article className="sileo-goal-card flex min-h-48 w-full flex-col justify-between rounded-2xl border border-black/5 p-6 sm:p-7">
+            <strong className="text-5xl font-semibold leading-none tracking-[-0.05em] text-black sm:text-6xl">
+              +20%
+            </strong>
+            <p className="mt-8 text-base leading-snug text-gray-600 sm:text-lg">
+              Tareas completadas por las personas usuarias de la aplicación.
+            </p>
+          </article>
+
+          <article className="sileo-goal-card flex min-h-48 w-full flex-col justify-between rounded-2xl border border-black/5 p-6 sm:p-7">
+            <strong className="text-5xl font-semibold leading-none tracking-[-0.05em] text-black sm:text-6xl">
+              100%
+            </strong>
+            <p className="mt-8 text-base leading-snug text-gray-600 sm:text-lg">
+              Cumplimiento de las pautas de accesibilidad de nivel AA de las
+              WCAG.
+            </p>
+          </article>
+
+          <article className="sileo-goal-card flex min-h-48 w-full flex-col justify-between rounded-2xl border border-black/5 p-6 sm:p-7">
+            <strong className="text-5xl font-semibold leading-none tracking-[-0.05em] text-black sm:text-6xl">
+              80%
+            </strong>
+            <p className="mt-8 text-base leading-snug text-gray-600 sm:text-lg">
+              Personas usuarias que reportan menor agobio al organizar su
+              rutina.
+            </p>
+          </article>
+        </div>
+      </div>
     ),
   },
   {
@@ -315,7 +348,8 @@ const processSections = [
   },
   {
     title: "Asistente Ora",
-    lead: "",
+    lead:
+      "Se comprueba si la incorporación de una IA de soporte puede integrarse de forma natural y resultar realmente útil para las personas usuarias de la aplicación.",
     body: (
       <div className="space-y-7">
         <div>
@@ -445,6 +479,8 @@ export default function SileoPage() {
         developmentTime: "3 meses",
         developmentTimeEn: "3 months",
         tools: "Figma, React Native, Expo, Supabase",
+        award: "Selected Projects - Selekted 2026",
+        awardEn: "Selected Projects - Selekted 2026",
       }}
       processSections={processSections}
       description={

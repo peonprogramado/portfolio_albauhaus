@@ -53,6 +53,8 @@ export default function NarsPage() {
         developmentTime: "3 semanas",
         developmentTimeEn: "3 weeks",
         tools: "Blender, After Effects",
+        award: "Selected Projects - Selekted 2025",
+        awardEn: "Selected Projects - Selekted 2025",
       }}
       processSections={processSections}
       description={

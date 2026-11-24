@@ -20,6 +20,8 @@ type ProjectDetailLayoutProps = {
     developmentTime: string;
     developmentTimeEn?: string;
     tools: string;
+    award?: string;
+    awardEn?: string;
   };
   processSections?: {
     title: string;
@@ -206,7 +208,11 @@ export default function ProjectDetailLayout({
             </header>
 
             {caseMeta && (
-              <div className="project-case-meta mb-12 grid gap-7 border-t border-black/10 px-6 py-7 text-center sm:grid-cols-3 sm:px-8 lg:mb-16 lg:px-10 lg:py-8">
+              <div
+                className={`project-case-meta mb-12 grid gap-7 border-t border-black/10 px-6 py-7 text-center sm:px-8 lg:mb-16 lg:px-10 lg:py-8 ${
+                  caseMeta.award ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"
+                }`}
+              >
                 <div>
                   <p className="mb-2 text-base text-gray-500 sm:text-lg">
                     {t("Rol", "Role")}
@@ -233,6 +239,17 @@ export default function ProjectDetailLayout({
                     {caseMeta.tools}
                   </p>
                 </div>
+
+                {caseMeta.award && (
+                  <div>
+                    <p className="mb-2 text-base text-gray-500 sm:text-lg">
+                      {t("Premios", "Awards")}
+                    </p>
+                    <p className="text-base text-black sm:text-lg">
+                      {t(caseMeta.award, caseMeta.awardEn)}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 

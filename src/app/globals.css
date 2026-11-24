@@ -97,6 +97,23 @@ html[data-contrast="dark"] .project-section-lead {
   background-color: #202022;
 }
 
+.sileo-goal-card {
+  background-color: #f0f0f0;
+  transition: background-color 240ms ease, border-color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+html[data-contrast="dark"] .sileo-goal-card {
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+html[data-contrast="high"] .sileo-goal-card {
+  border: 1px solid var(--contrast-border);
+  background-color: var(--contrast-background);
+}
+
 .project-detail-layout :is(p, li),
 .project-detail-layout :is(p, li) strong {
   font-weight: 400 !important;
