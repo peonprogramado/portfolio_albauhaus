@@ -397,7 +397,10 @@ export default function AboutPage() {
                                         )}
                                     </p>
                                     <p>
-                                        {t('Disfruto los hackathones por su combinación de ', 'I enjoy hackathons for their mix of ')}
+                                        {t(
+                                            'En mis ratos libres también disfruto participando en hackathones, donde se combinan ',
+                                            'In my spare time, I also enjoy taking part in hackathons, where I combine ',
+                                        )}
                                         <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">problemSolving</code>
                                         {', '}
                                         <code className="rounded bg-black/[0.045] px-1.5 py-0.5 font-mono text-[0.9em] text-black">rapidPrototyping</code>
